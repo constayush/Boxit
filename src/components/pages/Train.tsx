@@ -1,4 +1,3 @@
-"use client"
 
 import { useState, useEffect, useRef } from "react"
 import { useLocation } from "react-router"
@@ -20,17 +19,17 @@ const punchTypes: Record<string, { name: string; color: string; icon: string; de
 }
 
 // Sound effects for different punch types
-const punchSounds = {
-  "1": "/sounds/jab.mp3",
-  "2": "/sounds/cross.mp3",
-  "3": "/sounds/hook.mp3",
-  "4": "/sounds/hook.mp3",
-  "5": "/sounds/uppercut.mp3",
-  "6": "/sounds/uppercut.mp3",
-  S: "/sounds/slip.mp3",
-  R: "/sounds/roll.mp3",
-  D: "/sounds/duck.mp3",
-}
+// const punchSounds = {
+//   "1": "/sounds/jab.mp3",
+//   "2": "/sounds/cross.mp3",
+//   "3": "/sounds/hook.mp3",
+//   "4": "/sounds/hook.mp3",
+//   "5": "/sounds/uppercut.mp3",
+//   "6": "/sounds/uppercut.mp3",
+//   S: "/sounds/slip.mp3",
+//   R: "/sounds/roll.mp3",
+//   D: "/sounds/duck.mp3",
+// }
 
 export default function Train() {
   const location = useLocation()
@@ -62,7 +61,6 @@ export default function Train() {
   }
 
   const combo = parseCombo(comboString)
-
   const [isTraining, setIsTraining] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [intervalTime, setIntervalTime] = useState(1500)
@@ -72,8 +70,7 @@ export default function Train() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [countdown, setCountdown] = useState(0)
   const [showSettings, setShowSettings] = useState(false)
-
-  const timeoutRef = useRef(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const audioRef = useRef(null)
   const speechRef = useRef(new SpeechSynthesisUtterance())
 
@@ -84,21 +81,24 @@ export default function Train() {
     speechRef.current.volume = 1.0
   }, [])
 
+ 
   // Handle countdown before starting
   useEffect(() => {
     if (countdown > 0) {
-      const timer = setTimeout(() => {
-        setCountdown(countdown - 1)
-      }, 1000)
-
-      return () => clearTimeout(timer)
+      timeoutRef.current = setTimeout(() => {
+        setCountdown((prev) => prev - 1); // Functional update to avoid stale state issues
+      }, 1000);
     } else if (countdown === 0 && isTraining) {
-      startTrainingSequence()
+      startTrainingSequence();
     }
-  }, [countdown, isTraining])
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  },[countdown, isTraining]); 
 
   // Main training sequence
-  const startTrainingSequence = () => {
+ const startTrainingSequence = () => {
     let index = 0
     let remainingReps = repsLeft
 
@@ -139,7 +139,6 @@ export default function Train() {
 
     playPunch()
   }
-
   // Start training with countdown
   const startTraining = () => {
     setRepsLeft(reps)

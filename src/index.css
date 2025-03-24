@@ -38,7 +38,7 @@ html {
   background-repeat: no-repeat;
 
 }
-.Select{
+.select-bg{
   background-image: url(../public/hero-bg.png);
   background-size: cover;
   background-position: center;
@@ -52,8 +52,11 @@ filter: grayscale(1);
   background-position: center;
   background-repeat: no-repeat;
 }
-
+.feature-card:hover .fight-card-bg{
+  filter: grayscale(0);
+}
 a, button{
   transition: all .3s ease-in-out;
   cursor: pointer;
 }
+

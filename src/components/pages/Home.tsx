@@ -119,7 +119,7 @@ export default function Home() {
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center">
             <Link to="/learn">
-              <button className="w-full sm:w-auto border border-white/30  bg-gradient-to-tl from-red-600 to-[#2d0303]   transition-all duration-300 rounded-xl py-4 px-8 text-xl font-medium tracking-wide">
+              <button className="w-full sm:w-auto border border-white/30 hover:border-white hover:border-2  bg-gradient-to-tl from-red-600 to-[#2d0303]   transition-all duration-300 rounded-xl py-4 px-8 text-xl font-medium tracking-wide">
                 Learn
               </button>
             </Link>
@@ -132,32 +132,42 @@ export default function Home() {
         </div>
 
         {/* Features */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 w-full max-w-6xl">
-          <Link to="/learn">
-            <div className="bg-gray-900/70 p-6 rounded-xl flex flex-col items-center text-center">
-              <Trophy className="w-12 h-12 text-red-500 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Pro Techniques</h3>
-              <p className="text-gray-400">
-                Learn boxing techniques from professional fighters
-              </p>
-            </div>
-          </Link>
+    
+<div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 w-full max-w-6xl">
+  <Link to="/learn">
+    <div className="feature-card border border-[#ffffff3f] relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden">
+      {/* Background Gradient Shadow */}
+      <div className="absolute inset-0  opacity-5 hover:opacity-10 transition-all fight-card-bg"></div>
+      <Trophy className="w-12 h-12 text-red-500 mb-4 relative z-10" />
+      <h3 className="text-xl font-bold mb-2 relative z-10">Pro Techniques</h3>
+      <p className="text-gray-400 relative z-10">
+        Learn boxing techniques from professional fighters
+      </p>
+    </div>
+  </Link>
 
-          <div className="bg-gray-900/70 p-6 rounded-xl flex flex-col items-center text-center">
-            <Calendar className="w-12 h-12 text-red-500 mb-4" />
-            <h3 className="text-xl font-bold mb-2">Fight Calendar</h3>
-            <p className="text-gray-400">
-              Stay updated with upcoming boxing matches
-            </p>
-          </div>
-          <div className="bg-gray-900/70 p-6 rounded-xl flex flex-col items-center text-center">
-            <Users className="w-12 h-12 text-red-500 mb-4" />
-            <h3 className="text-xl font-bold mb-2">Fighter Stats</h3>
-            <p className="text-gray-400">
-              Detailed statistics on your favorite boxers
-            </p>
-          </div>
-        </div>
+  <div className="feature-card border border-[#ffffff3f]  relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden">
+    {/* Background Gradient Shadow */}
+    <div className="absolute inset-0  opacity-5 hover:opacity-10 transition-all fight-card-bg"></div>
+    <Calendar className="w-12 h-12 text-red-500 mb-4 relative z-10" />
+    <h3 className="text-xl font-bold mb-2 relative z-10">Fight Calendar</h3>
+    <p className="text-gray-400 relative z-10">
+      Stay updated with upcoming boxing matches
+    </p>
+  </div>
+
+  <div className="feature-card border border-[#ffffff3f] relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden">
+    {/* Background Gradient Shadow */}
+    <div className="absolute inset-0  opacity-5 hover:opacity-10 transition-all fight-card-bg"></div>
+    <Users className="w-12 h-12 text-red-500 mb-4 relative z-10" />
+    <h3 className="text-xl font-bold mb-2 relative z-10">Fighter Stats</h3>
+    <p className="text-gray-400 relative z-10">
+      Detailed statistics on your favorite boxers
+    </p>
+  </div>
+</div>
+
+
       </div>
 
       {/* Fights Section */}

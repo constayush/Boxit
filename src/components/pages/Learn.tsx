@@ -1,8 +1,16 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Link } from "react-router"
-import { ArrowLeft, Play, Info, ChevronRight, BookOpen, Award, CheckCircle } from "lucide-react"
+import { useState } from "react";
+import { Link } from "react-router";
+import {
+  ArrowLeft,
+  Play,
+  Info,
+  ChevronRight,
+  BookOpen,
+  Award,
+  CheckCircle,
+} from "lucide-react";
 
 // Punch tutorial data with YouTube video IDs
 const punchTutorials = [
@@ -168,37 +176,37 @@ const punchTutorials = [
     difficulty: "Intermediate",
     relatedPunches: ["S", "R"],
   },
-]
+];
 
 // Categories for organizing the tutorials
 const categories = [
   { id: "basic", name: "Basic Punches", punches: ["1", "2"] },
   { id: "power", name: "Power Punches", punches: ["3", "4", "5", "6"] },
   { id: "defense", name: "Defensive Moves", punches: ["S", "R", "D"] },
-]
+];
 
 export default function Learn() {
-  const [selectedPunch, setSelectedPunch] = useState(punchTutorials[0])
-  const [activeCategory, setActiveCategory] = useState("basic")
+  const [selectedPunch, setSelectedPunch] = useState(punchTutorials[0]);
+  const [activeCategory, setActiveCategory] = useState("basic");
 
   // Function to get difficulty badge color
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Beginner":
-        return "bg-green-600"
+        return "bg-green-600";
       case "Intermediate":
-        return "bg-yellow-600"
+        return "bg-yellow-600";
       case "Advanced":
-        return "bg-red-600"
+        return "bg-red-600";
       default:
-        return "bg-gray-600"
+        return "bg-gray-600";
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen bg-black text-white flex flex-col px-4 md:my-24 my-12 md:px-12">
       {/* Header with navigation */}
-      <div className="container mx-auto px-4 py-6 flex items-center">
+      <div className="container mx-auto mb-12  flex items-center">
         <Link
           to="/"
           className="flex items-center justify-center rounded-full bg-black border-red-600 border-2 p-3 hover:bg-red-600 transition-colors"
@@ -206,39 +214,55 @@ export default function Learn() {
           <ArrowLeft className="w-5 h-5" />
         </Link>
 
-        <h1 className="text-2xl md:text-3xl font-bold ml-4">Learn Boxing</h1>
+        <div className="flex items-center w-full gap-8">
+          <h1 className="text-2xl md:text-5xl  font-bold ml-4 helvetica-font">
+            Learn Boxing
+          </h1>
+          <div className="h-1 w- flex-grow  bg-red-600 rounded-full"></div>
+        </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6 flex-1">
+      <div className="container mx-auto flex-1">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Sidebar with punch list */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-900/70 rounded-xl p-6 sticky top-6">
+            <div className="bg-gray-900/70 rounded-xl p-6 sticky top-10">
               <h2 className="text-xl font-bold mb-6 flex items-center">
                 <BookOpen className="w-5 h-5 mr-2 text-red-600" />
                 Boxing Techniques
               </h2>
 
-
-
               {/* Categories */}
               <div className="space-y-6">
-
-              <div >
-                    <h3
-                      className={`text-lg font-medium mb-3 pb-2 border-b `}
-                      
+                <div>
+                  <h3 className={`text-lg font-medium mb-3 pb-2 border-b `}>
+                    Important note
+                  </h3>
+                  <p>
+                    This course is not created or owned by us. It is a Creative
+                    Commons-licensed course sourced from YouTube, originally
+                    produced by its respective creator(s). All credit goes to
+                    the original author(s){" "}
+                    <a
+                      className="font-bold text-red-500"
+                      href="https://www.youtube.com/@MasterBoxingLLC"
+                      target="_blank"
                     >
-                     Important note 
-                    </h3>
-                    <p>This course is not created or owned by us. It is a Creative Commons-licensed course sourced from YouTube, originally produced by its respective creator(s). All credit goes to the original author(s) <a className="font-bold text-red-500" href="https://www.youtube.com/@MasterBoxingLLC" target="_blank">MASTER BOXING</a> for their work. We are simply providing access to this content for educational purposes.</p>
-                 
-                  </div>
+                      MASTER BOXING
+                    </a>{" "}
+                    for their work. We are simply providing access to this
+                    content for educational purposes.
+                  </p>
+                </div>
 
                 {categories.map((category) => (
                   <div key={category.id}>
                     <h3
-                      className={`text-lg font-medium mb-3 pb-2 border-b ${activeCategory === category.id ? "border-red-600" : "border-gray-700"}`}
+                      className={`text-lg font-medium mb-3 pb-2 border-b ${
+                        activeCategory === category.id
+                          ? "border-red-600"
+                          : "border-gray-700"
+                      }`}
                       onClick={() => setActiveCategory(category.id)}
                     >
                       {category.name}
@@ -250,7 +274,11 @@ export default function Learn() {
                           <button
                             key={punch.id}
                             onClick={() => setSelectedPunch(punch)}
-                            className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${selectedPunch.id === punch.id ? "bg-gray-800 border-l-4 border-red-600" : "hover:bg-gray-800/50"}`}
+                            className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
+                              selectedPunch.id === punch.id
+                                ? "bg-gray-800 border-l-4 border-red-600"
+                                : "hover:bg-gray-800/50"
+                            }`}
                           >
                             <div className="flex items-center">
                               <div
@@ -262,7 +290,9 @@ export default function Learn() {
                               <span>{punch.name}</span>
                             </div>
                             <ChevronRight
-                              className={`w-5 h-5 transition-transform ${selectedPunch.id === punch.id ? "rotate-90" : ""}`}
+                              className={`w-5 h-5 transition-transform ${
+                                selectedPunch.id === punch.id ? "rotate-90" : ""
+                              }`}
                             />
                           </button>
                         ))}
@@ -287,9 +317,13 @@ export default function Learn() {
                       {selectedPunch.code}
                     </div>
                     <div>
-                      <h2 className="text-2xl md:text-3xl font-bold">{selectedPunch.name}</h2>
+                      <h2 className="text-2xl md:text-3xl font-bold">
+                        {selectedPunch.name}
+                      </h2>
                       <div
-                        className={`text-sm px-2 py-1 rounded-full inline-flex items-center mt-1 ${getDifficultyColor(selectedPunch.difficulty)}`}
+                        className={`text-sm px-2 py-1 rounded-full inline-flex items-center mt-1 ${getDifficultyColor(
+                          selectedPunch.difficulty
+                        )}`}
                       >
                         <Award className="w-4 h-4 mr-1" />
                         {selectedPunch.difficulty}
@@ -316,7 +350,9 @@ export default function Learn() {
                     <Info className="w-5 h-5 mr-2 text-red-600" />
                     Description
                   </h3>
-                  <p className="text-gray-300 leading-relaxed">{selectedPunch.description}</p>
+                  <p className="text-gray-300 leading-relaxed">
+                    {selectedPunch.description}
+                  </p>
                 </div>
 
                 {/* Tips */}
@@ -337,8 +373,10 @@ export default function Learn() {
                   <h3 className="text-xl font-bold mb-4">Related Techniques</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {selectedPunch.relatedPunches.map((id) => {
-                      const relatedPunch = punchTutorials.find((p) => p.id === id)
-                      if (!relatedPunch) return null
+                      const relatedPunch = punchTutorials.find(
+                        (p) => p.id === id
+                      );
+                      if (!relatedPunch) return null;
 
                       return (
                         <button
@@ -354,7 +392,7 @@ export default function Learn() {
                           </div>
                           <span>{relatedPunch.name}</span>
                         </button>
-                      )
+                      );
                     })}
                   </div>
                 </div>
@@ -375,10 +413,11 @@ export default function Learn() {
       </div>
 
       {/* Footer */}
-      <div className="container mx-auto px-4 py-6 border-t border-gray-800">
-        <p className="text-center text-gray-500 text-sm">Learn proper boxing techniques from professional tutorials</p>
+      <div className="container my-12 px-4 py-6 border-t border-gray-800">
+        <p className="text-center text-gray-500 text-sm">
+          Learn proper boxing techniques from professional tutorials
+        </p>
       </div>
     </div>
-  )
+  );
 }
-
