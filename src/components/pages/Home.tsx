@@ -112,7 +112,7 @@ export default function Home() {
         
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-6xl md:text-[10rem] font-bold mb-3 helvetica-font">
-            Box'<span className="text-red-600">it</span>
+            Box'<span className="text-red-600">it.</span>
           </h1>
           <p className="text-xl md:text-3xl mb-12 text-gray-300">Your Ultimate Boxing Guide! – Train, Learn, and Stay Updated!</p>
 
