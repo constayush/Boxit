@@ -14,7 +14,7 @@ const punchTutorials = [
     icon: "👊",
     description:
       "The jab is a quick, straight punch thrown with the lead hand from the guard position. The jab is the most important punch in a boxer's arsenal because it provides a fair amount of its own cover and it leaves the least amount of space for a counter punch from the opponent.",
-    videoId: "vD4JbdNu2Vc",
+    videoId: "jm2OaMiFexc",
     tips: [
       "Keep your elbow in",
       "Rotate your fist at the end of the punch",
@@ -32,7 +32,7 @@ const punchTutorials = [
     icon: "💥",
     description:
       "The cross is a powerful straight punch thrown with the rear hand. It's often thrown after a jab, creating the classic 'one-two' combination. The power comes from rotating your hips and shoulders, transferring weight from the back foot to the front foot.",
-    videoId: "xZdDRvzG4Jw",
+    videoId: "GXIshLTUHjk",
     tips: [
       "Rotate your hips and shoulders",
       "Keep your chin tucked",
@@ -50,7 +50,7 @@ const punchTutorials = [
     icon: "🤛",
     description:
       "The lead hook is a semi-circular punch thrown with the lead hand. It's aimed at the side of the opponent's head or body. The hook is a powerful punch that can catch opponents by surprise as it comes from the side rather than straight on.",
-    videoId: "KxZgCEPOk5Y",
+    videoId: "kxY5RMesarQ",
     tips: [
       "Keep your elbow at a 90-degree angle",
       "Pivot on your lead foot",
@@ -86,7 +86,7 @@ const punchTutorials = [
     icon: "⤴️",
     description:
       "The lead uppercut is an upward punch thrown with the lead hand, targeting the opponent's chin or body. It's effective in close range and can be devastating when an opponent is leaning forward or has their guard too high.",
-    videoId: "7oPAiKjhMzM",
+    videoId: "83TN2M8ZBuI",
     tips: [
       "Bend your knees slightly",
       "Keep your elbow close to your body",
@@ -122,7 +122,7 @@ const punchTutorials = [
     icon: "↪️",
     description:
       "Slipping is a defensive technique where you move your head to either side to avoid an incoming punch. It's a fundamental defensive skill that allows you to evade punches while staying in position to counter.",
-    videoId: "HeKy5YbYU8k",
+    videoId: "mDyQFyTaCRE",
     tips: [
       "Bend slightly at the knees, not the waist",
       "Keep your eyes on your opponent",
@@ -140,7 +140,7 @@ const punchTutorials = [
     icon: "🔄",
     description:
       "Rolling is a defensive technique where you move your upper body in a circular motion to avoid punches. It's particularly effective against hooks and allows you to position yourself for counter punches.",
-    videoId: "Zs-Kj3Gp-qU",
+    videoId: "nCWFoJYNUH4",
     tips: [
       "Bend your knees",
       "Keep your hands up to protect your face",
@@ -158,7 +158,7 @@ const punchTutorials = [
     icon: "⬇️",
     description:
       "Ducking is a defensive technique where you lower your body by bending your knees to avoid punches aimed at your head. It's effective against straight punches and can set you up for body counter punches.",
-    videoId: "JfBP_Sb5UVs",
+    videoId: "ljkp",
     tips: [
       "Bend at the knees, not the waist",
       "Keep your eyes on your opponent",
@@ -219,8 +219,22 @@ export default function Learn() {
                 Boxing Techniques
               </h2>
 
+
+
               {/* Categories */}
               <div className="space-y-6">
+
+              <div >
+                    <h3
+                      className={`text-lg font-medium mb-3 pb-2 border-b `}
+                      
+                    >
+                     Important note 
+                    </h3>
+                    <p>This course is not created or owned by us. It is a Creative Commons-licensed course sourced from YouTube, originally produced by its respective creator(s). All credit goes to the original author(s) <a className="font-bold text-red-500" href="https://www.youtube.com/@MasterBoxingLLC" target="_blank">MASTER BOXING</a> for their work. We are simply providing access to this content for educational purposes.</p>
+                 
+                  </div>
+
                 {categories.map((category) => (
                   <div key={category.id}>
                     <h3

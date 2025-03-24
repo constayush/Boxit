@@ -54,5 +54,6 @@ filter: grayscale(1);
 }
 
 a, button{
+  transition: all .3s ease-in-out;
   cursor: pointer;
 }
