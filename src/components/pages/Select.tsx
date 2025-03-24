@@ -41,9 +41,11 @@ export default function Select() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen relative w-full bg-black text-white flex flex-col justify-center items-center px-4 md:my-24 my-12 md:px-12">
+
+      <div className="absolute bg-red-300 w-full h-full -z-1 "></div>
       {/* Header with navigation */}
-      <div className="container mx-auto px-4 py-6 flex items-center justify-between">
+      <div className="container flex items-center justify-between">
         <Link
           to="/"
           className="flex items-center justify-center rounded-full bg-black border-red-600 border-2 p-3 hover:bg-red-600 transition-colors"
@@ -51,7 +53,7 @@ export default function Select() {
           <ArrowLeft className="w-5 h-5" />
         </Link>
 
-        <h1 className="text-3xl md:text-4xl font-bold">Select Your Combo</h1>
+        <h1 className="text-3xl md:text-6xl font-bold helvetica-font">Select Your Combo</h1>
 
         <Link
           to="/train"
@@ -161,7 +163,7 @@ export default function Select() {
         </div>
 
         {/* Custom Combo Input */}
-        <div className="w-full max-w-2xl bg-gray-900/70 rounded-xl p-6">
+        <div className="w-full max-w-4xl bg-gray-900/70 rounded-xl p-6">
           <h2 className="text-xl font-bold mb-4">Create Custom Combo</h2>
           <div className="flex flex-col gap-4">
             <input

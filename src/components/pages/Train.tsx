@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ArrowLeft, Play, Square, RotateCcw, Clock, Repeat, Settings, ChevronRight, ChevronLeft } from "lucide-react"
 
 // Updated punch codes to match our combo system
-const punchTypes = {
+const punchTypes: Record<string, { name: string; color: string; icon: string; description: string }> = {
   "1": { name: "Jab", color: "#ef4444", icon: "👊", description: "Lead hand straight punch" },
   "2": { name: "Cross", color: "#3b82f6", icon: "💥", description: "Rear hand straight punch" },
   "3": { name: "Lead Hook", color: "#10b981", icon: "🤛", description: "Lead hand hook" },
@@ -37,14 +37,14 @@ export default function Train() {
   const comboString = new URLSearchParams(location.search).get("combo") || "Jab, Cross"
 
   // Parse the combo string into our number/letter codes
-  const parseCombo = (comboStr) => {
+  const parseCombo = (comboStr: string) => {
     // If it's already in code format like "1-2-3"
     if (comboStr.includes("-")) {
       return comboStr.split("-")
     }
 
     // If it's in text format like "Jab, Cross, Hook"
-    const punchMap = {
+    const punchMap: Record<string, string> = {
       Jab: "1",
       Cross: "2",
       Hook: "3", // Default to lead hook
@@ -58,7 +58,7 @@ export default function Train() {
       Duck: "D",
     }
 
-    return comboStr.split(", ").map((punch) => punchMap[punch] || punch)
+    return comboStr.split(", ").map((punch:string):string => punchMap[punch] || punch)
   }
 
   const combo = parseCombo(comboString)
@@ -118,7 +118,7 @@ export default function Train() {
       }
 
       // Move to next punch after interval
-      timeoutRef.current = setTimeout(() => {
+      timeoutRef.current= setTimeout(() => {
         index = (index + 1) % combo.length
 
         // If we've completed a full combo
@@ -177,17 +177,20 @@ export default function Train() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen bg-black text-white flex flex-col px-4 md:my-24 my-12 md:px-12">
       {/* Header with navigation */}
-      <div className="container mx-auto px-4 py-6 flex items-center">
-        <Link
+      <div className="container mx-auto flex items-center">
+       <Link
           to="/select"
           className="flex items-center justify-center rounded-full bg-black border-red-600 border-2 p-3 hover:bg-red-600 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
 
-        <h1 className="text-2xl md:text-3xl font-bold ml-4">Training Mode</h1>
+<div className="flex items-center w-full gap-8"> 
+        <h1 className="text-2xl md:text-5xl  font-bold ml-4 helvetica-font">Training Mode</h1>
+        <div className="h-1 w- flex-grow  bg-red-600 rounded-full"></div>
+        </div>
       </div>
 
       <div className="container mx-auto px-4 py-6 flex-1 flex flex-col items-center">

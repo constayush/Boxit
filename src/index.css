@@ -21,7 +21,7 @@ html {
 }
 
 .helvetica-font{
-  letter-spacing: .02em;
+  letter-spacing: .025em;
   text-shadow: 4px 4px 4px #000;
   font-family: "helvetica", monospace;
 }
@@ -51,4 +51,8 @@ filter: grayscale(1);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+a, button{
+  cursor: pointer;
 }

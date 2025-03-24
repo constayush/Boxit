@@ -123,14 +123,14 @@ export default function Home() {
                 Practice
               </button>
             </Link>
-            <a href="#" className="cursor-not-allowed">
+            <Link to="/learn" className="">
               <button
                 className="w-full sm:w-auto border border-white/30 bg-gray-800/50 hover:bg-red-600 transition-all duration-300 rounded-xl py-4 px-8 text-xl font-medium tracking-wide hover:tracking-wider"
-                disabled
+                
               >
                 Learn
               </button>
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -155,7 +155,7 @@ export default function Home() {
       </div>
 
       {/* Fights Section */}
-      <div className="container px-4 md:my-24 my-12 md:px-12">
+      <div className="container cursor-not-allowed px-4 md:my-24 my-12 md:px-12">
         <div className="flex items-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold">Upcoming Fights</h2>
           <div className="h-1 flex-grow ml-8 bg-red-600 rounded-full"></div>
@@ -174,7 +174,7 @@ export default function Home() {
       </div>
 
       {/* Player Stats Section */}
-      <div className="container px-4 md:my-24 my-12 md:px-12">
+      <div className="container cursor-not-allowed px-4 md:my-24 my-12 md:px-12">
         <div className="flex items-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold">Top Fighters</h2>
           <div className="h-1 flex-grow ml-8 bg-red-600 rounded-full"></div>
@@ -307,7 +307,7 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="w-full bg-gradient-to-b from-black to-gray-900 p-24 ">
+      <div className="w-full cursor-not-allowed bg-gradient-to-b from-black to-gray-900 p-24 ">
         <div className="container mx-auto px-4 text-center max-w-3xl">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Step in the Ring?</h2>
           <p className="text-xl text-gray-300 mb-12">
