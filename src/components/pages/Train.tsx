@@ -1,3 +1,4 @@
+"use client"
 
 import { useState, useEffect, useRef } from "react"
 import { useLocation } from "react-router"
@@ -18,25 +19,19 @@ const punchTypes: Record<string, { name: string; color: string; icon: string; de
   D: { name: "Duck", color: "#f97316", icon: "⬇️", description: "Defensive duck movement" },
 }
 
-// Sound effects for different punch types
-// const punchSounds = {
-//   "1": "/sounds/jab.mp3",
-//   "2": "/sounds/cross.mp3",
-//   "3": "/sounds/hook.mp3",
-//   "4": "/sounds/hook.mp3",
-//   "5": "/sounds/uppercut.mp3",
-//   "6": "/sounds/uppercut.mp3",
-//   S: "/sounds/slip.mp3",
-//   R: "/sounds/roll.mp3",
-//   D: "/sounds/duck.mp3",
-// }
+// Type for the training state
+interface TrainingState {
+  index: number
+  remainingReps: number
+  isActive: boolean
+}
 
 export default function Train() {
   const location = useLocation()
   const comboString = new URLSearchParams(location.search).get("combo") || "Jab, Cross"
 
   // Parse the combo string into our number/letter codes
-  const parseCombo = (comboStr: string) => {
+  const parseCombo = (comboStr: string): string[] => {
     // If it's already in code format like "1-2-3"
     if (comboStr.includes("-")) {
       return comboStr.split("-")
@@ -57,90 +52,166 @@ export default function Train() {
       Duck: "D",
     }
 
-    return comboStr.split(", ").map((punch:string):string => punchMap[punch] || punch)
+    return comboStr.split(", ").map((punch: string): string => punchMap[punch] || punch)
   }
 
   const combo = parseCombo(comboString)
-  const [isTraining, setIsTraining] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
-  const [intervalTime, setIntervalTime] = useState(1500)
-  const [reps, setReps] = useState(5)
-  const [repsLeft, setRepsLeft] = useState(reps)
-  const [currentPunch, setCurrentPunch] = useState("")
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [countdown, setCountdown] = useState(0)
-  const [showSettings, setShowSettings] = useState(false)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const audioRef = useRef(null)
-  const speechRef = useRef(new SpeechSynthesisUtterance())
+  const [isTraining, setIsTraining] = useState<boolean>(false)
+  const [isPaused, setIsPaused] = useState<boolean>(false)
+  const [intervalTime, setIntervalTime] = useState<number>(1500)
+  const [reps, setReps] = useState<number>(5)
+  const [repsLeft, setRepsLeft] = useState<number>(reps)
+  const [currentPunch, setCurrentPunch] = useState<string>("")
+  const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const [countdown, setCountdown] = useState<number>(0)
+  const [showSettings, setShowSettings] = useState<boolean>(false)
 
-  // Set speech properties
-  useEffect(() => {
-    speechRef.current.rate = 1.0
-    speechRef.current.pitch = 1.0
-    speechRef.current.volume = 1.0
-  }, [])
+  // Refs
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const countdownRef = useRef<NodeJS.Timeout | null>(null)
+  const trainingStateRef = useRef<TrainingState>({ index: 0, remainingReps: reps, isActive: false })
+  const audioContextRef = useRef<AudioContext | null>(null)
 
- 
+  // Initialize audio context on first user interaction
+  const initAudioContext = () => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
+    }
+  }
+
+  // Play a simple beep sound instead of using speech synthesis
+  const playBeep = (frequency = 440, duration = 150) => {
+    if (!audioContextRef.current) return
+
+    const oscillator = audioContextRef.current.createOscillator()
+    const gainNode = audioContextRef.current.createGain()
+
+    oscillator.connect(gainNode)
+    gainNode.connect(audioContextRef.current.destination)
+
+    oscillator.type = "sine"
+    oscillator.frequency.value = frequency
+    gainNode.gain.value = 0.5
+
+    oscillator.start()
+
+    setTimeout(() => {
+      oscillator.stop()
+    }, duration)
+  }
+
+  // Get punch-specific beep frequency
+  const getPunchFrequency = (punchId: string): number => {
+    const baseFrequencies: Record<string, number> = {
+      "1": 440, // A4
+      "2": 494, // B4
+      "3": 523, // C5
+      "4": 587, // D5
+      "5": 659, // E5
+      "6": 698, // F5
+      S: 784, // G5
+      R: 880, // A5
+      D: 988, // B5
+    }
+
+    return baseFrequencies[punchId] || 440
+  }
+
   // Handle countdown before starting
   useEffect(() => {
     if (countdown > 0) {
-      timeoutRef.current = setTimeout(() => {
-        setCountdown((prev) => prev - 1); // Functional update to avoid stale state issues
-      }, 1000);
+      // Play countdown beep
+      if (audioContextRef.current) {
+        playBeep(330, 200) // Lower pitch for countdown
+      }
+
+      countdownRef.current = setTimeout(() => {
+        setCountdown((prev) => prev - 1)
+      }, 1000)
     } else if (countdown === 0 && isTraining) {
-      startTrainingSequence();
+      trainingStateRef.current = {
+        index: 0,
+        remainingReps: repsLeft,
+        isActive: true,
+      }
+      nextPunch()
     }
 
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  },[countdown, isTraining]); 
+      if (countdownRef.current) clearTimeout(countdownRef.current)
+    }
+  }, [countdown, isTraining])
 
-  // Main training sequence
- const startTrainingSequence = () => {
-    let index = 0
-    let remainingReps = repsLeft
+  // Update training state ref when repsLeft changes
+  useEffect(() => {
+    trainingStateRef.current.remainingReps = repsLeft
+  }, [repsLeft])
 
-    const playPunch = () => {
-      if (!isTraining || isPaused || remainingReps <= 0) return
-
-      const punch = combo[index]
-      setCurrentPunch(punch)
-      setCurrentIndex(index)
-
-      // Play audio for the punch
-      if (audioRef.current) {
-        // In a real app, you would have actual sound files
-        // For now we'll use speech synthesis
-        speechRef.current.text = punchTypes[punch]?.name || punch
-        window.speechSynthesis.speak(speechRef.current)
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      if (countdownRef.current) clearTimeout(countdownRef.current)
+      if (audioContextRef.current) {
+        audioContextRef.current.close().catch(console.error)
       }
+    }
+  }, [])
 
-      // Move to next punch after interval
-      timeoutRef.current= setTimeout(() => {
-        index = (index + 1) % combo.length
+  // Process the next punch in the sequence
+  const nextPunch = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
 
-        // If we've completed a full combo
-        if (index === 0) {
-          remainingReps--
-          setRepsLeft(remainingReps)
+    const { index, remainingReps, isActive } = trainingStateRef.current
 
-          // If we've completed all reps
-          if (remainingReps <= 0) {
-            setIsTraining(false)
-            return
-          }
-        }
-
-        playPunch()
-      }, intervalTime)
+    if (!isActive || isPaused || remainingReps <= 0) {
+      if (remainingReps <= 0) {
+        setIsTraining(false)
+        trainingStateRef.current.isActive = false
+      }
+      return
     }
 
-    playPunch()
+    // Set current punch
+    const punch = combo[index]
+    setCurrentPunch(punch)
+    setCurrentIndex(index)
+
+    // Play sound for the punch
+    if (audioContextRef.current) {
+      playBeep(getPunchFrequency(punch), 150)
+    }
+
+    // Schedule next punch
+    timeoutRef.current = setTimeout(() => {
+      // Update index for next punch
+      const nextIndex = (index + 1) % combo.length
+
+      // If we've completed a full combo
+      if (nextIndex === 0) {
+        const newRepsLeft = remainingReps - 1
+        setRepsLeft(newRepsLeft)
+        trainingStateRef.current.remainingReps = newRepsLeft
+
+        // If we've completed all reps
+        if (newRepsLeft <= 0) {
+          setIsTraining(false)
+          trainingStateRef.current.isActive = false
+          return
+        }
+      }
+
+      // Update training state for next punch
+      trainingStateRef.current.index = nextIndex
+
+      // Process next punch
+      nextPunch()
+    }, intervalTime)
   }
+
   // Start training with countdown
   const startTraining = () => {
+    initAudioContext()
     setRepsLeft(reps)
     setCountdown(3)
     setIsTraining(true)
@@ -150,45 +221,40 @@ export default function Train() {
   const stopTraining = () => {
     setIsTraining(false)
     setIsPaused(false)
-    clearTimeout(timeoutRef.current)
-    window.speechSynthesis.cancel()
+    trainingStateRef.current.isActive = false
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
     setCurrentPunch("")
     setCurrentIndex(0)
   }
 
   // Toggle pause
   const togglePause = () => {
-    setIsPaused(!isPaused)
-    if (!isPaused) {
-      clearTimeout(timeoutRef.current)
-      window.speechSynthesis.cancel()
+    const newPausedState = !isPaused
+    setIsPaused(newPausedState)
+
+    if (newPausedState) {
+      // Pause training
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
     } else {
-      startTrainingSequence()
+      // Resume training
+      nextPunch()
     }
   }
-
-  // Clean up on unmount
-  useEffect(() => {
-    return () => {
-      clearTimeout(timeoutRef.current)
-      window.speechSynthesis.cancel()
-    }
-  }, [])
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col px-4 md:my-24 my-12 md:px-12">
       {/* Header with navigation */}
       <div className="container mx-auto flex items-center">
-       <Link
+        <Link
           to="/select"
           className="flex items-center justify-center rounded-full bg-black border-red-600 border-2 p-3 hover:bg-red-600 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
 
-<div className="flex items-center w-full gap-8"> 
-        <h1 className="text-2xl md:text-5xl  font-bold ml-4 helvetica-font">Training Mode</h1>
-        <div className="h-1 w- flex-grow  bg-red-600 rounded-full"></div>
+        <div className="flex items-center w-full gap-8">
+          <h1 className="text-2xl md:text-5xl font-bold ml-4 helvetica-font">Training Mode</h1>
+          <div className="h-1 flex-grow bg-red-600 rounded-full"></div>
         </div>
       </div>
 
@@ -232,10 +298,10 @@ export default function Train() {
           </AnimatePresence>
 
           {/* Current punch display */}
-          <AnimatePresence>
+          <AnimatePresence mode="wait">
             {currentPunch && !countdown && (
               <motion.div
-                key={currentPunch + Date.now()}
+                key={`${currentPunch}-${currentIndex}-${repsLeft}`}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 1.2, opacity: 0 }}
@@ -407,9 +473,6 @@ export default function Train() {
           </AnimatePresence>
         </div>
       </div>
-
-      {/* Audio elements (would be populated with actual sound files) */}
-      <audio ref={audioRef} />
 
       {/* Footer */}
       <div className="container mx-auto px-4 py-6 border-t border-gray-800">
