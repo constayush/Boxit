@@ -5,6 +5,8 @@ import Home from "./components/pages/Home";
 import Learn from "./components/pages/Learn";
 
 function App() {
+
+
   return (
     <Router>
       <Routes>

@@ -456,7 +456,7 @@ export default function Learn() {
 
                 {/* Video player */}
                 <div className="aspect-video h-full bg-gray-900/70 rounded-xl overflow-hidden">
-                  <div id="youtube-player" className=" w-full h-[100%]">
+                  <div id="youtube-player" className=" w-full h-[100%] ">
                     <div ref={playerRef} className="w-full h-full"></div>
                   </div>
                 </div>
