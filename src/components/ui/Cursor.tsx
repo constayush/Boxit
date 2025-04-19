@@ -45,6 +45,7 @@ const CustomCursor = ({ cursorVariant }) => {
       border: "1px solid rgba(255, 255, 255, 0.5)",
       mixBlendMode: "difference",
     },
+   
   }
 
   return (
@@ -59,7 +60,7 @@ const CustomCursor = ({ cursorVariant }) => {
         willChange: "transform",
         transition: "opacity 0.2s ease",
       }}
-    //   variants={variants}
+      variants={variants}
       animate={cursorVariant}
       transition={{
         type: "tween",

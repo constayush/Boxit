@@ -242,7 +242,13 @@ export default function Train() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col px-4 md:my-24 my-12 md:px-12">
+    <motion.div
+    initial={{ opacity: 0, filter: "blur(10px)" }}
+    animate={{ opacity: 1, filter: "blur(0px)" }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.5 }}
+    className="min-h-screen relative bg-black text-white flex flex-col px-4 md:my-24 my-12 md:px-12">
+   
       {/* Header with navigation */}
       <div className="container mx-auto flex items-center">
         <Link
@@ -480,7 +486,7 @@ export default function Train() {
           Follow the visual and audio cues to complete your boxing combo
         </p>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

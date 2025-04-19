@@ -9,24 +9,15 @@ import "../../index.css"
 
 export default function Home() {
 
-// Initialize Lenis
-
-
-
-
   const [cursorVariant, setCursorVariant] = useState("default")
   const heroRef = useRef(null)
   const featuresRef = useRef(null)
   const videosRef = useRef(null)
   const ctaRef = useRef(null)
-
   const isHeroInView = useInView(heroRef, { once: true })
   const isFeaturesInView = useInView(featuresRef, { once: true, amount: 0.3 })
   const isVideosInView = useInView(videosRef, { once: true, amount: 0.2 })
   const isCtaInView = useInView(ctaRef, { once: true, amount: 0.5 })
-
-
-
 
   const legendaryFights = [
     {
@@ -56,10 +47,12 @@ export default function Home() {
   const leaveButton = () => setCursorVariant("default")
 
   return (
-    <div className="min-h-screen min-w-full flex flex-col justify-center items-center bg-black text-white overflow-hidden">
+ 
+     <div className="min-h-screen min-w-full flex flex-col justify-center items-center bg-black text-white overflow-hidden">
       <CustomCursor cursorVariant={cursorVariant} />
 
       {/* Hero Section */}
+ 
       <motion.div
         ref={heroRef}
     
@@ -75,8 +68,8 @@ export default function Home() {
         >
           <div className="text-center max-w-4xl mx-auto">
             <motion.h1
-              initial={{ opacity: 0, y: 50 }}
-              animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+              initial={{ opacity: 0, y: 50, letterSpacing: "20px" }}
+              animate={isHeroInView ? { opacity: 1, y: 0, letterSpacing: "0px" } : {}}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               className="text-6xl md:text-[10rem] font-bold mb-3 brand-font"
               onMouseEnter={enterText}
@@ -139,7 +132,7 @@ export default function Home() {
             </motion.div>
           </motion.div>
         </motion.div>
-      </motion.div>
+      </motion.div> 
       <hr className="w-full border border-[#ffffff27]"/>
       {/* Features */}
       <div className="w-full bg-black py-20">
@@ -181,7 +174,7 @@ export default function Home() {
             />
 
             <FeatureCard
-                  link={"/"}
+                  link={"/select"}
               icon={<Users className="w-12 h-12 text-red-500 mb-4 relative z-10" />}
               title="Training"
               description="Master what you’ve learned by training and repeating techniques in the Practice section."
@@ -209,8 +202,10 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            initial="hidden"
+             initial={{ opacity: 0}}
+          
             animate={isVideosInView ? "visible" : "hidden"}
+            
             variants={{
               hidden: { opacity: 0 },
               visible: {
@@ -268,7 +263,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link to="/select">
+            <Link to="/learn">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -279,7 +274,7 @@ export default function Home() {
                 Learn boxing
               </motion.button>
             </Link>
-            <Link to="#">
+            <Link to="/select">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

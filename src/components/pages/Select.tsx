@@ -109,7 +109,12 @@ export default function Select() {
   }
 
   return (
-    <div className="min-h-screen relative w-full bg-black text-white flex flex-col justify-center items-center px-4 md:py-24 py-12 md:px-12">
+    <motion.div
+    initial={{ opacity: 0, filter: "blur(10px)" }}
+    animate={{ opacity: 1, filter: "blur(0px)" }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.5 }}
+    className="min-h-screen relative w-full bg-black text-white flex flex-col justify-center items-center px-4 md:py-24 py-12 md:px-12">
       <div className="absolute inset-0 h-full opacity-1 select-bg"></div>
       {/* Header with navigation */}
       <div className="w-full h-fit z-10 relative">
@@ -294,7 +299,7 @@ export default function Select() {
           <p className="text-center text-gray-500 text-sm">Select a combination to begin your training session</p>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

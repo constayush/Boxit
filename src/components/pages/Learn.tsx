@@ -1,9 +1,17 @@
-
-import { useState, useRef, useEffect } from "react"
-import { Link } from "react-router"
-import { ArrowLeft, Play, Info, ChevronRight, BookOpen, Award, CheckCircle, Clock } from "lucide-react"
-
-const TUTORIAL_VIDEO_ID = "FjZIDL8-JP0"
+import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router";
+import {
+  ArrowLeft,
+  Play,
+  Info,
+  ChevronRight,
+  BookOpen,
+  Award,
+  CheckCircle,
+  Clock,
+} from "lucide-react";
+import {motion} from "framer-motion";
+const TUTORIAL_VIDEO_ID = "FjZIDL8-JP0";
 
 const punchTutorials = [
   {
@@ -14,17 +22,17 @@ const punchTutorials = [
     icon: "🕴️",
     description:
       "A boxing stance is the foundation of balance, mobility, power, and defense in the ring. It ensures stability while throwing punches or dodging attacks, allowing smooth movement and efficient footwork. A proper stance helps generate power by transferring energy from the legs and hips while also maintaining defensive positioning to block or evade strikes. It enhances endurance by conserving energy, preventing unnecessary movement and fatigue. The two primary stances—orthodox (left foot forward) and southpaw (right foot forward)—set the stage for a boxer’s effectiveness. Mastering stance is essential for control, precision, and overall success in boxing.",
-    timestamp: 0, 
+    timestamp: 0,
     tips: [
-"      Feet Shoulder-Width Apart – Maintain balance and stability.",
+      "      Feet Shoulder-Width Apart – Maintain balance and stability.",
 
-"Lead Foot Forward – Left foot for orthodox, right foot for southpaw.",
+      "Lead Foot Forward – Left foot for orthodox, right foot for southpaw.",
 
-"Knees Slightly Bent – Stay agile and ready to move.",
+      "Knees Slightly Bent – Stay agile and ready to move.",
 
-"Hands Up, Chin Down – Protect your face at all times.",
+      "Hands Up, Chin Down – Protect your face at all times.",
 
-"Weight Evenly Distributed – Avoid leaning too far forward or back.",
+      "Weight Evenly Distributed – Avoid leaning too far forward or back.",
     ],
     difficulty: "Beginner",
     relatedPunches: ["1", "2"],
@@ -91,7 +99,7 @@ const punchTutorials = [
     icon: "🤜",
     description:
       "The rear hook is a powerful semi-circular punch thrown with the rear hand. Similar to the lead hook, it targets the side of the opponent's head or body. The rear hook generates significant power due to the weight transfer and rotation involved.",
-    timestamp: 1186, 
+    timestamp: 1186,
     tips: [
       "Rotate your body fully",
       "Keep your elbow at the right height",
@@ -109,7 +117,7 @@ const punchTutorials = [
     icon: "⤴️",
     description:
       "The lead uppercut is an upward punch thrown with the lead hand, targeting the opponent's chin or body. It's effective in close range and can be devastating when an opponent is leaning forward or has their guard too high.",
-    timestamp: 1263, 
+    timestamp: 1263,
     tips: [
       "Bend your knees slightly",
       "Keep your elbow close to your body",
@@ -127,7 +135,7 @@ const punchTutorials = [
     icon: "⤴️",
     description:
       "The rear uppercut is a powerful upward punch thrown with the rear hand. It's one of the most powerful punches in boxing when executed correctly. The power comes from the legs, hips, and core rotation, making it effective for close-range fighting.",
-    timestamp: 1412, 
+    timestamp: 1412,
     tips: [
       "Drive from your legs",
       "Rotate your hips and shoulders",
@@ -201,13 +209,13 @@ const punchTutorials = [
       " A block involves using your gloves or arms to absorb or deflect punches, while a duck involves lowering your head and bending your knees to slip under an opponent's strike. ",
     timestamp: 2050, // 13:32
     tips: [
-    "Keep Hands Up – Always protect your head and chin.",
+      "Keep Hands Up – Always protect your head and chin.",
 
       "Elbows Close to the Body – Guard your ribs and midsection.",
-      
-     "Absorb with Forearms & Gloves – Let your arms take the impact, not your face.",
-      
-   "Stay Relaxed – Tension slows reactions and wastes energy.",
+
+      "Absorb with Forearms & Gloves – Let your arms take the impact, not your face.",
+
+      "Stay Relaxed – Tension slows reactions and wastes energy.",
     ],
     difficulty: "Intermediate",
     relatedPunches: ["S", "R"],
@@ -222,19 +230,18 @@ const punchTutorials = [
       " Footwork in boxing refers to the movement and positioning of a fighter’s feet to maintain balance, mobility, and control in the ring. It allows boxers to attack, defend, evade punches, and create angles for counterattacks. ",
     timestamp: 2515, // 13:32
     tips: [
-     "Stay on the Balls of Your Feet – Helps with speed, balance, and quick reactions.",
+      "Stay on the Balls of Your Feet – Helps with speed, balance, and quick reactions.",
 
-     "Keep Your Stance Wide but Mobile – Feet should be shoulder-width apart for stability.",
-      
-     "Move with Small, Controlled Steps – Avoid crossing your feet to maintain balance.",
-      
-     "Lead with Your Front Foot – Step first with the foot closest to the direction you're moving.",
-    
+      "Keep Your Stance Wide but Mobile – Feet should be shoulder-width apart for stability.",
+
+      "Move with Small, Controlled Steps – Avoid crossing your feet to maintain balance.",
+
+      "Lead with Your Front Foot – Step first with the foot closest to the direction you're moving.",
     ],
     difficulty: "Intermediate",
     relatedPunches: ["D", "R"],
   },
-]
+];
 
 const categories = [
   { id: "stance", name: "Stance", punches: ["stance"] },
@@ -242,46 +249,46 @@ const categories = [
   { id: "power", name: "Power Punches", punches: ["3", "4", "5", "6"] },
   { id: "defense", name: "Defensive Moves", punches: ["S", "R", "B"] },
   { id: "footwork", name: "Footwork", punches: ["F"] },
-]
+];
 
 // Format seconds to MM:SS
 const formatTime = (seconds: number): string => {
-  const mins = Math.floor(seconds / 60)
-  const secs = seconds % 60
-  return `${mins}:${secs < 10 ? "0" : ""}${secs}`
-}
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+};
 
 export default function Learn() {
-  const [selectedPunch, setSelectedPunch] = useState(punchTutorials[0])
-  const [activeCategory, setActiveCategory] = useState("basic")
-  const [player, setPlayer] = useState<any>(null)
-  const [isPlayerReady, setIsPlayerReady] = useState(false)
-  const playerRef = useRef<HTMLIFrameElement>(null)
+  const [selectedPunch, setSelectedPunch] = useState(punchTutorials[0]);
+  const [activeCategory, setActiveCategory] = useState("basic");
+  const [player, setPlayer] = useState<any>(null);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const playerRef = useRef<HTMLIFrameElement>(null);
 
   // Initialize YouTube API
   useEffect(() => {
     // Load YouTube API if not already loaded
     if (!window.YT) {
-      const tag = document.createElement("script")
-      tag.src = "https://www.youtube.com/iframe_api"
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
 
-      const firstScriptTag = document.getElementsByTagName("script")[0]
-      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
+      const firstScriptTag = document.getElementsByTagName("script")[0];
+      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
 
-      window.onYouTubeIframeAPIReady = initializePlayer
+      window.onYouTubeIframeAPIReady = initializePlayer;
     } else {
-      initializePlayer()
+      initializePlayer();
     }
 
     return () => {
       // Clean up
-      window.onYouTubeIframeAPIReady = null
-    }
-  }, [])
+      window.onYouTubeIframeAPIReady = null;
+    };
+  }, []);
 
   // Initialize the YouTube player
   const initializePlayer = () => {
-    if (!playerRef.current) return
+    if (!playerRef.current) return;
 
     const newPlayer = new window.YT.Player(playerRef.current, {
       videoId: TUTORIAL_VIDEO_ID,
@@ -294,37 +301,42 @@ export default function Learn() {
       events: {
         onReady: () => setIsPlayerReady(true),
       },
-    })
+    });
 
-    setPlayer(newPlayer)
-  }
+    setPlayer(newPlayer);
+  };
 
   // Handle punch selection and seek to timestamp
   const handlePunchSelect = (punch: (typeof punchTutorials)[0]) => {
-    setSelectedPunch(punch)
+    setSelectedPunch(punch);
 
     if (isPlayerReady && player && player.seekTo) {
-      player.seekTo(punch.timestamp, true)
-      player.playVideo()
+      player.seekTo(punch.timestamp, true);
+      player.playVideo();
     }
-  }
+  };
 
   // Function to get difficulty badge color
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Beginner":
-        return "bg-green-600"
+        return "bg-green-600";
       case "Intermediate":
-        return "bg-yellow-600"
+        return "bg-yellow-600";
       case "Advanced":
-        return "bg-red-600"
+        return "bg-red-600";
       default:
-        return "bg-gray-600"
+        return "bg-gray-600";
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col px-4 md:my-24 my-12 md:px-12">
+    <motion.div 
+    initial={{ filter: "blur(10px)" , opacity: 0, }}
+    animate={{ filter: "blur(0px)", opacity: 1 }}
+    transition={{ duration: 2}}
+    className="min-h-screen bg-black text-white flex flex-col px-4 md:my-24 my-12 md:px-12">
+   
       {/* Header with navigation */}
       <div className="container mx-auto mb-12 flex items-center">
         <Link
@@ -335,7 +347,13 @@ export default function Learn() {
         </Link>
 
         <div className="flex items-center w-full gap-8">
-          <h1 className="text-2xl md:text-5xl font-bold ml-4 helvetica-font">Learn Boxing</h1>
+          <motion.h1 
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0,  opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="text-2xl md:text-5xl font-bold ml-4 helvetica-font">
+            Learn Boxing
+          </motion.h1>
           <div className="h-1 flex-grow bg-red-600 rounded-full"></div>
         </div>
       </div>
@@ -353,19 +371,24 @@ export default function Learn() {
               {/* Categories */}
               <div className="space-y-6">
                 <div>
-                  <h3 className={`text-lg font-medium mb-3 pb-2 border-b`}>Important note</h3>
+                  <h3 className={`text-lg font-medium mb-3 pb-2 border-b`}>
+                    Important note
+                  </h3>
                   <p>
-                    This course is not created or owned by us. It is a Creative Commons-licensed course sourced from
-                    YouTube, originally produced by its respective creator(s). All credit goes to the original author(s){" "}
+                    This course is not created or owned by us. It is a Creative
+                    Commons-licensed course sourced from YouTube, originally
+                    produced by its respective creator(s). All credit goes to
+                    the original author(s){" "}
                     <a
                       className="font-bold text-red-500"
                       href="https://www.youtube.com/channel/UCiE7yqBDTQjtk1abuw92FQg"
                       target="_blank"
                       rel="noreferrer"
-                    >                 
+                    >
                       Atiko Academy
                     </a>{" "}
-                    for their work. We are simply providing access to this content for educational purposes.
+                    for their work. We are simply providing access to this
+                    content for educational purposes.
                   </p>
                 </div>
 
@@ -373,7 +396,9 @@ export default function Learn() {
                   <div key={category.id}>
                     <h3
                       className={`text-lg font-medium mb-3 pb-2 border-b cursor-pointer ${
-                        activeCategory === category.id ? "border-red-600" : "border-gray-700"
+                        activeCategory === category.id
+                          ? "border-red-600"
+                          : "border-gray-700"
                       }`}
                       onClick={() => setActiveCategory(category.id)}
                     >
@@ -408,7 +433,9 @@ export default function Learn() {
                               </span>
                               <ChevronRight
                                 className={`w-5 h-5 transition-transform ${
-                                  selectedPunch.id === punch.id ? "rotate-90" : ""
+                                  selectedPunch.id === punch.id
+                                    ? "rotate-90"
+                                    : ""
                                 }`}
                               />
                             </div>
@@ -435,11 +462,13 @@ export default function Learn() {
                       {selectedPunch.code}
                     </div>
                     <div>
-                      <h2 className="text-2xl md:text-3xl font-bold">{selectedPunch.name}</h2>
+                      <h2 className="text-2xl md:text-3xl font-bold">
+                        {selectedPunch.name}
+                      </h2>
                       <div className="flex items-center gap-3 mt-1">
                         <div
                           className={`text-sm px-2 py-1 rounded-full inline-flex items-center ${getDifficultyColor(
-                            selectedPunch.difficulty,
+                            selectedPunch.difficulty
                           )}`}
                         >
                           <Award className="w-4 h-4 mr-1" />
@@ -467,7 +496,9 @@ export default function Learn() {
                     <Info className="w-5 h-5 mr-2 text-red-600" />
                     Description
                   </h3>
-                  <p className="text-gray-300 leading-relaxed">{selectedPunch.description}</p>
+                  <p className="text-gray-300 leading-relaxed">
+                    {selectedPunch.description}
+                  </p>
                 </div>
 
                 {/* Tips */}
@@ -488,8 +519,10 @@ export default function Learn() {
                   <h3 className="text-xl font-bold mb-4">Related Techniques</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {selectedPunch.relatedPunches.map((id) => {
-                      const relatedPunch = punchTutorials.find((p) => p.id === id)
-                      if (!relatedPunch) return null
+                      const relatedPunch = punchTutorials.find(
+                        (p) => p.id === id
+                      );
+                      if (!relatedPunch) return null;
 
                       return (
                         <button
@@ -505,7 +538,7 @@ export default function Learn() {
                           </div>
                           <span>{relatedPunch.name}</span>
                         </button>
-                      )
+                      );
                     })}
                   </div>
                 </div>
@@ -527,17 +560,18 @@ export default function Learn() {
 
       {/* Footer */}
       <div className="container my-12 px-4 py-6 border-t border-gray-800">
-        <p className="text-center text-gray-500 text-sm">Learn proper boxing techniques from professional tutorials</p>
+        <p className="text-center text-gray-500 text-sm">
+          Learn proper boxing techniques from professional tutorials
+        </p>
       </div>
-    </div>
-  )
+    </motion.div>
+  );
 }
 
 // Add YouTube IFrame API type definitions
 declare global {
   interface Window {
-    YT: any
-    onYouTubeIframeAPIReady: (() => void) | null
+    YT: any;
+    onYouTubeIframeAPIReady: (() => void) | null;
   }
 }
-
