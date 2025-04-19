@@ -1,29 +1,34 @@
 "use client"
-import { useEffect, useRef } from "react"
-import { motion, useSpring } from "framer-motion"
 
-const CustomCursor = ({ cursorVariant }) => {
+import { useEffect, useRef } from "react"
+import { motion, useSpring, Variants } from "framer-motion"
+
+// 1. Define types for cursor variants
+type CursorVariant= "default" | "button" | "text"
+
+interface CustomCursorProps {
+  cursorVariant: CursorVariant
+}
+
+const CustomCursor: React.FC<CustomCursorProps> = ({ cursorVariant }) => {
   const cursorRef = useRef(null)
 
-  // Use springs for smoother motion
   const springConfig = { damping: 25, stiffness: 300 }
   const x = useSpring(0, springConfig)
   const y = useSpring(0, springConfig)
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
-      // Update spring values
       x.set(e.clientX)
       y.set(e.clientY)
     }
 
     window.addEventListener("mousemove", moveCursor)
-    return () => {
-      window.removeEventListener("mousemove", moveCursor)
-    }
+    return () => window.removeEventListener("mousemove", moveCursor)
   }, [x, y])
 
-  const variants = {
+  // 2. Add correct typing for variants
+  const variants: Variants = {
     default: {
       height: 32,
       width: 32,
@@ -45,7 +50,6 @@ const CustomCursor = ({ cursorVariant }) => {
       border: "1px solid rgba(255, 255, 255, 0.5)",
       mixBlendMode: "difference",
     },
-   
   }
 
   return (
@@ -53,8 +57,8 @@ const CustomCursor = ({ cursorVariant }) => {
       ref={cursorRef}
       className="custom-cursor fixed top-0 left-0 rounded-full pointer-events-none z-50 hidden md:block"
       style={{
-        x: x,
-        y: y,
+        x,
+        y,
         translateX: "-50%",
         translateY: "-50%",
         willChange: "transform",

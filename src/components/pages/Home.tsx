@@ -8,8 +8,9 @@ import VideoCard from "../ui/VideoCard"
 import "../../index.css"
 
 export default function Home() {
+  type CursorVariant = "default" | "button" | "text"
 
-  const [cursorVariant, setCursorVariant] = useState("default")
+  const [cursorVariant, setCursorVariant] = useState<CursorVariant>("default")
   const heroRef = useRef(null)
   const featuresRef = useRef(null)
   const videosRef = useRef(null)
