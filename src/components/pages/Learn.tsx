@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
+import ScrollToTop from "../ui/ScrollToTop"
 import {
   ArrowLeft,
   Play,
@@ -335,8 +336,8 @@ export default function Learn() {
     initial={{ filter: "blur(10px)" , opacity: 0, }}
     animate={{ filter: "blur(0px)", opacity: 1 }}
     transition={{ duration: 2}}
-    className="min-h-screen bg-black text-white flex flex-col px-4 md:my-24 my-12 md:px-12">
-   
+    className="min-h-screen bg-[#020202] text-white flex flex-col px-4 md:py-24 py-12 md:px-12">
+   <ScrollToTop />
       {/* Header with navigation */}
       <div className="container mx-auto mb-12 flex items-center">
         <Link

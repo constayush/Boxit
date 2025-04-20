@@ -5,7 +5,7 @@ import { useLocation } from "react-router"
 import { Link } from "react-router"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowLeft, Play, Square, RotateCcw, Clock, Repeat, Settings, ChevronRight, ChevronLeft } from "lucide-react"
-
+import ScrollToTop from "../ui/ScrollToTop"
 // Updated punch codes to match our combo system
 const punchTypes: Record<string, { name: string; color: string; icon: string; description: string }> = {
   "1": { name: "Jab", color: "#ef4444", icon: "👊", description: "Lead hand straight punch" },
@@ -247,8 +247,8 @@ export default function Train() {
     animate={{ opacity: 1, filter: "blur(0px)" }}
     exit={{ opacity: 0 }}
     transition={{ duration: 0.5 }}
-    className="min-h-screen relative bg-black text-white flex flex-col px-4 md:my-24 my-12 md:px-12">
-   
+    className="min-h-screen relative black-red-grad h-full text-white flex flex-col px-4 md:py-24 py-12 md:px-12">
+         <ScrollToTop/>
       {/* Header with navigation */}
       <div className="container mx-auto flex items-center">
         <Link

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router"
 import { Link } from "react-router"
 import { motion } from "framer-motion"
 import { ArrowLeft, ArrowRight, Info, ChevronRight, Dumbbell, X, Trash2, Play } from "lucide-react"
-
+import ScrollToTop from "../ui/ScrollToTop"
 // Boxing combo codes:
 // 1 = Jab (lead hand straight)
 // 2 = Cross (rear hand straight)
@@ -115,6 +115,8 @@ export default function Select() {
     exit={{ opacity: 0 }}
     transition={{ duration: 0.5 }}
     className="min-h-screen relative w-full bg-black text-white flex flex-col justify-center items-center px-4 md:py-24 py-12 md:px-12">
+     
+      <ScrollToTop/>
       <div className="absolute inset-0 h-full opacity-1 select-bg"></div>
       {/* Header with navigation */}
       <div className="w-full h-fit z-10 relative">
@@ -148,7 +150,7 @@ export default function Select() {
 
           {/* Legend */}
           {showLegend && (
-            <div className="w-full max-w-2xl bg-gray-900/70 rounded-xl p-6 mb-8">
+            <div className="w-full max-w-2xl bg-[#14161a] rounded-xl p-6 mb-8">
               <h3 className="text-xl font-bold mb-4">Boxing Combo Legend</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {punchTypes.map((punch) => (
@@ -178,7 +180,7 @@ export default function Select() {
                 <button
                   key={index}
                   onClick={() => handleSelectCombo(combo.code)}
-                  className="bg-gray-900/50 border border-gray-800 hover:border-red-600 hover:bg-gray-800/70 text-white p-5 rounded-xl transition-all duration-300 flex flex-col items-start h-full"
+                  className="bg-[#14161a] border border-[#ffffff22] hover:border-red-500 hover:bg-black text-white p-5 rounded-xl transition-all duration-300 flex flex-col items-start h-full"
                 >
                   <div className="bg-red-600/20 text-red-500 px-3 py-1 rounded-full text-sm font-mono mb-2">
                     {combo.code}
@@ -193,7 +195,7 @@ export default function Select() {
           </div>
 
           {/* Custom Combo Builder */}
-          <div className="w-full max-w-4xl bg-gray-900/70 rounded-xl p-6 mb-12">
+          <div className="w-full max-w-4xl bg-[#14161a]  rounded-xl p-6 mb-12">
             <h2 className="text-xl font-bold mb-4">Create Custom Combo</h2>
 
             {/* Drag and drop area */}
