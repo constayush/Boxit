@@ -7,7 +7,7 @@ import CustomCursor from "../ui/Cursor";
 import VideoCard from "../ui/VideoCard";
 import "../../index.css";
 import ScrollToTop from "../ui/ScrollToTop";
-
+import tysonImg from "../../../public/tyson.jpg";
 export default function Home() {
   type CursorVariant = "default" | "button" | "text";
 
@@ -58,125 +58,101 @@ export default function Home() {
 
       <motion.div
         ref={heroRef}
-        className="hero-section relative w-full flex p-14 items-center justify-center min-h-screen"
+        className="hero-section relative w-full flex flex-col items-center justify-center min-h-screen py-12 md:py-20"
       >
         <div className="absolute inset-0 hero-gradient"></div>
-        {/* <video
-            className="w-[50%] border-6 border-[#ffffff0f] h-full object-cover grayscale-100 rounded-lg "
-            autoPlay
-            loop
-            muted
-            src={bgVideo}
-          ></video> */}
-
-        {/* <img
-            className="w-[50%] aspect-video  border-6 border-[#ffffff0f] h-full object-cover grayscale-100 rounded-lg " src={bgImg}  /> */}
 
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="container relative z-10 flex flex-col items-center px-4 md:px-12 my-12 md:my-24"
+          className="relative z-10 flex flex-col items-center text-center w-full max-w-5xl px-4"
         >
           <motion.span
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="w-[30%] h-[100%] absolute top-0 left-0 -z-10 bg-[#a0d3fd] blur-[300px]"
+            className="w-[30%] h-[100%] absolute top-0 left-0 -z-10 bg-[#1a2732] blur-[300px]"
           ></motion.span>
 
           <motion.span
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeIn" }}
-            className="w-[30%] h-[100%] absolute top-0 right-0 -z-10 bg-[#f48282] blur-[300px]"
+            className="w-[30%] h-[100%] absolute top-0 right-0 -z-10 bg-[#e06565] blur-[300px]"
           ></motion.span>
-          <div className="text-center max-w-4xl mx-auto">
-            <motion.h1
-              initial={{ opacity: 0, y: 50, letterSpacing: "20px" }}
-              animate={
-                isHeroInView ? { opacity: 1, y: 0, letterSpacing: "0px" } : {}
-              }
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="text-8xl md:text-[8rem] font-bold mb-1 russo tracking-widest"
-              onMouseEnter={enterText}
-              onMouseLeave={leaveButton}
-            >
-              Box'
-              <motion.span initial={{}} className="text-red-600">
-                it.
-              </motion.span>
-            </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 50 }}
-              animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="text-xl md:text-xl  text-gray-300/90"
-              onMouseEnter={enterText}
-              onMouseLeave={leaveButton}
-            >
-              Your Ultimate Boxing Guide! – Train, Learn, and Fight!
-              <br />
-              Stay ahead with the ultimate boxing platform.
-            </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 50, letterSpacing: "20px" }}
+            animate={
+              isHeroInView ? { opacity: 1, y: 0, letterSpacing: "0px" } : {}
+            }
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="text-8xl md:text-[8rem] font-bold mb-1 russo tracking-widest"
+            onMouseEnter={enterText}
+            onMouseLeave={leaveButton}
+          >
+            Box'
+            <motion.span className="text-red-600">it.</motion.span>
+          </motion.h1>
 
-            {/* Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-              className="flex flex-col mt-8 sm:flex-row gap-4 sm:gap-8 justify-center"
-            >
-              {/* <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onMouseEnter={enterButton}
-                onMouseLeave={leaveButton}
-                className="w-full sm:w-auto border border-white/30 hover:border-white hover:border-2 bg-gradient-to-tl from-red-600 to-[#2d0303] transition-all duration-300 rounded-xl py-4 px-8 text-xl font-medium tracking-wide"
-              >
-                Learn
-              </motion.button> */}
+          <motion.p
+            initial={{ opacity: 0, y: 50 }}
+            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            className="text-base sm:text-lg md:text-xl text-gray-300/90"
+            onMouseEnter={enterText}
+            onMouseLeave={leaveButton}
+          >
+            Your Ultimate Boxing Guide! – Train, Learn, and Fight!
+            <br />
+            Stay ahead with the ultimate boxing platform.
+          </motion.p>
 
-              <button className="cursor-pointer bg-gradient-to-b from-[#000000] to-[#000000]   border-2   text-white font-medium group w-full sm:w-auto  border-white/20 hover:border-white hover:border-2 transition-all duration-300 rounded-xl py-4 px-8 text-xl tracking-wide">
-                <Link to="/learn">
-                  <div className="relative overflow-hidden">
-                    <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                      Learn
-                    </p>
-                    <p className="absolute top-7 left-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                      Learn
-                    </p>
-                  </div>
-                </Link>
-              </button>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-8 justify-center w-full max-w-md"
+          >
+            <Link to="/learn">
+              <button className="cursor-pointer bg-gradient-to-b from-[#000000] to-[#000000] border-2 text-white font-medium group w-full sm:w-auto border-white/40 hover:border-[#ffffffb5] hover:shadow-[0px_4px_32px_0_rgba(255,255,255,.3)] hover:border-2 transition-all duration-300 rounded-xl py-3 px-6 text-lg sm:text-xl tracking-wide">
+                <div className="relative overflow-hidden">
+                  <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+                    Learn
+                  </p>
+                  <p className="absolute top-7 left-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+                    Learn
+                  </p>
+                </div>
+              </button>{" "}
+            </Link>
 
-              <button className="cursor-pointer bg-gradient-to-b from-[#6e0106] to-[#b20009]  shadow-[0px_4px_32px_0_rgba(255,255,255,.05)] border-2   text-white font-medium group w-full sm:w-auto  border-white/50 hover:border-white hover:border-2 transition-all duration-300 rounded-xl py-4 px-8 text-xl tracking-wide">
-                <Link to="/select">
-                  <div className="relative overflow-hidden">
-                    <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                      Train
-                    </p>
-                    <p className="absolute top-7 left-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                      Train
-                    </p>
-                  </div>
-                </Link>
-              </button>
-            </motion.div>
-          </div>
+            <button className="cursor-pointer bg-gradient-to-b from-[#8d0007] to-[#b20009] shadow-[0px_4px_32px_0_rgba(255,255,255,.3)] hover:shadow-[0px_4px_32px_0_rgba(255,255,255,.6)] border-2 text-white font-medium group w-full sm:w-auto border-white/40 hover:border-[#ffffffb5] hover:border-2 transition-all duration-300 rounded-xl py-3 px-6 text-lg sm:text-xl tracking-wide">
+              <Link className="w-full h-full" to="/select">
+                <div className="relative overflow-hidden">
+                  <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+                    Train
+                  </p>
+                  <p className="absolute top-7 left-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+                    Train
+                  </p>
+                </div>
+              </Link>{" "}
+            </button>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0 }}
             animate={isHeroInView ? { opacity: 1 } : {}}
             transition={{ duration: 1.2, delay: 0.8 }}
-            className="absolute top-90 opacity-50 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
+            className="absolute top-90 opacity-40 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
           >
             <motion.div
               animate={{ y: [0, 10, 0] }}
               transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}
             >
-              <ChevronDown className="w-8 h-8 text-white/70" />
+              <ChevronDown className="w-6 h-6 text-white/70" />
             </motion.div>
           </motion.div>
         </motion.div>
@@ -185,7 +161,7 @@ export default function Home() {
       <hr className="w-full border border-[#ffffff27]" />
 
       {/* Features */}
-      <div className="w-full bg-[#020202] py-20">
+      <div className="w-full bg-[#020202] pt-24">
         <div ref={featuresRef} className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -239,17 +215,18 @@ export default function Home() {
       </div>
 
       {/* Legendary Fights */}
-      <div className="w-full bg-gradient-to-b from-[#020202] to-[#120000] py-20">
+      <div className="w-full bg-gradient-to-b from-[#020202] to-[#120000] pt-24">
         <div ref={videosRef} className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={isVideosInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="text-center mb-22"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Legendary Fights <span className="text-red-600">🥊</span>
             </h2>
+
             <div className="w-20 h-1 bg-red-600 mx-auto"></div>
           </motion.div>
 
@@ -282,78 +259,92 @@ export default function Home() {
 
       {/* CTA Section */}
       <motion.footer
-        ref={ctaRef}
-        initial={{ opacity: 0 }}
-        animate={isCtaInView ? { opacity: 1 } : {}}
-        transition={{ duration: 1 }}
-        className="w-full bg-gradient-to-b from-[#120000] to-black py-24"
+        
+      
+        className="w-full bg-gradient-to-b from-[#120000] to-black px-12 pt-24"
       >
-        <div className="container mx-auto  text- max-w-6xl">
+        <div className="max-w-6xl mx-auto text-center">
           <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={isCtaInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ y: 30 }}
+            animate={isCtaInView ? { y: 0 } : {}}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-7xl font-bold mb-6"
+            className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-24"
           >
             Ready to Step in the Ring?
           </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={isCtaInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl text-gray-400 mb-12"
-          >
-            Join us and improve your skills today.
-          </motion.p>
+          <div className="flex flex-col-reverse mt-8 lg:flex-row h-full items-start  justify-end gap-12">
+            <div className="w-full lg:w-1/2 flex flex-col justify-center   text-left">
+              {[
+                "Unleash your inner champ with our action-packed training modes — whether you're throwing punches in Shadow Boxing or sharpening your technique with Combo Practice, we've got you covered.",
+                "Dive into the Learn from Experts section to absorb real fight wisdom, tips, and breakdowns from seasoned pros.",
+                "This isn't just an app — it's your virtual boxing gym, coach, and corner man all in one.",
+                "Train smart, fight hard, level up. Join us and improve your skills today.",
+              ].map((text, i) => (
+                <motion.p
+                  key={i}
+                  className="text-lg md:text-xl text-gray-400 mb-6"
+                >
+                  {text}
+                </motion.p>
+              ))}
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isCtaInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 "
-          >
-            <Link to="/learn">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onMouseEnter={enterButton}
-                onMouseLeave={leaveButton}
-                className="w-full sm:w-auto bg-red-600 hover:bg-red-700 transition-all duration-300 rounded-xl py-4 px-8 text-xl font-bold"
+              <motion.div
+               
+                className="flex flex-col sm:flex-row gap-4 mt-8"
               >
-                Learn boxing
-              </motion.button>
-            </Link>
-            <Link to="/select">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onMouseEnter={enterButton}
-                onMouseLeave={leaveButton}
-                className="w-full sm:w-auto border border-white/70 bg-transparent hover:bg-white/10 transition-all duration-300 rounded-xl py-4 px-8 text-xl font-medium"
-              >
-                Train with us
-              </motion.button>
-            </Link>
-          </motion.div>
+                <Link to="/learn" className="w-full sm:w-auto">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onMouseEnter={enterButton}
+                    onMouseLeave={leaveButton}
+                    className="w-full bg-red-600 hover:bg-red-700 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-bold text-white"
+                  >
+                    Learn Boxing
+                  </motion.button>
+                </Link>
+                <Link to="/select" className="w-full sm:w-auto">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onMouseEnter={enterButton}
+                    onMouseLeave={leaveButton}
+                    className="w-full border border-white/70 text-white bg-transparent hover:bg-white/10 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-medium"
+                  >
+                    Train with Us
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </div>
+
+            <div className="w-full lg:w-1/2 flex justify-center">
+              <img
+                src={tysonImg}
+                alt="Tyson"
+                className="w-full h-[40rem] max-w-md border-4 border-white rounded-xl object-cover"
+              />
+            </div>
+          </div>
         </div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={isCtaInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-16 text-sm w-full flex flex-col items-center justify-center text-gray-500"
+      
+          className="my-20 text-sm text-gray-500 text-center px-4"
         >
-          <hr className="w-full border-1 mb-14" />
-          Note - All video content featured in this app is the intellectual
-          property of its respective owners. We do not claim ownership of any
-          third-party videos.
+          <hr className="border-gray-700 mb-6" />
+          <p className="mb-2">
+            Note - All video content featured in this app is the intellectual
+            property of its respective owners. We do not claim ownership of any
+            third-party videos.
+          </p>
           <p>
-            bulid by -{" "}
+            Built by –{" "}
             <a
               href="https://constayush.vercel.app/"
               target="_blank"
-              className="text-red-200 hover:text-red-600"
+              rel="noopener noreferrer"
+              className="text-red-300 hover:text-red-600"
             >
               Ayush
             </a>

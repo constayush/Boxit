@@ -254,3 +254,10 @@ button,
   background: #000000;
   background: linear-gradient(154deg, rgba(0, 0, 0, 1) 0%, rgba(10, 0, 0, 1) 100%);
 }
+
+.bg-tyson{
+  background-image: url("../public/tyson.jpg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
