@@ -8,7 +8,6 @@ import VideoCard from "../ui/VideoCard";
 import "../../index.css";
 import ScrollToTop from "../ui/ScrollToTop";
 
-
 export default function Home() {
   type CursorVariant = "default" | "button" | "text";
 
@@ -61,9 +60,8 @@ export default function Home() {
         ref={heroRef}
         className="hero-section relative w-full flex p-14 items-center justify-center min-h-screen"
       >
-    
-      <div className="absolute inset-0 hero-gradient"></div>
-      {/* <video
+        <div className="absolute inset-0 hero-gradient"></div>
+        {/* <video
             className="w-[50%] border-6 border-[#ffffff0f] h-full object-cover grayscale-100 rounded-lg "
             autoPlay
             loop
@@ -71,7 +69,7 @@ export default function Home() {
             src={bgVideo}
           ></video> */}
 
-          {/* <img
+        {/* <img
             className="w-[50%] aspect-video  border-6 border-[#ffffff0f] h-full object-cover grayscale-100 rounded-lg " src={bgImg}  /> */}
 
         <motion.div
@@ -80,6 +78,19 @@ export default function Home() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="container relative z-10 flex flex-col items-center px-4 md:px-12 my-12 md:my-24"
         >
+          <motion.span
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="w-[30%] h-[100%] absolute top-0 left-0 -z-10 bg-[#a0d3fd] blur-[300px]"
+          ></motion.span>
+
+          <motion.span
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeIn" }}
+            className="w-[30%] h-[100%] absolute top-0 right-0 -z-10 bg-[#f48282] blur-[300px]"
+          ></motion.span>
           <div className="text-center max-w-4xl mx-auto">
             <motion.h1
               initial={{ opacity: 0, y: 50, letterSpacing: "20px" }}
@@ -87,7 +98,7 @@ export default function Home() {
                 isHeroInView ? { opacity: 1, y: 0, letterSpacing: "0px" } : {}
               }
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="text-6xl md:text-[8rem] font-bold mb-3 brand-font"
+              className="text-8xl md:text-[8rem] font-bold mb-1 russo tracking-widest"
               onMouseEnter={enterText}
               onMouseLeave={leaveButton}
             >
@@ -101,11 +112,13 @@ export default function Home() {
               initial={{ opacity: 0, y: 50 }}
               animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="text-xl md:text-xl  text-gray-300"
+              className="text-xl md:text-xl  text-gray-300/90"
               onMouseEnter={enterText}
               onMouseLeave={leaveButton}
             >
               Your Ultimate Boxing Guide! – Train, Learn, and Fight!
+              <br />
+              Stay ahead with the ultimate boxing platform.
             </motion.p>
 
             {/* Buttons */}
@@ -113,7 +126,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 50 }}
               animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-              className="flex flex-col mt-14 sm:flex-row gap-4 sm:gap-8 justify-center"
+              className="flex flex-col mt-8 sm:flex-row gap-4 sm:gap-8 justify-center"
             >
               {/* <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -125,29 +138,31 @@ export default function Home() {
                 Learn
               </motion.button> */}
 
-              
-                <button className="cursor-pointer bg-gradient-to-b from-[#000000] to-[#000000]   border-2   text-white font-medium group w-full sm:w-auto  border-white/20 hover:border-white hover:border-2 transition-all duration-300 rounded-xl py-4 px-8 text-xl tracking-wide">
-                  <Link to="/learn"><div className="relative overflow-hidden">
+              <button className="cursor-pointer bg-gradient-to-b from-[#000000] to-[#000000]   border-2   text-white font-medium group w-full sm:w-auto  border-white/20 hover:border-white hover:border-2 transition-all duration-300 rounded-xl py-4 px-8 text-xl tracking-wide">
+                <Link to="/learn">
+                  <div className="relative overflow-hidden">
                     <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
                       Learn
                     </p>
                     <p className="absolute top-7 left-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
                       Learn
                     </p>
-                  </div></Link>
-                </button>
-              
-                <button className="cursor-pointer bg-gradient-to-b from-[#6e0106] to-[#b20009]  shadow-[0px_4px_32px_0_rgba(255,255,255,.05)] border-2   text-white font-medium group w-full sm:w-auto  border-white/50 hover:border-white hover:border-2 transition-all duration-300 rounded-xl py-4 px-8 text-xl tracking-wide">
-                  <Link to="/select"><div className="relative overflow-hidden">
+                  </div>
+                </Link>
+              </button>
+
+              <button className="cursor-pointer bg-gradient-to-b from-[#6e0106] to-[#b20009]  shadow-[0px_4px_32px_0_rgba(255,255,255,.05)] border-2   text-white font-medium group w-full sm:w-auto  border-white/50 hover:border-white hover:border-2 transition-all duration-300 rounded-xl py-4 px-8 text-xl tracking-wide">
+                <Link to="/select">
+                  <div className="relative overflow-hidden">
                     <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
                       Train
                     </p>
                     <p className="absolute top-7 left-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
                       Train
                     </p>
-                  </div></Link>
-                </button>
-              
+                  </div>
+                </Link>
+              </button>
             </motion.div>
           </div>
 
@@ -165,19 +180,7 @@ export default function Home() {
             </motion.div>
           </motion.div>
         </motion.div>
-
-
-
-
-
       </motion.div>
-
-
-
-
-
-
-
 
       <hr className="w-full border border-[#ffffff27]" />
 
@@ -377,7 +380,7 @@ const FeatureCard = ({
       }}
       transition={{ duration: 0.5 }}
       whileHover={{ scale: 1.03 }}
-      className="feature-card motion-div border border-[#ffffff3f] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
+      className="feature-card motion-div bg-[#040404] border border-[#ffffff3f] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >

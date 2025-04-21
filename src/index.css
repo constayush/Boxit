@@ -75,7 +75,7 @@ body {
 /* Hero Gradient */
 .hero-gradient {
  
- background-color: #000000b0;
+ background-color: #000000ba;
 }
 
 /* Feature Card Background */
@@ -163,7 +163,7 @@ body {
 
   position: relative;
   overflow: hidden;
-  background-image: url("../public/Boxing\ Greats.jpeg");
+  background-image: url("../public/main-bg.png");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -175,7 +175,6 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-image: url("../public/home-bg.webp"); */
   background-size: cover;
   background-position: center;
   opacity: 0.25;
@@ -186,6 +185,10 @@ body {
   position: absolute;
 
   
+}
+.russo {
+  font-family: "Russo One", sans-serif;
+  font-style: normal;
 }
 
 /* Dynamic hover effects */
