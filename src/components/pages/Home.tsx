@@ -220,7 +220,7 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={isVideosInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.5 }}
             className="text-center mb-22"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
