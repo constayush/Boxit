@@ -6,7 +6,15 @@ import { Link } from "react-router"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowLeft, Play, Square, RotateCcw, Clock, Repeat, Settings, ChevronRight, ChevronLeft } from "lucide-react"
 import ScrollToTop from "../ui/ScrollToTop"
-// Updated punch codes to match our combo system
+
+import cross from "../../assets/cross.mp3"
+import jab from "../../assets/jab.mp3"
+import hook from "../../assets/hook.mp3"
+import uppercut from "../../assets/uppercut.mp3"
+import slip from "../../assets/slip.mp3"
+import roll from "../../assets/roll.mp3"
+
+
 const punchTypes: Record<string, { name: string; color: string; icon: string; description: string }> = {
   "1": { name: "Jab", color: "#ef4444", icon: "👊", description: "Lead hand straight punch" },
   "2": { name: "Cross", color: "#3b82f6", icon: "💥", description: "Rear hand straight punch" },
@@ -14,12 +22,11 @@ const punchTypes: Record<string, { name: string; color: string; icon: string; de
   "4": { name: "Rear Hook", color: "#8b5cf6", icon: "🤜", description: "Rear hand hook" },
   "5": { name: "Lead Uppercut", color: "#f59e0b", icon: "⤴️", description: "Lead hand uppercut" },
   "6": { name: "Rear Uppercut", color: "#ec4899", icon: "⤴️", description: "Rear hand uppercut" },
-  S: { name: "Slip", color: "#6366f1", icon: "↪️", description: "Defensive slip movement" },
-  R: { name: "Roll", color: "#14b8a6", icon: "🔄", description: "Defensive roll movement" },
-  D: { name: "Duck", color: "#f97316", icon: "⬇️", description: "Defensive duck movement" },
+  "S": { name: "Slip", color: "#6366f1", icon: "↪️", description: "Defensive slip movement" },
+  "R": { name: "Roll", color: "#14b8a6", icon: "🔄", description: "Defensive roll movement" },
+  "D": { name: "Duck", color: "#f97316", icon: "⬇️", description: "Defensive duck movement" },
 }
 
-// Type for the training state
 interface TrainingState {
   index: number
   remainingReps: number
@@ -28,7 +35,10 @@ interface TrainingState {
 
 export default function Train() {
   const location = useLocation()
-  const comboString = new URLSearchParams(location.search).get("combo") || "Jab, Cross"
+
+ const comboString = new URLSearchParams(location.search).get("combo") || "1-2"
+//  if(!comboString) return <Navigate to="/select" replace /> //redirect to select page if no string is foundd
+
 
   // Parse the combo string into our number/letter codes
   const parseCombo = (comboStr: string): string[] => {
@@ -36,15 +46,13 @@ export default function Train() {
     if (comboStr.includes("-")) {
       return comboStr.split("-")
     }
-
-    // If it's in text format like "Jab, Cross, Hook"
     const punchMap: Record<string, string> = {
       Jab: "1",
       Cross: "2",
-      Hook: "3", // Default to lead hook
+      Hook: "3", 
       "Lead Hook": "3",
       "Rear Hook": "4",
-      Uppercut: "6", // Default to rear uppercut
+      Uppercut: "6", 
       "Lead Uppercut": "5",
       "Rear Uppercut": "6",
       Slip: "S",
@@ -58,13 +66,13 @@ export default function Train() {
   const combo = parseCombo(comboString)
   const [isTraining, setIsTraining] = useState<boolean>(false)
   const [isPaused, setIsPaused] = useState<boolean>(false)
-  const [intervalTime, setIntervalTime] = useState<number>(1500)
+  const [intervalTime, setIntervalTime] = useState<number>(1000)
   const [reps, setReps] = useState<number>(5)
   const [repsLeft, setRepsLeft] = useState<number>(reps)
-  const [currentPunch, setCurrentPunch] = useState<string>("")
+  const [currentPunch, setCurrentPunch] = useState<string>("Ready to box?")
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [countdown, setCountdown] = useState<number>(0)
-  const [showSettings, setShowSettings] = useState<boolean>(false)
+  const [showSettings, setShowSettings] = useState<boolean>(true)
 
   // Refs
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -99,23 +107,46 @@ export default function Train() {
       oscillator.stop()
     }, duration)
   }
+ 
 
-  // Get punch-specific beep frequency
-  const getPunchFrequency = (punchId: string): number => {
-    const baseFrequencies: Record<string, number> = {
-      "1": 440, // A4
-      "2": 494, // B4
-      "3": 523, // C5
-      "4": 587, // D5
-      "5": 659, // E5
-      "6": 698, // F5
-      S: 784, // G5
-      R: 880, // A5
-      D: 988, // B5
-    }
+  // useEffect(() => {
+  //   Object.values(punchAudioMap).forEach((audio) => {
+  //     audio.load()
+  //   })
+  // }, [])
+  
 
-    return baseFrequencies[punchId] || 440
+  const punchAudioMap: Record<string, HTMLAudioElement> = {
+    "1": new Audio(jab),
+    "2": new Audio(cross),
+    "3": new Audio(hook),
+    "4": new Audio(hook),
+    "5": new Audio(uppercut),
+    "6": new Audio(uppercut),
+    S: new Audio(slip),
+    R: new Audio(roll),
+   
   }
+  
+  const playPunchSound = (punchId: string) => {
+    const audio = punchAudioMap[punchId]
+    if (audio) {
+      audio.pause() // make sure it stops if it's playing
+      audio.currentTime = 0
+      audio.playbackRate = getPlaybackRate() 
+      audio.play().catch((e) => console.error("Failed to play sound:", e))
+    }
+  }
+
+  const getPlaybackRate = () => {
+    const baseInterval = 1500 
+    const minRate = 0.5
+    const maxRate = 2.0
+    const rate = baseInterval / intervalTime
+    return Math.min(Math.max(rate, minRate), maxRate)
+  }
+  
+
 
   // Handle countdown before starting
   useEffect(() => {
@@ -178,9 +209,7 @@ export default function Train() {
     setCurrentIndex(index)
 
     // Play sound for the punch
-    if (audioContextRef.current) {
-      playBeep(getPunchFrequency(punch), 150)
-    }
+    playPunchSound(punch)
 
     // Schedule next punch
     timeoutRef.current = setTimeout(() => {
@@ -304,7 +333,7 @@ export default function Train() {
           </AnimatePresence>
 
           {/* Current punch display */}
-          <AnimatePresence mode="wait">
+<AnimatePresence mode="wait">
             {currentPunch && !countdown && (
               <motion.div
                 key={`${currentPunch}-${currentIndex}-${repsLeft}`}
@@ -321,10 +350,12 @@ export default function Train() {
                 >
                   {currentPunch}
                 </div>
-                <div className="text-2xl font-medium">{punchTypes[currentPunch]?.name || "Punch"}</div>
+                <div className="text-2xl font-medium">{punchTypes[currentPunch]?.name || ""}</div>
               </motion.div>
             )}
-          </AnimatePresence>
+          </AnimatePresence> 
+
+          
 
           {/* Reps counter */}
           <div className="absolute top-4 right-4 bg-black/70 px-3 py-1 rounded-full text-sm font-medium">
@@ -417,7 +448,7 @@ export default function Train() {
                         <input
                           type="range"
                           min="500"
-                          max="3000"
+                          max="2500"
                           step="100"
                           value={intervalTime}
                           onChange={(e) => setIntervalTime(Number(e.target.value))}
