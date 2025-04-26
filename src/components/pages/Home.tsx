@@ -71,14 +71,14 @@ export default function Home() {
           <motion.span
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="w-[30%] h-[100%] absolute top-0 left-0 -z-10 bg-[#1a2732] blur-[300px]"
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            className="w-[30%] h-[100%] absolute top-0 left-0 -z-10 bg-[#1688e4] blur-[300px]"
           ></motion.span>
 
           <motion.span
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeIn" }}
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeIn" }}
             className="w-[30%] h-[100%] absolute top-0 right-0 -z-10 bg-[#e06565] blur-[300px]"
           ></motion.span>
 

@@ -75,7 +75,7 @@ body {
 /* Hero Gradient */
 .hero-gradient {
  
- background-color: #000000ba;
+ background-color: #000000a8;
 }
 
 /* Feature Card Background */
@@ -163,7 +163,7 @@ body {
 
   position: relative;
   overflow: hidden;
-  background-image: url("../public/main-bg.png");
+  background-image: url("../public/tyson-hero.png");
   background-size: cover;
   background-repeat: no-repeat;
 }
