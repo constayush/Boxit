@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { Link } from "react-router";
-import { Trophy, Users, ChevronDown } from "lucide-react";
+import { Trophy, Users } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import CustomCursor from "../ui/Cursor";
 import VideoCard from "../ui/VideoCard";
@@ -42,6 +42,11 @@ export default function Home() {
       title: "Tyson Fury vs Deontay Wilder III (2021)",
       videoUrl: "https://www.youtube.com/embed/vxw3x1zVvEE",
     },
+
+    {
+      title: "George Foreman vs Muhammad Ali (1974)",
+      videoUrl: "https://www.youtube.com/embed/55AasOJZzDE",
+    }
   ];
 
   const enterButton = () => setCursorVariant("button");
@@ -66,7 +71,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 100 }}
           animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative z-10 flex flex-col items-center text-center w-full max-w-5xl px-4"
+          className="relative z-10 flex flex-col items-center text-center w-full max-w-5xl p-8"
         >
           <motion.span
             initial={{ opacity: 0, scale: 0 }}
@@ -88,7 +93,7 @@ export default function Home() {
               isHeroInView ? { opacity: 1, y: 0, letterSpacing: "0px" } : {}
             }
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-8xl md:text-[8rem] font-bold mb-1 russo tracking-widest"
+            className="text-[5rem] md:text-[8rem] font-bold mb-1 russo tracking-widest"
             onMouseEnter={enterText}
             onMouseLeave={leaveButton}
           >
@@ -109,72 +114,13 @@ export default function Home() {
             Stay ahead with the ultimate boxing platform.
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-8 justify-center w-full max-w-md"
-          >
-            <Link to="/learn">
-              <button className="cursor-pointer bg-gradient-to-b from-[#000000] to-[#000000] border-2 text-white font-medium group w-full sm:w-auto border-white/40 hover:border-[#ffffffb5] hover:shadow-[0px_4px_32px_0_rgba(255,255,255,.3)] hover:border-2 transition-all duration-300 rounded-xl py-3 px-6 text-lg sm:text-xl tracking-wide">
-                <div className="relative overflow-hidden">
-                  <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                    Learn
-                  </p>
-                  <p className="absolute top-7 left-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                    Learn
-                  </p>
-                </div>
-              </button>{" "}
-            </Link>
+       
 
-            <button className="cursor-pointer bg-gradient-to-b from-[#8d0007] to-[#b20009] shadow-[0px_4px_32px_0_rgba(255,255,255,.3)] hover:shadow-[0px_4px_32px_0_rgba(255,255,255,.6)] border-2 text-white font-medium group w-full sm:w-auto border-white/40 hover:border-[#ffffffb5] hover:border-2 transition-all duration-300 rounded-xl py-3 px-6 text-lg sm:text-xl tracking-wide">
-              <Link className="w-full h-full" to="/select">
-                <div className="relative overflow-hidden">
-                  <p className="group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                    Train
-                  </p>
-                  <p className="absolute top-7 left-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                    Train
-                  </p>
-                </div>
-              </Link>{" "}
-            </button>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isHeroInView ? { opacity: 1 } : {}}
-            transition={{ duration: 1.2, delay: 0.8 }}
-            className="absolute top-90 opacity-40 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}
-            >
-              <ChevronDown className="w-6 h-6 text-white/70" />
-            </motion.div>
-          </motion.div>
+         
         </motion.div>
-      </motion.div>
-
-      <hr className="w-full border border-[#ffffff27]" />
-
-      {/* Features */}
-      <div className="w-full bg-[#020202] pt-24">
+         <div className="w-full pt-0 md:pt-12">
         <div ref={featuresRef} className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={isFeaturesInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Why <span className="text-red-600">Box'it</span>?
-            </h2>
-            <div className="w-20 h-1 bg-red-600 mx-auto"></div>
-          </motion.div>
-
+         
           <motion.div
             initial="hidden"
             animate={isFeaturesInView ? "visible" : "hidden"}
@@ -187,7 +133,7 @@ export default function Home() {
                 },
               },
             }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 w-full max-w-6xl mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mx-auto"
           >
             <FeatureCard
               icon={
@@ -213,44 +159,52 @@ export default function Home() {
           </motion.div>
         </div>
       </div>
+      </motion.div>
+
+      <hr className="w-full border  border-[#ffffff36]" />
+
+     
+
 
       {/* Legendary Fights */}
-      <div className="w-full bg-gradient-to-b from-[#020202] to-[#120000] pt-24">
+      <div className="w-full relative flex justify-center items-center bg-gradient-to-b from-[#020202] to-[#120000] pt-24">
+
+
+
         <div ref={videosRef} className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 100 }}
             animate={isVideosInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
             className="text-center mb-22"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Legendary Fights <span className="text-red-600">🥊</span>
+              <span className="text-yellow-500">Legendary</span>  Fights⚔️
             </h2>
 
             <div className="w-20 h-1 bg-red-600 mx-auto"></div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={isVideosInView ? "visible" : "hidden"}
+            initial={{ opacity: 0, y:200 }}
+            animate={isVideosInView ? { opacity: 1, y: 0 } : {}}
             variants={{
               hidden: { opacity: 0 },
               visible: {
                 opacity: 1,
                 transition: {
-                  staggerChildren: 0.15,
+                  staggerChildren: 0.55,
                 },
               },
             }}
-            className="grid gap-12 md:grid-cols-2 max-w-6xl mx-auto"
+            className="grid gap-12 md:grid-cols-2 max-w-6xl  mx-auto place-items-center"
           >
             {legendaryFights.map((fight, index) => (
-              <VideoCard
+              <VideoCard    
                 key={index}
                 title={fight.title}
                 videoUrl={fight.videoUrl}
-                onMouseEnter={enterButton}
-                onMouseLeave={leaveButton}
+             
               />
             ))}
           </motion.div>
@@ -261,7 +215,7 @@ export default function Home() {
       <motion.footer
         
       
-        className="w-full bg-gradient-to-b from-[#120000] to-black px-12 pt-24"
+        className="w-full bg-gradient-to-b from-[#120000] to-black px-4 md:px-12 pt-24 flex justify-center items-center flex-col "
       >
         <div className="max-w-6xl mx-auto text-center">
           <motion.h2
@@ -322,7 +276,7 @@ export default function Home() {
               <img
                 src={tysonImg}
                 alt="Tyson"
-                className="w-full h-[40rem] max-w-md border-4 border-white rounded-xl object-cover"
+                className="w-full h-[40rem] max-w-md border-4 border-white/60 rounded-xl object-cover"
               />
             </div>
           </div>
@@ -364,19 +318,19 @@ const FeatureCard = ({
   onMouseLeave,
 }) => {
   return (
+    
     <motion.div
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
       }}
-      transition={{ duration: 0.5 }}
-      whileHover={{ scale: 1.03 }}
-      className="feature-card motion-div bg-[#040404] border border-[#ffffff3f] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
+      transition={{ duration: 0.3 }}
+      className="feature-card motion-div bg-[#0000007d]  backdrop-blur-3xl border border-[#ffffff4c] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-    >
+    ><Link to={link}>
       <div className="absolute inset-0 opacity-5 transition-all z-0"></div>
-      {icon}
+      <span className="flex w-full justify-center items-center">{icon}</span>
       <h3 className="text-xl font-bold mb-2 relative z-10">{title}</h3>
       <p className="text-gray-400 relative z-10">{description}</p>
       {link !== "" && (
@@ -386,7 +340,7 @@ const FeatureCard = ({
         >
           Learn more →
         </Link>
-      )}
+      )}</Link>
     </motion.div>
   );
 };
