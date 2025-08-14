@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { Trophy, Users } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import CustomCursor from "../ui/Cursor";
-// import VideoCard from "../ui/VideoCard";
+import VideoCard from "../ui/VideoCard";
 import "../../index.css";
 import ScrollToTop from "../ui/ScrollToTop";
 import { useTransform, useScroll } from "framer-motion";
@@ -21,43 +21,66 @@ export default function Home() {
 
   const [cursorVariant, setCursorVariant] = useState<CursorVariant>("default");
   const heroRef = useRef(null);
+  const gallery_ref = useRef(null);
   const featuresRef = useRef(null);
-  // const videosRef = useRef(null);
+  const videosRef = useRef(null);
   const isHeroInView = useInView(heroRef, { once: true });
   const isFeaturesInView = useInView(featuresRef, { once: true, amount: 0.3 });
-  // const isVideosInView = useInView(videosRef, { once: true, amount: 0.2 });
-  // const legendaryFights = [
-  //   {
-  //     title: "Muhammad Ali vs Joe Frazier – Thrilla in Manila (1975)",
-  //     videoUrl: "https://www.youtube.com/embed/oNEfN2R4oRc",
-  //   },
-  //   {
-  //     title: "Mike Tyson vs Trevor Berbick (1986)",
-  //     videoUrl: "https://www.youtube.com/embed/QKFhSnX9LzM",
-  //   },
-  //   {
-  //     title: "Floyd Mayweather vs Manny Pacquiao (2015)",
-  //     videoUrl: "https://www.youtube.com/embed/39zhhfMGNRk",
-  //   },
-  //   {
-  //     title: "Gatti vs Ward I (2002)",
-  //     videoUrl: "https://www.youtube.com/embed/wxyQvFmlXiw",
-  //   },
-  //   {
-  //     title: "Tyson Fury vs Deontay Wilder III (2021)",
-  //     videoUrl: "https://www.youtube.com/embed/vxw3x1zVvEE",
-  //   },
+  const legendaryFights = [
+    {
+      title: "Muhammad Ali vs Joe Frazier – Thrilla in Manila (1975)",
+      videoUrl: "https://www.youtube.com/embed/oNEfN2R4oRc",
+      description:
+        "The brutal third clash in their epic rivalry. Fought in scorching heat, this fight pushed both men beyond their limits, with Ali calling it 'the closest thing to dying.'",
+    },
+    {
+      title: "Mike Tyson vs Trevor Berbick (1986)",
+      videoUrl: "https://www.youtube.com/embed/QKFhSnX9LzM",
+      description:
+        "A 20-year-old Mike Tyson becomes the youngest heavyweight champion in history, demolishing Berbick in just two rounds with ferocious power.",
+    },
+    {
+      title: "Floyd Mayweather vs Manny Pacquiao (2015)",
+      videoUrl: "https://www.youtube.com/embed/39zhhfMGNRk",
+      description:
+        "The long-awaited 'Fight of the Century.' A masterclass in defensive boxing from Mayweather as he outpoints Pacquiao in a tactical showdown.",
+    },
+    {
+      title: "Gatti vs Ward I (2002)",
+      videoUrl: "https://www.youtube.com/embed/wxyQvFmlXiw",
+      description:
+        "An all-out war from start to finish. Arturo Gatti and Micky Ward traded non-stop punishment in one of the most thrilling bouts in boxing history.",
+    },
+    {
+      title: "Tyson Fury vs Deontay Wilder III (2021)",
+      videoUrl: "https://www.youtube.com/embed/vxw3x1zVvEE",
+      description:
+        "The dramatic conclusion to their trilogy. Multiple knockdowns, insane comebacks, and Fury’s final knockout to seal one of the greatest heavyweight rivalries.",
+    },
+    {
+      title: "George Foreman vs Muhammad Ali (1974)",
+      videoUrl: "https://www.youtube.com/embed/55AasOJZzDE",
+      description:
+        "The legendary 'Rumble in the Jungle.' Ali uses his famous rope-a-dope strategy to tire out the powerful Foreman before delivering a stunning knockout.",
+    },
+  ];
 
-  //   {
-  //     title: "George Foreman vs Muhammad Ali (1974)",
-  //     videoUrl: "https://www.youtube.com/embed/55AasOJZzDE",
-  //   },
-  // ];
-  const gallery_ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: gallery_ref,
     offset: ["start start", "end end"],
   });
+
+  const { scrollYProgress: scrollYProgress_videos_section } = useScroll({
+    target: videosRef,
+    offset: ["start end", "end start"],
+  });
+
+  const rotateY = useTransform(scrollYProgress_videos_section, [0, 1], [15, 0]);
+  const translateY = useTransform(
+    scrollYProgress_videos_section,
+    [0, 1],
+    [100, 0]
+  );
 
   const scale4 = useTransform(scrollYProgress, [0, 1], [1, 4]);
   const scale5 = useTransform(scrollYProgress, [0, 1], [1, 5]);
@@ -66,18 +89,22 @@ export default function Home() {
   const scale9 = useTransform(scrollYProgress, [0, 1], [1, 9]);
 
   const pictures = [
-    { src: effect_img_1, 
-      scale: scale4, 
-      classes: "w-[25vw] h-[25vh] top-[1vh] md:top-[-15vh]" },
+    {
+      src: effect_img_1,
+      scale: scale4,
+      classes: "w-[25vw] h-[25vh] top-[1vh] md:top-[-15vh]",
+    },
     {
       src: effect_img_2,
       scale: scale5,
-      classes: "top-[-30vh] md:top-[-30vh] right-[-20vw] w-[28vw] md:w-[12vw] h-[30vh]",
+      classes:
+        "top-[-30vh] md:top-[-30vh] right-[-20vw] w-[28vw] md:w-[12vw] h-[30vh]",
     },
     {
       src: effect_img_3,
       scale: scale6,
-      classes: "top-[-20vh] top-[-20vh] md:left-[-28vw] left-[-22vw] w-[40vw] md:w-[25vw] h-[45vh]",
+      classes:
+        "top-[-20vh] top-[-20vh] md:left-[-28vw] left-[-22vw] w-[40vw] md:w-[25vw] h-[45vh]",
     },
     {
       src: effect_img_4,
@@ -87,22 +114,26 @@ export default function Home() {
     {
       src: effect_img_5,
       scale: scale6,
-      classes: "top-[32vh] left-[2vw]  w-[25vw] md:w-[18vw] h-[25vh] md:left-[37vw] md:top-[-36vh]",
+      classes:
+        "top-[32vh] left-[2vw]  w-[25vw] md:w-[18vw] h-[25vh] md:left-[37vw] md:top-[-36vh]",
     },
     {
       src: effect_img_6,
       scale: scale8,
-      classes: "top-[27.5vh] left-[-30vw] w-[25vw] md:w-[12vw] h-[25vh] md:top-[22vh]  md:left-[-20vw]",
+      classes:
+        "top-[27.5vh] left-[-30vw] w-[25vw] md:w-[12vw] h-[25vh] md:top-[22vh]  md:left-[-20vw]",
     },
     {
       src: effect_img_7,
       scale: scale4,
-      classes: "top-[22.5vh] left-[30vw] md:w-[15vw] w-[25vw] h-[15vh] md:top-[12vh] md:left-[22vw] ",
+      classes:
+        "top-[22.5vh] left-[30vw] md:w-[15vw] w-[25vw] h-[15vh] md:top-[12vh] md:left-[22vw] ",
     },
     {
       src: effect_img_8,
       scale: scale9,
-      classes: "top-[0vh] left-[-26vw] md:left-[-35vw]  md:top-[17vh] w-[15vw] h-[15vh]",
+      classes:
+        "top-[0vh] left-[-26vw] md:left-[-35vw]  md:top-[17vh] w-[15vw] h-[15vh]",
     },
   ];
 
@@ -113,11 +144,8 @@ export default function Home() {
   return (
     <div className="min-h-screen min-w-full flex flex-col justify-center items-center bg-[#030303] text-white ">
       <ScrollToTop />
-
       <CustomCursor cursorVariant={cursorVariant} />
-
       {/* Hero Section */}
-
       <motion.div
         ref={heroRef}
         className="hero-section relative w-full flex flex-col items-center justify-center min-h-screen py-12 md:py-20"
@@ -212,53 +240,8 @@ export default function Home() {
           </div>
         </div>
       </motion.div>
-
       <hr className="w-full border  border-[#ffffff36]" />
-
-      {/* Legendary Fights */}
-      {/* <div className="legendary-fights-wrapper flex  justify-center items-center w-full bg-gradient-to-b from-[#181818] to-[#120000] pt-24">
-        <div className="w-full max-w-6xl relative flex justify-center items-center">
-          <div ref={videosRef} className="">
-            <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={isVideosInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="text-center mb-22"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                <span className="text-yellow-500">Legendary</span> Fights⚔️
-              </h2>
-
-              <div className="w-20 h-1 bg-red-600 mx-auto"></div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 200 }}
-              animate={isVideosInView ? { opacity: 1, y: 0 } : {}}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.55,
-                  },
-                },
-              }}
-              className="grid gap-12 md:grid-cols-2 max-w-6xl  mx-auto place-items-center"
-            >
-              {legendaryFights.map((fight, index) => (
-                <VideoCard
-                  key={index}
-                  title={fight.title}
-                  videoUrl={fight.videoUrl}
-                />
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </div> */}
-
-      {/* CTA Section */}
+      {/* Gallery Section */}
       <div ref={gallery_ref} className="relative h-[300vh] w-full ">
         <div className="sticky top-0 h-screen overflow-hidden ">
           {pictures.map(({ src, scale, classes }, index) => (
@@ -274,38 +257,68 @@ export default function Home() {
           ))}
         </div>
       </div>
-   <hr className="border-gray-700/10 w-full my-10 " />
+      <hr className="border-gray-700/10 w-full my-10 " />
       <div className="flex justify-center items-center w-full flex-col ">
-      <motion.p className="text-3xl russo p-4 text-center">
-        "Everybody has a plan until they get punched in the mouth." - <span className="text-red-500">Mike Tyson</span>
-      </motion.p>
-   <hr className="border-gray-700/10 w-full my-5 " />
-      <motion.div className="flex flex-col sm:flex-row gap-4 mt-8">
-        <Link to="/learn" className="w-full sm:w-auto">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onMouseEnter={enterButton}
-            onMouseLeave={leaveButton}
-            className="w-full bg-red-600 hover:bg-red-700 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-bold text-white"
-          >
-            Learn Boxing
-          </motion.button>
-        </Link>
-        <Link to="/select" className="w-full sm:w-auto">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onMouseEnter={enterButton}
-            onMouseLeave={leaveButton}
-            className="w-full border border-white/70 text-white bg-transparent hover:bg-white/10 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-medium"
-          >
-            Train with Us
-          </motion.button>
-        </Link>
-      </motion.div>
-</div>
+        <motion.p className="text-3xl russo p-4 text-center">
+          "Everybody has a plan until they get punched in the mouth." -{" "}
+          <span className="text-red-500">Mike Tyson</span>
+        </motion.p>
+        <hr className="border-gray-700/10 w-full my-5 " />
+        <motion.div className="flex flex-col sm:flex-row gap-4 mt-8">
+          <Link to="/learn" className="w-full sm:w-auto">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onMouseEnter={enterButton}
+              onMouseLeave={leaveButton}
+              className="w-full bg-red-600 hover:bg-red-700 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-bold text-white"
+            >
+              Learn Boxing
+            </motion.button>
+          </Link>
+          <Link to="/select" className="w-full sm:w-auto">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onMouseEnter={enterButton}
+              onMouseLeave={leaveButton}
+              className="w-full border border-white/70 text-white bg-transparent hover:bg-white/10 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-medium"
+            >
+              Train with Us
+            </motion.button>
+          </Link>
+        </motion.div>
+      </div>{" "}
+      <hr className="border-gray-700 w-full my-20 " />
+      {/* Legendary Fights */}
+      <div className="legendary-fights-wrapper flex justify-center items-center w-full">
+        <motion.div
+          ref={videosRef}
+          className="w-full max-w-6xl relative flex justify-center items-center"
+      
+        >
+          <div className="">
+            <motion.div className="text-center mb-22">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            THUNDER, <span className="text-red-600">BLOOD</span>, LEGACY
+              </h2>
+              <div className="w-90 h-1 bg-red-600 mx-auto"></div>
+              <p className="mt-2 text-xl text-gray-300">A collection of the most iconic boxing matches in history</p>
+            </motion.div>
 
+            <div className="grid gap-12 md:grid-cols-3 max-w-6xl mx-auto place-items-center">
+              {legendaryFights.map((fight, index) => (
+                <VideoCard
+                  key={index}
+                  title={fight.title}
+                  description={fight.description}
+                  videoUrl={fight.videoUrl}
+                />
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </div>
       <hr className="border-gray-700 w-full my-20 " />
       {/* Footer Section */}
       <motion.div className=" w-full max-w-6xl mb-20 text-sm text-gray-500 text-center  ">

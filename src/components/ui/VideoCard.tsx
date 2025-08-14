@@ -4,8 +4,8 @@ import { useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const VideoCard = ({ 
-  title = "The Future of AI Technology in 2025", 
-  description = "Explore the cutting-edge advancements in artificial intelligence and how they will shape our future.",
+  title = "no title :( yet.", 
+  description = "no description :( yet.",
   videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ", 
  
 }) => {
@@ -14,7 +14,7 @@ const VideoCard = ({
 
   const handleMouseEnter = () => {
     setIsHovered(true)
-
+console.log("hovered")
   }
 
   const handleMouseLeave = () => {
@@ -66,7 +66,7 @@ const VideoCard = ({
       whileHover="hover"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="w-full max-w-md rounded-xl overflow-hidden border-2 border-[#ffb30049] h-full bg-gradient-to-t from-[#ffa60000] to-[#ffffff76] shadow-xl hover:shadow-2xl hover:shadow-yellow-500/10 transition-all duration-300"
+      className="w-full max-w-md rounded-xl hover:cursor-pointer overflow-hidden border-2 border-[#ffa60046] h-full bg-gradient-to-t from-[#1c000024] to-[#b2010184] shadow-xl hover:shadow-2xl hover:shadow-yellow-500/10 transition-all duration-300"
     >
      
 
@@ -104,7 +104,7 @@ const VideoCard = ({
             className="h-0.5 bg-gradient-to-r from-yellow-500 to-white mt-1"
             initial={{ width: 0 }}
             animate={{ width: isHovered ? "100%" : "0%" }}
-            transition={{ duration: 0.3, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           />
         </motion.div>
         
@@ -112,10 +112,10 @@ const VideoCard = ({
         <AnimatePresence>
           {isHovered && (
             <motion.p
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              initial={{ height: 0, opacity: 0, filter: "blur(10px)" }}
+              animate={{ height: "auto", opacity: 1, filter: "blur(0px)" }}
+              exit={{ height: 0, opacity: 0 ,filter: "blur(10px)"}}
+              transition={{ duration: 0.5 }}
               className="text-sm text-gray-300 overflow-hidden"
             >
               {description}
