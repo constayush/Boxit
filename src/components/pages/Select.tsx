@@ -117,7 +117,7 @@ export default function Select() {
     className="min-h-screen relative w-full bg-black text-white flex flex-col justify-center items-center px-4 md:py-24 py-12 md:px-12">
      
       <ScrollToTop/>
-      <div className="absolute inset-0 h-full opacity-1 select-bg"></div>
+      <div className="absolute inset-0 h-full opacity-10 select-bg"></div>
       {/* Header with navigation */}
       <div className="w-full h-fit z-10 relative">
         <div className="container flex items-center justify-between">

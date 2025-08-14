@@ -6,13 +6,13 @@ import { Link } from "react-router"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowLeft, Play, Square, RotateCcw, Clock, Repeat, Settings, ChevronRight, ChevronLeft } from "lucide-react"
 import ScrollToTop from "../ui/ScrollToTop"
-
 import cross from "../../assets/cross.mp3"
 import jab from "../../assets/jab.mp3"
 import hook from "../../assets/hook.mp3"
 import uppercut from "../../assets/uppercut.mp3"
 import slip from "../../assets/slip.mp3"
 import roll from "../../assets/roll.mp3"
+
 
 
 const punchTypes: Record<string, { name: string; color: string; icon: string; description: string }> = {
@@ -271,13 +271,14 @@ export default function Train() {
   }
 
   return (
+    
     <motion.div
     initial={{ opacity: 0, filter: "blur(10px)" }}
     animate={{ opacity: 1, filter: "blur(0px)" }}
     exit={{ opacity: 0 }}
     transition={{ duration: 0.5 }}
-    className="min-h-screen relative black-red-grad h-full text-white flex flex-col px-4 md:py-24 py-12 md:px-12">
-         <ScrollToTop/>
+    className="min-h-screen   relative  h-full text-white flex flex-col px-4 md:py-24 py-12 md:px-12">
+         <ScrollToTop/><div className="train-bg w-full h-full  fixed top-0 left-0  opacity-10 -z-7"/>
       {/* Header with navigation */}
       <div className="container mx-auto flex items-center">
         <Link
@@ -293,7 +294,7 @@ export default function Train() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6 flex-1 flex flex-col items-center">
+      <div className="container mx-auto px-4 pt-12 flex-1 flex flex-col items-center">
         {/* Combo display */}
         <div className="bg-gray-900/70 rounded-xl p-6 w-full max-w-2xl mb-8">
           <h2 className="text-xl font-semibold mb-4">Current Combo</h2>
@@ -513,7 +514,7 @@ export default function Train() {
 
       {/* Footer */}
       <div className="container mx-auto px-4 py-6 border-t border-gray-800">
-        <p className="text-center text-gray-500 text-sm">
+        <p className="text-center text-gray-200 text-xl russo ">
           Follow the visual and audio cues to complete your boxing combo
         </p>
       </div>

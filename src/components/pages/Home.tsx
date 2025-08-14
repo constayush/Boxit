@@ -230,7 +230,41 @@ export default function Home() {
         </div>
       </motion.div>
       <hr className="w-full border  border-[#ffffff36]" />
-      {/* Gallery Section */}
+     
+     
+      {/* Legendary Fights */}
+      <div className="legendary-fights-wrapper flex justify-center items-center w-full mt-20" >
+        <motion.div
+          ref={videosRef}
+          className="w-full max-w-6xl relative flex justify-center items-center"
+      
+        >
+          <div className="">
+            <motion.div className="text-center mb-22">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            THUNDER, <span className="text-red-600">BLOOD</span>, LEGACY
+              </h2>
+              <div className="w-90 h-1 bg-red-600 mx-auto"></div>
+              <p className="mt-2 text-xl text-gray-300">A collection of the most iconic boxing matches in history</p>
+            </motion.div>
+
+            <div className="grid gap-12 md:grid-cols-3 max-w-6xl mx-auto place-items-center">
+              {legendaryFights.map((fight, index) => (
+                <VideoCard
+                  key={index}
+                  title={fight.title}
+                  description={fight.description}
+                  videoUrl={fight.videoUrl}
+                />
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+ <hr className="border-gray-700 w-full mt-20 " />
+
+       {/* Gallery Section */}
       <div ref={gallery_ref} className="relative h-[300vh] w-full ">
         <div className="sticky top-0 h-screen overflow-hidden ">
           {pictures.map(({ src, scale, classes }, index) => (
@@ -246,7 +280,9 @@ export default function Home() {
           ))}
         </div>
       </div>
+
       <hr className="border-gray-700/10 w-full my-10 " />
+
       <div className="flex justify-center items-center w-full flex-col ">
         <motion.p className="text-3xl russo p-4 text-center">
           "Everybody has a plan until they get punched in the mouth." -{" "}
@@ -279,36 +315,7 @@ export default function Home() {
         </motion.div>
       </div>{" "}
       <hr className="border-gray-700 w-full my-20 " />
-      {/* Legendary Fights */}
-      <div className="legendary-fights-wrapper flex justify-center items-center w-full">
-        <motion.div
-          ref={videosRef}
-          className="w-full max-w-6xl relative flex justify-center items-center"
-      
-        >
-          <div className="">
-            <motion.div className="text-center mb-22">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            THUNDER, <span className="text-red-600">BLOOD</span>, LEGACY
-              </h2>
-              <div className="w-90 h-1 bg-red-600 mx-auto"></div>
-              <p className="mt-2 text-xl text-gray-300">A collection of the most iconic boxing matches in history</p>
-            </motion.div>
 
-            <div className="grid gap-12 md:grid-cols-3 max-w-6xl mx-auto place-items-center">
-              {legendaryFights.map((fight, index) => (
-                <VideoCard
-                  key={index}
-                  title={fight.title}
-                  description={fight.description}
-                  videoUrl={fight.videoUrl}
-                />
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </div>
-      <hr className="border-gray-700 w-full my-20 " />
       {/* Footer Section */}
       <motion.div className=" w-full max-w-6xl mb-20 text-sm text-gray-500 text-center  ">
         <p className="mb-2">

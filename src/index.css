@@ -31,7 +31,13 @@ html {
   background-position: center;
   background-repeat: no-repeat;
 }
-
+.train-bg{
+  background-image: url(../public/train-bg.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+object-fit: cover;
+}
 .fight-card-bg{
 filter: grayscale(1);
   background-image: url(../public/fight-card-bg.jpg);
