@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
-import ScrollToTop from "../ui/ScrollToTop"
+import ScrollToTop from "../ui/ScrollToTop";
 import {
   ArrowLeft,
   Play,
@@ -11,7 +11,7 @@ import {
   CheckCircle,
   Clock,
 } from "lucide-react";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 const TUTORIAL_VIDEO_ID = "FjZIDL8-JP0";
 
 const punchTutorials = [
@@ -332,12 +332,13 @@ export default function Learn() {
   };
 
   return (
-    <motion.div 
-    initial={{ filter: "blur(10px)" , opacity: 0, }}
-    animate={{ filter: "blur(0px)", opacity: 1 }}
-    transition={{ duration: 2}}
-    className="min-h-screen bg-[#020202] text-white flex flex-col px-4 md:py-24 py-12 md:px-12">
-   <ScrollToTop />
+    <motion.div
+      initial={{ filter: "blur(10px)", opacity: 0 }}
+      animate={{ filter: "blur(0px)", opacity: 1 }}
+      transition={{ duration: 2 }}
+      className="min-h-screen bg-[#020202] text-white flex flex-col px-4 md:py-24 py-12 md:px-12"
+    >
+      <ScrollToTop />
       {/* Header with navigation */}
       <div className="container mx-auto mb-12 flex items-center">
         <Link
@@ -348,11 +349,12 @@ export default function Learn() {
         </Link>
 
         <div className="flex items-center w-full gap-8">
-          <motion.h1 
-          initial={{ x: 100, opacity: 0 }}
-          animate={{ x: 0,  opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="text-2xl md:text-5xl font-bold ml-4 helvetica-font">
+          <motion.h1
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="text-2xl md:text-5xl font-bold ml-4 helvetica-font"
+          >
             Learn Boxing
           </motion.h1>
           <div className="h-1 flex-grow bg-red-600 rounded-full"></div>
@@ -455,31 +457,42 @@ export default function Learn() {
               <div className="space-y-6 ">
                 {/* Punch header */}
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div
-                      className="w-12 h-12 rounded-full flex items-center justify-center mr-4 text-white text-xl font-bold"
-                      style={{ backgroundColor: selectedPunch.color }}
-                    >
-                      {selectedPunch.code}
-                    </div>
-                    <div>
-                      <h2 className="text-2xl md:text-3xl font-bold">
-                        {selectedPunch.name}
-                      </h2>
-                      <div className="flex items-center gap-3 mt-1">
-                        <div
-                          className={`text-sm px-2 py-1 rounded-full inline-flex items-center ${getDifficultyColor(
-                            selectedPunch.difficulty
-                          )}`}
-                        >
-                          <Award className="w-4 h-4 mr-1" />
-                          {selectedPunch.difficulty}
-                        </div>
-                        <div className="text-sm px-2 py-1 rounded-full inline-flex items-center bg-gray-800">
-                          <Clock className="w-4 h-4 mr-1" />
-                          {formatTime(selectedPunch.timestamp)}
-                        </div>
+                  <div className="flex justify-between w-full items-center">
+                    <div className="flex items-center">
+                      <div
+                        className="w-12 h-12 rounded-full flex  items-center justify-center mr-4 text-white text-xl font-bold"
+                        style={{ backgroundColor: selectedPunch.color }}
+                      >
+                        {selectedPunch.code}
                       </div>
+                      <div>
+                        <h2 className="text-2xl md:text-3xl font-bold">
+                          {selectedPunch.name}
+                        </h2>
+                        <div className="flex items-center gap-3 mt-1">
+                          <div
+                            className={`text-sm px-2 py-1 rounded-full inline-flex items-center ${getDifficultyColor(
+                              selectedPunch.difficulty
+                            )}`}
+                          >
+                            <Award className="w-4 h-4 mr-1" />
+                            {selectedPunch.difficulty}
+                          </div>
+                          <div className="text-sm px-2 py-1 rounded-full inline-flex items-center bg-gray-800">
+                            <Clock className="w-4 h-4 mr-1" />
+                            {formatTime(selectedPunch.timestamp)}
+                          </div>
+                        </div>
+                      </div>{" "}
+                    </div>
+                    {/* Practice button */}
+                    <div className="flex justify-center">
+                      <Link to={`/train?combo=${selectedPunch.code}`}>
+                        <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center gap-2">
+                          <Play className="w-5 h-5" />
+                          <span>Practice This Technique</span>
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -542,16 +555,6 @@ export default function Learn() {
                       );
                     })}
                   </div>
-                </div>
-
-                {/* Practice button */}
-                <div className="flex justify-center">
-                  <Link to={`/train?combo=${selectedPunch.code}`}>
-                    <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center gap-2">
-                      <Play className="w-5 h-5" />
-                      <span>Practice This Technique</span>
-                    </button>
-                  </Link>
                 </div>
               </div>
             )}
