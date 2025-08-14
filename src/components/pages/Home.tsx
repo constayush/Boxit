@@ -70,17 +70,6 @@ export default function Home() {
     offset: ["start start", "end end"],
   });
 
-  const { scrollYProgress: scrollYProgress_videos_section } = useScroll({
-    target: videosRef,
-    offset: ["start end", "end start"],
-  });
-
-  const rotateY = useTransform(scrollYProgress_videos_section, [0, 1], [15, 0]);
-  const translateY = useTransform(
-    scrollYProgress_videos_section,
-    [0, 1],
-    [100, 0]
-  );
 
   const scale4 = useTransform(scrollYProgress, [0, 1], [1, 4]);
   const scale5 = useTransform(scrollYProgress, [0, 1], [1, 5]);
