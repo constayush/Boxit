@@ -267,3 +267,24 @@ button,
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.navlink:hover{
+ color: #dc2626 !important;
+ font-weight: 600 !important;
+ letter-spacing: .08rem;
+}
+
+.onScrollNav {
+  margin: 1rem 1rem;
+  padding: 1rem 1rem;
+  width: fit-content;
+  background: #645f6556;
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25) inset; 
+
+
+  transition: all 0.3s ease;
+}
+

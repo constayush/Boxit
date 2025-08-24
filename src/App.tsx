@@ -3,6 +3,7 @@ import Select from "./components/pages/Select";
 import Train from "./components/pages/Train";
 import Home from "./components/pages/Home";
 import Learn from "./components/pages/Learn";
+// import Navbar from "./components/ui/Navbar";
 import { ReactLenis } from 'lenis/react'
 function App() {
 
@@ -12,7 +13,7 @@ function App() {
     <> <ReactLenis root />
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<><Home /></>} />
         <Route path="/learn" element={<Learn />} />
         <Route path="/select" element={<Select />} />
         <Route path="/train" element={<Train />} />

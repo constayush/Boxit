@@ -1,61 +1,34 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const VideoCard = ({ 
   title = "no title :( yet.", 
   description = "no description :( yet.",
   videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ", 
- 
 }) => {
-  const [isHovered, setIsHovered] = useState(false)
-  const progressInterval = useRef(null)
+  const [isExpanded, setIsExpanded] = useState(false)
 
-  const handleMouseEnter = () => {
-    setIsHovered(true)
-console.log("hovered")
+  const toggleDescription = () => {
+    setIsExpanded((prev) => !prev)
   }
-
-  const handleMouseLeave = () => {
-    setIsHovered(false)
-    if (progressInterval.current) {
-      clearInterval(progressInterval.current)
-    }
-  }
-
 
   const containerVariants = {
-    initial: { 
-      y: 20, 
-      opacity: 0,
-      filter: "blur(10px)"
-    },
+    initial: { y: 20, opacity: 0, filter: "blur(10px)" },
     animate: { 
-      y: 0, 
-      opacity: 1,
-      filter: "blur(0px)",
-      transition: { 
-        duration: 0.6,
-        staggerChildren: 0.1
-      }
+      y: 0, opacity: 1, filter: "blur(0px)",
+      transition: { duration: 0.6, staggerChildren: 0.1 }
     },
     hover: {
       y: -5,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
+      transition: { duration: 0.3, ease: "easeOut" }
     }
   }
 
   const childVariants = {
     initial: { opacity: 0, y: 10 },
-    animate: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.4 }
-    }
+    animate: { opacity: 1, y: 0, transition: { duration: 0.4 } }
   }
 
   return (
@@ -64,35 +37,25 @@ console.log("hovered")
       initial="initial"
       animate="animate"
       whileHover="hover"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="w-full max-w-md rounded-xl hover:cursor-pointer overflow-hidden border-2 border-[#ffa60046] h-full bg-gradient-to-t from-[#1c000024] to-[#b2010184] shadow-xl hover:shadow-2xl hover:shadow-yellow-500/10 transition-all duration-300"
+      className="w-full max-w-md rounded-xl overflow-hidden border-2 border-[#8e8e8e8d] h-full bg-gradient-to-t from-[#1c000024] to-[#b2010184] shadow-xl hover:shadow-2xl hover:shadow-white/10 transition-all duration-300"
     >
-     
-
+      {/* Video */}
       <motion.div className="relative aspect-video w-full overflow-hidden">
-         
-      
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full h-full">
+          <iframe
             className="w-full h-full"
-          >
-            <iframe
-              className="w-full h-full"
-              src={videoUrl}
-              title={title}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </motion.div>
-      
+            src={videoUrl}
+            title={title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </motion.div>
       </motion.div>
       
       {/* Content Section */}
       <motion.div className="p-5 space-y-4">
-        {/* Title with animated underline */}
+        {/* Title */}
         <motion.div className="relative">
           <motion.h3
             variants={childVariants}
@@ -100,21 +63,23 @@ console.log("hovered")
           >
             {title}
           </motion.h3>
-          <motion.div 
-            className="h-0.5 bg-gradient-to-r from-yellow-500 to-white mt-1"
-            initial={{ width: 0 }}
-            animate={{ width: isHovered ? "100%" : "0%" }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          />
         </motion.div>
         
-        {/* Description with reveal animation */}
+        {/* Show More button */}
+        <button 
+          onClick={toggleDescription}
+          className="text-sm  text-gray-300/80 underline underline-offset-4 cursor-pointer font-bold hover:text-red-200 transition-colors"
+        > 
+          {isExpanded ? "Show less" : "Show more"}
+        </button>
+
+        {/* Description with animation */}
         <AnimatePresence>
-          {isHovered && (
+          {isExpanded && (
             <motion.p
               initial={{ height: 0, opacity: 0, filter: "blur(10px)" }}
               animate={{ height: "auto", opacity: 1, filter: "blur(0px)" }}
-              exit={{ height: 0, opacity: 0 ,filter: "blur(10px)"}}
+              exit={{ height: 0, opacity: 0, filter: "blur(10px)" }}
               transition={{ duration: 0.5 }}
               className="text-sm text-gray-300 overflow-hidden"
             >
@@ -122,20 +87,7 @@ console.log("hovered")
             </motion.p>
           )}
         </AnimatePresence>
-        
-     
       </motion.div>
-      
-      {/* Glow Effect */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ 
-          opacity: isHovered ? 0.15 : 0,
-          boxShadow: isHovered ? "inset 0 0 30px 5px rgba(168, 85, 247, 0.5)" : "none"
-        }}
-        transition={{ duration: 0.5 }}
-      />
     </motion.div>
   )
 }

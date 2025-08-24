@@ -70,7 +70,6 @@ export default function Home() {
     offset: ["start start", "end end"],
   });
 
-
   const scale4 = useTransform(scrollYProgress, [0, 1], [1, 4]);
   const scale5 = useTransform(scrollYProgress, [0, 1], [1, 5]);
   const scale6 = useTransform(scrollYProgress, [0, 1], [1, 6]);
@@ -145,7 +144,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 100 }}
           animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative z-10 flex flex-col items-center text-center w-full max-w-5xl p-8"
+          className="relative z-10 flex flex-col items-center mb-10 text-center w-full max-w-5xl "
         >
           <motion.span
             initial={{ opacity: 0, scale: 0 }}
@@ -167,19 +166,19 @@ export default function Home() {
               isHeroInView ? { opacity: 1, y: 0, letterSpacing: "0px" } : {}
             }
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-[5rem] md:text-[8rem] font-bold mb-1 russo tracking-widest"
+            className="text-[5rem] md:text-[8rem] font-bold  russo tracking-widest"
             onMouseEnter={enterText}
             onMouseLeave={leaveButton}
           >
             Box'
-            <motion.span className="text-red-600">it.</motion.span>
+            <motion.span className="text-red-600">it</motion.span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 50 }}
             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="text-base sm:text-lg md:text-xl text-gray-300/90"
+            className="text-base sm:text-lg md:text-xl font-medium text-gray-300/90"
             onMouseEnter={enterText}
             onMouseLeave={leaveButton}
           >
@@ -188,6 +187,7 @@ export default function Home() {
             Stay ahead with the ultimate boxing platform.
           </motion.p>
         </motion.div>
+
         <div className="w-full pt-0 md:pt-12">
           <div ref={featuresRef} className="container mx-auto px-4">
             <motion.div
@@ -208,8 +208,8 @@ export default function Home() {
                 icon={
                   <Trophy className="w-12 h-12 text-red-500 mb-4 relative z-10" />
                 }
-                title="Pro Techniques"
-                description="Learn boxing techniques from professional fighters"
+                title="Learn Boxing"
+                description="Master the fundamentals, from footwork to powerful punches by professionals"
                 link="/learn"
                 onMouseEnter={enterButton}
                 onMouseLeave={leaveButton}
@@ -221,7 +221,7 @@ export default function Home() {
                   <Users className="w-12 h-12 text-red-500 mb-4 relative z-10" />
                 }
                 title="Training"
-                description="Master what you’ve learned by training and repeating techniques in the Practice section."
+                description="Sharpen your skills with drills, discipline, and real fight conditioning"
                 onMouseEnter={enterButton}
                 onMouseLeave={leaveButton}
               />
@@ -230,22 +230,23 @@ export default function Home() {
         </div>
       </motion.div>
       <hr className="w-full border  border-[#ffffff36]" />
-     
-     
       {/* Legendary Fights */}
-      <div className="legendary-fights-wrapper flex justify-center items-center w-full mt-20" >
+      <div className="legendary-fights-wrapper relative flex justify-center items-center w-full mt-20">
+        <span className="absolute blur-[400px] top-0 left-0 w-[20%] h-[80%] bg-[#fc4f4fb9]" />
+        <span className="absolute blur-[400px] top-0 right-0 w-[20%] h-[80%] bg-[#575dfac8]" />
         <motion.div
           ref={videosRef}
-          className="w-full max-w-6xl relative flex justify-center items-center"
-      
+          className="w-full  max-w-6xl relative flex justify-center items-center"
         >
           <div className="">
             <motion.div className="text-center mb-22">
               <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            THUNDER, <span className="text-red-600">BLOOD</span>, LEGACY
+                THUNDER, <span className="text-red-600">BLOOD</span>, LEGACY
               </h2>
               <div className="w-90 h-1 bg-red-600 mx-auto"></div>
-              <p className="mt-2 text-xl text-gray-300">A collection of the most iconic boxing matches in history</p>
+              <p className="mt-2 text-xl text-gray-300">
+                A collection of the most iconic boxing matches in history
+              </p>
             </motion.div>
 
             <div className="grid gap-12 md:grid-cols-3 max-w-6xl mx-auto place-items-center">
@@ -261,10 +262,8 @@ export default function Home() {
           </div>
         </motion.div>
       </div>
-
- <hr className="border-gray-700 w-full mt-20 " />
-
-       {/* Gallery Section */}
+      <hr className="border-gray-700 w-full mt-20 " />
+      {/* Gallery Section */}
       <div ref={gallery_ref} className="relative h-[300vh] w-full ">
         <div className="sticky top-0 h-screen overflow-hidden ">
           {pictures.map(({ src, scale, classes }, index) => (
@@ -280,10 +279,10 @@ export default function Home() {
           ))}
         </div>
       </div>
-
       <hr className="border-gray-700/10 w-full my-10 " />
-
-      <div className="flex justify-center items-center w-full flex-col ">
+      <div className="flex justify-center items-center w-full flex-col  relative ">
+        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[80%] bg-[#fc4f4fb9]"   />
+      <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[80%] bg-[#575dfac8] " />
         <motion.p className="text-3xl russo p-4 text-center">
           "Everybody has a plan until they get punched in the mouth." -{" "}
           <span className="text-red-500">Mike Tyson</span>
@@ -315,9 +314,9 @@ export default function Home() {
         </motion.div>
       </div>{" "}
       <hr className="border-gray-700 w-full my-20 " />
-
       {/* Footer Section */}
-      <motion.div className=" w-full max-w-6xl mb-20 text-sm text-gray-500 text-center  ">
+      <motion.div className=" w-full max-w-6xl mb-20 text-sm text-gray-500 text-center relative  ">
+      
         <p className="mb-2">
           Note - All video content featured in this app is the intellectual
           property of its respective owners. We do not claim ownership of any
@@ -361,16 +360,14 @@ const FeatureCard = ({
       <Link to={link}>
         <div className="absolute inset-0 opacity-5 transition-all z-0"></div>
         <span className="flex w-full justify-center items-center">{icon}</span>
-        <h3 className="text-xl font-bold mb-2 relative z-10">{title}</h3>
+       
+       <span className="flex  flex-col w-full justify-center items-center gap- mb-2">
+        
+        <h3 className="text-xl underline underline-offset-4 font-bold mb-2 relative z-10 flex">{title} </h3>
+        {/* <ArrowRightCircle size={40} className="text-white/30"/> */}
+        
+        </span> 
         <p className="text-gray-400 relative z-10">{description}</p>
-        {link !== "" && (
-          <Link
-            to="#"
-            className="mt-4 text-red-500 hover:text-red-400 font-medium"
-          >
-            Learn more →
-          </Link>
-        )}
       </Link>
     </motion.div>
   );
