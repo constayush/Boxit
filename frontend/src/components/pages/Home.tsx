@@ -130,7 +130,12 @@ export default function Home() {
   const leaveButton = () => setCursorVariant("default");
 
   return (
-    <div className="min-h-screen min-w-full flex flex-col justify-center items-center bg-[#030303] text-white ">
+    <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration:2, ease: "easeOut" }}
+    
+    className="min-h-screen min-w-full flex flex-col justify-center items-center bg-[#030303] text-white ">
       <ScrollToTop />
       <CustomCursor cursorVariant={cursorVariant} />
       {/* Hero Section */}
@@ -334,7 +339,7 @@ export default function Home() {
           </a>
         </p>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
