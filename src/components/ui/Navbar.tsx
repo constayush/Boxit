@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { Link } from "react-router";
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -26,15 +26,15 @@ function Navbar() {
           <li className="font-bold text-2xl">Box'it</li>
           <li>
             <ul className="flex w-fit gap-4 justify-between">
-              <li className="hover:cursor-pointer font-medium navlink transition-all duration-300">
+              <Link to="/" className="hover:cursor-pointer font-medium navlink transition-all duration-300">
                 Home
-              </li>
-              <li className="hover:cursor-pointer font-medium navlink transition-all duration-300">
+              </Link>
+              <Link to="/signup" className="hover:cursor-pointer font-medium navlink transition-all duration-300">
                 Signup
-              </li>
-              <li className="hover:cursor-pointer font-medium navlink transition-all duration-300">
+              </Link>
+              <Link to="/login" className="hover:cursor-pointer font-medium navlink transition-all duration-300">
                 Login
-              </li>
+              </Link>
             </ul>
           </li>
         
