@@ -2,26 +2,53 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { loginUser } from "../../services/auth"; 
+import { useAuthStore } from "../../stores/authStore"; 
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const setUser = useAuthStore((state) => state.setUser); 
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => setLoading(false), 2000); // fake API call
+    setError(null);
+
+    try {
+      const res = await loginUser({ username: email, password });
+      setUser(res.user); 
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative  p-4">
-      <motion.span initial={{y:-100}} animate={{y:0}} transition={{duration:0.6, ease:"easeOut"}} className="absolute blur-[400px] top-50 right-0 w-[52%] h-[50%] bg-red-500"></motion.span>
-      <motion.span initial={{y:-100}} animate={{y:0}} transition={{duration:0.6, ease:"easeOut"}}  className="absolute blur-[400px] top-50 left-0 w-[52%] h-[50%] bg-blue-500"></motion.span>
+    <div className="min-h-screen flex items-center justify-center relative p-4">
+      <motion.span
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="absolute blur-[400px] top-50 right-0 w-[52%] h-[50%] bg-red-500"
+      />
+      <motion.span
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="absolute blur-[400px] top-50 left-0 w-[52%] h-[50%] bg-blue-500"
+      />
+
       {/* Card wrapper */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md bg-[#0000004d] backdrop-blur-lg rounded-2xl shadow-xl shadow-[#ffffff06]  p-8 border border-white/40"
+        className="w-full max-w-md bg-[#0000004d] backdrop-blur-lg rounded-2xl shadow-xl shadow-[#ffffff06] p-8 border border-white/40"
       >
         <h2 className="text-3xl font-bold text-center text-white">
           Welcome Back 👋
@@ -29,27 +56,30 @@ export default function Login() {
         <p className="text-gray-400 text-center mb-8">Login to continue</p>
 
         <form className="space-y-6" onSubmit={handleLogin}>
-          {/* Email Input */}
           <motion.div whileFocus={{ scale: 1.02 }} className="w-full">
             <input
-              type="email"
-              placeholder="Email"
+              type="text"
+              placeholder="Username"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             />
           </motion.div>
 
-          {/* Password Input */}
           <motion.div whileFocus={{ scale: 1.02 }} className="w-full">
             <input
               type="password"
               placeholder="Password"
               required
-              className="w-full px-4 py-3 rounded-xl bg-white/5  border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             />
           </motion.div>
 
-          {/* Button with micro hover/tap animation */}
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}

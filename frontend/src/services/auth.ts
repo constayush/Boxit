@@ -1,0 +1,27 @@
+
+import api from "../api/api";
+
+interface RegisterData {
+  username: string;
+  password: string;
+}
+
+export const registerUser = async (data: RegisterData) => {
+  const res = await api.post("/auth/register", data);
+  return res.data; 
+};
+
+
+export const loginUser = async (data: RegisterData) => {
+  const res = await api.post("/auth/login", data);
+  return res.data;
+};
+
+export const fetchMe = async () => {
+  const res = await api.get("/auth/me", { withCredentials: true }); 
+  return res.data; 
+};
+
+export const logoutUser = async () => {
+  await api.post("/auth/logout", {}, { withCredentials: true });
+};

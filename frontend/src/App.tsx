@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import Select from "./components/pages/Select";
 import Train from "./components/pages/Train";
@@ -6,23 +7,40 @@ import Learn from "./components/pages/Learn";
 import Navbar from "./components/ui/Navbar";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
-import { ReactLenis } from 'lenis/react'
+import { ReactLenis } from 'lenis/react';
+import { useAuthStore } from "./stores/authStore";
+import { fetchMe } from "./services/auth";
 
 function App() {
+  const setUser = useAuthStore((state) => state.setUser);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const userData = await fetchMe();
+        setUser(userData);
+      } catch (err) {
+        setUser(null); 
+      }
+    };
+
+    getUser();
+  }, [setUser]);
 
   return (
-    <> 
-    <ReactLenis root />
-    <Router>
-      <Routes>
-        <Route path="/" element={<><Navbar /><Home /></>} />
-        <Route path="/learn" element={<Learn />} />
-        <Route path="/select" element={<Select />} />
-        <Route path="/train" element={<Train />} />
-        <Route path="/login" element={<><Navbar /><Login /></>} />
-        <Route path="/signup" element={<><Navbar /><Signup /></>} />
-      </Routes>
-    </Router>
+    <>
+      <ReactLenis root />
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/learn" element={<Learn />} />
+          <Route path="/select" element={<Select />} />
+          <Route path="/train" element={<Train />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </Router>
     </>
   );
 }
