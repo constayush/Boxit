@@ -358,7 +358,7 @@ const FeatureCard = ({
         visible: { opacity: 1, y: 0 },
       }}
       transition={{ duration: 0.3 }}
-      className="feature-card motion-div bg-[#0000007d]  backdrop-blur-3xl border border-[#ffffff4c] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
+      className="feature-card motion-div group bg-[#00000000]  backdrop-blur-3xl border border-[#ffffff4c] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -368,7 +368,7 @@ const FeatureCard = ({
        
        <span className="flex  flex-col w-full justify-center items-center gap- mb-2">
         
-        <h3 className="text-xl underline underline-offset-4 font-bold mb-2 relative z-10 flex">{title} </h3>
+        <h3 className="text-xl underline underline-offset-4 font-bold mb-2 group-hover:underline-offset-8 transition-all duration-200 relative z-10 flex">{title} </h3>
         {/* <ArrowRightCircle size={40} className="text-white/30"/> */}
         
         </span> 

@@ -12,7 +12,7 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
 
   const setUser = useAuthStore((state) => state.setUser); 
-
+ const updateSteak = useAuthStore((state) => state.incrementStreak); // update steak ko shai karna hai make it call on login  
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -21,15 +21,19 @@ export default function Login() {
     try {
       const res = await loginUser({ username: email, password });
       setUser(res.user); 
+      console.log("#1");
+      await updateSteak();
+            console.log("#2");
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed");
     } finally {
+      
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative p-4">
+    <div className="min-h-screen flex items-center justify-center bg-tyson-login relative p-4">
       <motion.span
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -48,12 +52,12 @@ export default function Login() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md bg-[#0000004d] backdrop-blur-lg rounded-2xl shadow-xl shadow-[#ffffff06] p-8 border border-white/40"
+        className="w-full max-w-md bg-[#67676732] backdrop-blur-xl rounded-2xl shadow-xl shadow-[#ffffff06] p-8 border border-white/40"
       >
         <h2 className="text-3xl font-bold text-center text-white">
           Welcome Back 👋
         </h2>
-        <p className="text-gray-400 text-center mb-8">Login to continue</p>
+        <p className="text-gray-300 text-center mb-8">Login to continue</p>
 
         <form className="space-y-6" onSubmit={handleLogin}>
           <motion.div whileFocus={{ scale: 1.02 }} className="w-full">
@@ -63,7 +67,7 @@ export default function Login() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-400 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             />
           </motion.div>
 
@@ -74,7 +78,7 @@ export default function Login() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-400 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             />
           </motion.div>
 
@@ -91,7 +95,7 @@ export default function Login() {
           </motion.button>
         </form>
 
-        <p className="text-gray-500 text-sm text-center mt-6">
+        <p className="text-gray-300 text-sm text-center mt-6">
           Don’t have an account?{" "}
           <a href="/signup" className="text-red-400 hover:underline">
             Sign up

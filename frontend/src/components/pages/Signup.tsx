@@ -38,19 +38,25 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative p-4">
+    <div className="min-h-screen bg-tyson-signup flex items-center justify-center relative p-4">
       {/* Background glows */}
       <motion.span
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="absolute blur-[400px] top-50 right-0 w-[50%] h-[50%] bg-red-500"
+        className="absolute blur-[400px] -z-1 right-0 w-[50%] h-[100%] bg-red-500"
       />
       <motion.span
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="absolute blur-[400px] top-50 left-0 w-[50%] h-[50%] bg-blue-500"
+        className="absolute blur-[400px] -z-1 left-0 w-[50%] h-[100%] bg-blue-500"
+      />
+      <motion.span
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="absolute blur-[400px] -z-1 top-0 left-0 w-full h-full bg-black"
       />
 
       {/* Card wrapper */}
@@ -58,10 +64,10 @@ export default function Signup() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md bg-[#0000004d] backdrop-blur-lg rounded-2xl shadow-xl shadow-[#ffffff06] p-8 border border-white/40"
+        className="w-full max-w-md bg-[#67676732] backdrop-blur-xl rounded-2xl shadow-xl shadow-[#ffffff06] p-8 border border-white/40"
       >
         <h2 className="text-3xl font-bold text-center text-white">Create Account ✨</h2>
-        <p className="text-gray-400 text-center mb-8">Join us and get fighting</p>
+        <p className="text-gray-300 text-center mb-8">Join us and get fighting</p>
 
         <form className="space-y-6" onSubmit={handleSignup}>
           {/* Full Name */}
@@ -72,7 +78,7 @@ export default function Signup() {
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-300 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             />
           </motion.div>
 
@@ -84,7 +90,7 @@ export default function Signup() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-300 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             />
           </motion.div>
 
@@ -96,7 +102,7 @@ export default function Signup() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-300 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             />
           </motion.div>
 
@@ -108,7 +114,7 @@ export default function Signup() {
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-300 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             />
           </motion.div>
 
@@ -126,7 +132,7 @@ export default function Signup() {
           </motion.button>
         </form>
 
-        <p className="text-gray-500 text-sm text-center mt-6">
+        <p className="text-gray-300 text-sm text-center mt-6">
           Already have an account?{" "}
           <a href="/login" className="text-red-400 hover:underline">
             Login

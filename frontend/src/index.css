@@ -111,8 +111,8 @@ body {
 }
 
 .feature-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px  -5px rgba(220, 38, 38, 0.3);
+  transform: translateY(-60px);
+  box-shadow: 10px 10px  -5px rgba(255, 0, 0, 0.961);
 }
 
 .feature-card:hover::before {
@@ -288,3 +288,14 @@ button,
   transition: all 0.3s ease;
 }
 
+.bg-tyson-login{
+  background-image: url(../public/login-tyson.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.bg-tyson-signup{
+    background-image: url(../public/signup-tyson.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
