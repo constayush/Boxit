@@ -10,6 +10,7 @@ import Signup from "./components/pages/Signup";
 import { ReactLenis } from 'lenis/react';
 import { useAuthStore } from "./stores/authStore";
 import { fetchMe } from "./services/auth";
+import ProfilePage from "./components/pages/Profile";
 
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -39,6 +40,8 @@ function App() {
           <Route path="/train" element={<Train />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/profile" element={<ProfilePage/>} />
+          <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
       </Router>
     </>

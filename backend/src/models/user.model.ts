@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 
 interface IUser extends mongoose.Document {
   username: string;
+  email: string;
   password: string;
   xp: number;
   level: number;
@@ -22,6 +23,13 @@ const userSchema = new mongoose.Schema<IUser>({
     lowercase: true,
     minlength: 3,
     maxlength: 20,
+    trim: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
     trim: true,
   },
   password: {
@@ -63,33 +71,42 @@ userSchema.methods.addXP = function (amount: number) {
 };
 
 // 🔥 Update streak
+// In your userSchema.methods
 userSchema.methods.updateStreak = function () {
   const today = new Date();
   const lastLogin = this.lastLogin ? new Date(this.lastLogin) : null;
 
-  // Normalize to midnight (ignore hours/mins)
-  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  const startOfLastLogin = lastLogin
-    ? new Date(lastLogin.getFullYear(), lastLogin.getMonth(), lastLogin.getDate())
-    : null;
+  if (typeof this.streak !== "number") this.streak = 0;
 
   if (!lastLogin) {
     this.streak = 1;
-  } else {
-    const diffDays =
-      (startOfToday.getTime() - startOfLastLogin.getTime()) / (1000 * 60 * 60 * 24);
-
-    if (diffDays === 0) {
-      // already logged in today → no change
-    } else if (diffDays === 1) {
-      this.streak++;
-    } else {
-      this.streak = 1;
-    }
+    this.lastLogin = today;
+    return;
   }
 
-  this.lastLogin = today; // still save actual timestamp
+  // Normalize both dates to UTC midnight
+  const startOfTodayUTC = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  const startOfLastLoginUTC = Date.UTC(
+    lastLogin.getFullYear(),
+    lastLogin.getMonth(),
+    lastLogin.getDate()
+  );
+
+  const diffDays = Math.floor((startOfTodayUTC - startOfLastLoginUTC) / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return;       // same day → do nothing
+  if (diffDays === 1) this.streak++; // consecutive day → increment
+  else this.streak = 1;             // missed days → reset
+
+  // Save lastLogin as full timestamp
+  this.lastLogin = today;
 };
+
+
+
+
+
+
 
 const User = mongoose.model<IUser>("User", userSchema);
 export default User;

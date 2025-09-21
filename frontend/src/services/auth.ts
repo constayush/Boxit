@@ -3,6 +3,7 @@ import api from "../api/api";
 
 interface RegisterData {
   username: string;
+  email: string;
   password: string;
 }
 
@@ -19,6 +20,7 @@ export const loginUser = async (data: RegisterData) => {
 
 export const fetchMe = async () => {
   const res = await api.get("/auth/me", { withCredentials: true }); 
+  console.log("Fetched user:", res.data);
   return res.data; 
 };
 

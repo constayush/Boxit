@@ -130,18 +130,18 @@ export default function Home() {
   const leaveButton = () => setCursorVariant("default");
 
   return (
-    <motion.div 
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration:2, ease: "easeOut" }}
-    
-    className="min-h-screen min-w-full flex flex-col justify-center items-center bg-[#030303] text-white ">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2, ease: "easeOut" }}
+      className="min-h-screen min-w-full flex flex-col justify-center items-center bg-[#030303] text-white "
+    >
       <ScrollToTop />
       <CustomCursor cursorVariant={cursorVariant} />
       {/* Hero Section */}
       <motion.div
         ref={heroRef}
-        className="hero-section relative w-full flex flex-col items-center justify-center min-h-screen py-12 md:py-20"
+        className="hero-section relative w-full flex flex-col items-center justify-center min-h-screen py-12 md:py-26"
       >
         <div className="absolute inset-0 hero-gradient"></div>
 
@@ -254,7 +254,7 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="grid gap-12 md:grid-cols-3 max-w-6xl mx-auto place-items-center">
+            <div className="grid gap-12 md:grid-cols-3 max-w-6xl mx-auto place-items-center p-4">
               {legendaryFights.map((fight, index) => (
                 <VideoCard
                   key={index}
@@ -286,8 +286,8 @@ export default function Home() {
       </div>
       <hr className="border-gray-700/10 w-full my-10 " />
       <div className="flex justify-center items-center w-full flex-col  relative ">
-        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[80%] bg-[#fc4f4fb9]"   />
-      <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[80%] bg-[#575dfac8] " />
+        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[80%] bg-[#fc4f4fb9]" />
+        <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[80%] bg-[#575dfac8] " />
         <motion.p className="text-3xl russo p-4 text-center">
           "Everybody has a plan until they get punched in the mouth." -{" "}
           <span className="text-red-500">Mike Tyson</span>
@@ -321,7 +321,6 @@ export default function Home() {
       <hr className="border-gray-700 w-full my-20 " />
       {/* Footer Section */}
       <motion.div className=" w-full max-w-6xl mb-20 text-sm text-gray-500 text-center relative  ">
-      
         <p className="mb-2">
           Note - All video content featured in this app is the intellectual
           property of its respective owners. We do not claim ownership of any
@@ -365,13 +364,13 @@ const FeatureCard = ({
       <Link to={link}>
         <div className="absolute inset-0 opacity-5 transition-all z-0"></div>
         <span className="flex w-full justify-center items-center">{icon}</span>
-       
-       <span className="flex  flex-col w-full justify-center items-center gap- mb-2">
-        
-        <h3 className="text-xl underline underline-offset-4 font-bold mb-2 group-hover:underline-offset-8 transition-all duration-200 relative z-10 flex">{title} </h3>
-        {/* <ArrowRightCircle size={40} className="text-white/30"/> */}
-        
-        </span> 
+
+        <span className="flex  flex-col w-full justify-center items-center gap- mb-2">
+          <h3 className="text-xl underline underline-offset-4 font-bold mb-2 group-hover:underline-offset-8 transition-all duration-200 relative z-10 flex">
+            {title}{" "}
+          </h3>
+          {/* <ArrowRightCircle size={40} className="text-white/30"/> */}
+        </span>
         <p className="text-gray-400 relative z-10">{description}</p>
       </Link>
     </motion.div>

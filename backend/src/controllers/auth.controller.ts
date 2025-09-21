@@ -24,13 +24,13 @@ const generateToken = (userId: string) => {
 
 // REGISTER
 export const registerUser = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { username,email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser) return res.status(400).json({ message: "Username taken" });
 
-    const user = await User.create({ username, password });
+    const user = await User.create({ username, email, password });
 
     const token = generateToken((user._id as mongoose.Types.ObjectId).toString());
 
@@ -46,6 +46,7 @@ export const registerUser = async (req: Request, res: Response) => {
       user: {
         _id: user._id,
         username: user.username,
+        email: user.email,
         xp: user.xp,
         level: user.level,
         streak: user.streak,
@@ -84,6 +85,7 @@ export const loginUser = async (req: Request, res: Response) => {
       user: {
         _id: user._id,
         username: user.username,
+        email: user.email,
         xp: user.xp,
         level: user.level,
         streak: user.streak,

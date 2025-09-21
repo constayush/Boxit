@@ -10,6 +10,7 @@ import {
   Award,
   CheckCircle,
   Clock,
+  ArrowDown,
 } from "lucide-react";
 import { motion } from "framer-motion";
 const TUTORIAL_VIDEO_ID = "FjZIDL8-JP0";
@@ -260,6 +261,12 @@ const formatTime = (seconds: number): string => {
 };
 
 export default function Learn() {
+  const [toggle, setToggle] = useState(false);
+
+  const handleToggle = () => {
+    setToggle(!toggle);
+  };
+
   const [selectedPunch, setSelectedPunch] = useState(punchTutorials[0]);
   const [activeCategory, setActiveCategory] = useState("basic");
   const [player, setPlayer] = useState<any>(null);
@@ -336,7 +343,7 @@ export default function Learn() {
       initial={{ filter: "blur(10px)", opacity: 0 }}
       animate={{ filter: "blur(0px)", opacity: 1 }}
       transition={{ duration: 2 }}
-      className="min-h-screen bg-[#020202] text-white flex flex-col px-4 md:py-24 py-12 md:px-12"
+      className="min-h-screen bg-[#020202] text-white flex flex-col px-4 md:py-34 py-12 md:px-12"
     >
       <ScrollToTop />
       {/* Header with navigation */}
@@ -353,7 +360,7 @@ export default function Learn() {
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 1 }}
-            className="text-2xl md:text-5xl font-bold ml-4 helvetica-font"
+            className="text-3xl md:text-5xl font-bold ml-4 helvetica-font"
           >
             Learn Boxing
           </motion.h1>
@@ -366,14 +373,117 @@ export default function Learn() {
           {/* Sidebar with punch list */}
           <div className="lg:col-span-1">
             <div className="bg-gray-900/70 rounded-xl p-6 sticky top-10">
-              <h2 className="text-xl font-bold mb-6 flex items-center">
-                <BookOpen className="w-5 h-5 mr-2 text-red-600" />
-                Boxing Techniques
-              </h2>
+              <span className="flex  justify-between ">
+                
+                <span className="flex justify-center items-center"><BookOpen className="w-5 h-5 sm:mx-4  mr-4 text-red-600" />
+                <h2 className="text-2xl font-bold  flex items-center">
+                  
+                  Boxing Techniques
+                </h2></span>
 
+                <ArrowDown
+                  onClick={handleToggle}
+                  className={
+                    "transition-all lg:hidden border rounded-full " +
+                    (toggle ? "" : " rotate-180")
+                  }
+                />
+              </span>
               {/* Categories */}
-              <div className="space-y-6">
-                <div>
+
+              {toggle && (
+                <motion.div
+                  initial={{ filter: "blur(10px)" }}
+                  exit={{ filter: "blur(10px)" }}
+                  animate={{ filter: "blur(0px)" }}
+                  className="space-y-6 transition-all lg:hidden duration-200"
+                >
+                  <div>
+                    <h3 className={`text-lg font-medium mb-3 pb-2 border-b`}>
+                      Important note
+                    </h3>
+                    <p>
+                      This course is not created or owned by us. It is a
+                      Creative Commons-licensed course sourced from YouTube,
+                      originally produced by its respective creator(s). All
+                      credit goes to the original author(s){" "}
+                      <a
+                        className="font-bold text-red-500"
+                        href="https://www.youtube.com/channel/UCiE7yqBDTQjtk1abuw92FQg"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Atiko Academy
+                      </a>{" "}
+                      for their work. We are simply providing access to this
+                      content for educational purposes.
+                    </p>
+                  </div>
+
+                  {categories.map((category) => (
+                    <div key={category.id}>
+                      <h3
+                        className={`text-lg font-medium mb-3 pb-2 border-b cursor-pointer ${
+                          activeCategory === category.id
+                            ? "border-red-600"
+                            : "border-gray-700"
+                        }`}
+                        onClick={() => setActiveCategory(category.id)}
+                      >
+                        {category.name}
+                      </h3>
+                      <div className="space-y-2">
+                        {punchTutorials
+                          .filter((punch) =>
+                            category.punches.includes(punch.id)
+                          )
+                          .map((punch) => (
+                            <button
+                              key={punch.id}
+                              onClick={() => handlePunchSelect(punch)}
+                              className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
+                                selectedPunch.id === punch.id
+                                  ? "bg-gray-800 border-l-4 border-red-600"
+                                  : "hover:bg-gray-800/50"
+                              }`}
+                            >
+                              <div className="flex items-center">
+                                <div
+                                  className="w-8 h-8 rounded-full flex items-center justify-center mr-3 text-white font-bold"
+                                  style={{ backgroundColor: punch.color }}
+                                >
+                                  {punch.code}
+                                </div>
+                                <span>{punch.name}</span>
+                              </div>
+                              <div className="flex items-center">
+                                <span className="text-xs text-gray-400 mr-2 flex items-center">
+                                  <Clock className="w-3 h-3 mr-1" />
+                                  {formatTime(punch.timestamp)}
+                                </span>
+                                <ChevronRight
+                                  className={`w-5 h-5 transition-transform ${
+                                    selectedPunch.id === punch.id
+                                      ? "rotate-90"
+                                      : ""
+                                  }`}
+                                />
+                              </div>
+                            </button>
+                          ))}
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+
+              <motion.div
+                initial={{ filter: "blur(10px)" }}
+                exit={{ filter: "blur(10px)" }}
+                animate={{ filter: "blur(0px)" }}
+                className="space-y-6 hidden lg:block transition-all duration-200"
+              >
+                <div className="mt-3">
                   <h3 className={`text-lg font-medium mb-3 pb-2 border-b`}>
                     Important note
                   </h3>
@@ -447,7 +557,7 @@ export default function Learn() {
                     </div>
                   </div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </div>
 
@@ -457,19 +567,20 @@ export default function Learn() {
               <div className="space-y-6 ">
                 {/* Punch header */}
                 <div className="flex items-center justify-between">
-                  <div className="flex justify-between w-full items-center">
+                  <div className="flex flex-wrap  justify-between w-full items-center">
                     <div className="flex items-center">
-                      <div
-                        className="w-12 h-12 rounded-full flex  items-center justify-center mr-4 text-white text-xl font-bold"
-                        style={{ backgroundColor: selectedPunch.color }}
-                      >
-                        {selectedPunch.code}
-                      </div>
                       <div>
-                        <h2 className="text-2xl md:text-3xl font-bold">
+                        <h2 className="text-3xl my-8 font-bold">
                           {selectedPunch.name}
                         </h2>
                         <div className="flex items-center gap-3 mt-1">
+                          {" "}
+                          <div
+                            className="w-8 h-8 rounded-full flex border items-center justify-center mr-4 text-white text-xl font-bold"
+                            style={{ backgroundColor: selectedPunch.color }}
+                          >
+                            {selectedPunch.code}
+                          </div>
                           <div
                             className={`text-sm px-2 py-1 rounded-full inline-flex items-center ${getDifficultyColor(
                               selectedPunch.difficulty
@@ -486,9 +597,9 @@ export default function Learn() {
                       </div>{" "}
                     </div>
                     {/* Practice button */}
-                    <div className="flex justify-center">
+                    <div className="flex justify-center my-6">
                       <Link to={`/train?combo=${selectedPunch.code}`}>
-                        <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center gap-2">
+                        <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center w-fit gap-2">
                           <Play className="w-5 h-5" />
                           <span>Practice This Technique</span>
                         </button>

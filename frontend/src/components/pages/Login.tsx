@@ -7,7 +7,7 @@ import { useAuthStore } from "../../stores/authStore";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -19,11 +19,14 @@ export default function Login() {
     setError(null);
 
     try {
-      const res = await loginUser({ username: email, password });
+      const res = await loginUser({username, password, email: ""});
       setUser(res.user); 
-      console.log("#1");
+   
       await updateSteak();
-            console.log("#2");
+         
+      // Redirect or show success message
+      window.location.href = "/profile";
+
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed");
     } finally {
@@ -65,8 +68,8 @@ export default function Login() {
               type="text"
               placeholder="Username"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-400 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             />
           </motion.div>

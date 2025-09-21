@@ -5,6 +5,7 @@ import { fetchMe, addXp, incrementStreak, resetStreak } from "../services/user";
 interface User {
   _id: string;
   username: string;
+  email: string;
   xp: number;
   level: number;
   streak: number;

@@ -1,284 +1,391 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { useLocation } from "react-router"
-import { Link } from "react-router"
-import { motion, AnimatePresence } from "framer-motion"
-import { ArrowLeft, Play, Square, RotateCcw, Clock, Repeat, Settings, ChevronRight, ChevronLeft } from "lucide-react"
-import ScrollToTop from "../ui/ScrollToTop"
-import cross from "../../assets/cross.mp3"
-import jab from "../../assets/jab.mp3"
-import hook from "../../assets/hook.mp3"
-import uppercut from "../../assets/uppercut.mp3"
-import slip from "../../assets/slip.mp3"
-import roll from "../../assets/roll.mp3"
+import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router";
+import { Link } from "react-router";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowLeft,
+  Play,
+  Square,
+  RotateCcw,
+  Clock,
+  Repeat,
+  Settings,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
+import ScrollToTop from "../ui/ScrollToTop";
+import cross from "../../assets/cross.mp3";
+import jab from "../../assets/jab.mp3";
+import hook from "../../assets/hook.mp3";
+import uppercut from "../../assets/uppercut.mp3";
+import slip from "../../assets/slip.mp3";
+import roll from "../../assets/roll.mp3";
 
+const punchTypes: Record<
+  string,
+  { name: string; color: string; icon: string; description: string }
+> = {
+  "1": {
+    name: "Jab",
+    color: "#ef4444",
+    icon: "👊",
+    description: "Lead hand straight punch",
+  },
+  "2": {
+    name: "Cross",
+    color: "#3b82f6",
+    icon: "💥",
+    description: "Rear hand straight punch",
+  },
+  "3": {
+    name: "Lead Hook",
+    color: "#10b981",
+    icon: "🤛",
+    description: "Lead hand hook",
+  },
+  "4": {
+    name: "Rear Hook",
+    color: "#8b5cf6",
+    icon: "🤜",
+    description: "Rear hand hook",
+  },
+  "5": {
+    name: "Lead Uppercut",
+    color: "#f59e0b",
+    icon: "⤴️",
+    description: "Lead hand uppercut",
+  },
+  "6": {
+    name: "Rear Uppercut",
+    color: "#ec4899",
+    icon: "⤴️",
+    description: "Rear hand uppercut",
+  },
+  S: {
+    name: "Slip",
+    color: "#6366f1",
+    icon: "↪️",
+    description: "Defensive slip movement",
+  },
+  R: {
+    name: "Roll",
+    color: "#14b8a6",
+    icon: "🔄",
+    description: "Defensive roll movement",
+  },
+  D: {
+    name: "Duck",
+    color: "#f97316",
+    icon: "⬇️",
+    description: "Defensive duck movement",
+  },
+};
 
-
-const punchTypes: Record<string, { name: string; color: string; icon: string; description: string }> = {
-  "1": { name: "Jab", color: "#ef4444", icon: "👊", description: "Lead hand straight punch" },
-  "2": { name: "Cross", color: "#3b82f6", icon: "💥", description: "Rear hand straight punch" },
-  "3": { name: "Lead Hook", color: "#10b981", icon: "🤛", description: "Lead hand hook" },
-  "4": { name: "Rear Hook", color: "#8b5cf6", icon: "🤜", description: "Rear hand hook" },
-  "5": { name: "Lead Uppercut", color: "#f59e0b", icon: "⤴️", description: "Lead hand uppercut" },
-  "6": { name: "Rear Uppercut", color: "#ec4899", icon: "⤴️", description: "Rear hand uppercut" },
-  "S": { name: "Slip", color: "#6366f1", icon: "↪️", description: "Defensive slip movement" },
-  "R": { name: "Roll", color: "#14b8a6", icon: "🔄", description: "Defensive roll movement" },
-  "D": { name: "Duck", color: "#f97316", icon: "⬇️", description: "Defensive duck movement" },
-}
+const punchAudioMap: Record<string, HTMLAudioElement> = {
+  "1": new Audio(jab),
+  "2": new Audio(cross),
+  "3": new Audio(hook),
+  "4": new Audio(hook),
+  "5": new Audio(uppercut),
+  "6": new Audio(uppercut),
+  S: new Audio(slip),
+  R: new Audio(roll),
+};
 
 interface TrainingState {
-  index: number
-  remainingReps: number
-  isActive: boolean
+  index: number;
+  remainingReps: number;
+  isActive: boolean;
 }
 
 export default function Train() {
-  const location = useLocation()
-
- const comboString = new URLSearchParams(location.search).get("combo") || "1-2"
-//  if(!comboString) return <Navigate to="/select" replace /> //redirect to select page if no string is foundd
-
+  const location = useLocation();
+  const comboString =
+    new URLSearchParams(location.search).get("combo") || "1-2";
 
   // Parse the combo string into our number/letter codes
   const parseCombo = (comboStr: string): string[] => {
     // If it's already in code format like "1-2-3"
     if (comboStr.includes("-")) {
-      return comboStr.split("-")
+      return comboStr.split("-");
     }
     const punchMap: Record<string, string> = {
       Jab: "1",
       Cross: "2",
-      Hook: "3", 
+      Hook: "3",
       "Lead Hook": "3",
       "Rear Hook": "4",
-      Uppercut: "6", 
+      Uppercut: "6",
       "Lead Uppercut": "5",
       "Rear Uppercut": "6",
       Slip: "S",
       Roll: "R",
       Duck: "D",
-    }
+    };
 
-    return comboStr.split(", ").map((punch: string): string => punchMap[punch] || punch)
-  }
+    return comboStr
+      .split(", ")
+      .map((punch: string): string => punchMap[punch] || punch);
+  };
 
-  const combo = parseCombo(comboString)
-  const [isTraining, setIsTraining] = useState<boolean>(false)
-  const [isPaused, setIsPaused] = useState<boolean>(false)
-  const [intervalTime, setIntervalTime] = useState<number>(1000)
-  const [reps, setReps] = useState<number>(5)
-  const [repsLeft, setRepsLeft] = useState<number>(reps)
-  const [currentPunch, setCurrentPunch] = useState<string>("Ready to box?")
-  const [currentIndex, setCurrentIndex] = useState<number>(0)
-  const [countdown, setCountdown] = useState<number>(0)
-  const [showSettings, setShowSettings] = useState<boolean>(true)
+  const combo = parseCombo(comboString);
+  const [isTraining, setIsTraining] = useState<boolean>(false);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [intervalTime, setIntervalTime] = useState<number>(1000);
+  const [reps, setReps] = useState<number>(5);
+  const [repsLeft, setRepsLeft] = useState<number>(reps);
+  const [currentPunch, setCurrentPunch] = useState<string>("Ready to box?");
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [countdown, setCountdown] = useState<number>(0);
+  const [showSettings, setShowSettings] = useState<boolean>(true);
 
   // Refs
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const countdownRef = useRef<NodeJS.Timeout | null>(null)
-  const trainingStateRef = useRef<TrainingState>({ index: 0, remainingReps: reps, isActive: false })
-  const audioContextRef = useRef<AudioContext | null>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const countdownRef = useRef<NodeJS.Timeout | null>(null);
+  const trainingStateRef = useRef<TrainingState>({
+    index: 0,
+    remainingReps: reps,
+    isActive: false,
+  });
+  const audioContextRef = useRef<AudioContext | null>(null);
 
   // Initialize audio context on first user interaction
   const initAudioContext = () => {
     if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
+      audioContextRef.current = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
     }
-  }
+  };
 
-  // Play a simple beep sound instead of using speech synthesis
+  // Play a simple beep sound
   const playBeep = (frequency = 440, duration = 150) => {
-    if (!audioContextRef.current) return
+    if (!audioContextRef.current) return;
 
-    const oscillator = audioContextRef.current.createOscillator()
-    const gainNode = audioContextRef.current.createGain()
+    const oscillator = audioContextRef.current.createOscillator();
+    const gainNode = audioContextRef.current.createGain();
 
-    oscillator.connect(gainNode)
-    gainNode.connect(audioContextRef.current.destination)
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContextRef.current.destination);
 
-    oscillator.type = "sine"
-    oscillator.frequency.value = frequency
-    gainNode.gain.value = 0.5
+    oscillator.type = "sine";
+    oscillator.frequency.value = frequency;
+    gainNode.gain.value = 0.5;
 
-    oscillator.start()
+    oscillator.start();
 
     setTimeout(() => {
-      oscillator.stop()
-    }, duration)
-  }
- 
+      oscillator.stop();
+    }, duration);
+  };
 
-  // useEffect(() => {
-  //   Object.values(punchAudioMap).forEach((audio) => {
-  //     audio.load()
-  //   })
-  // }, [])
-  
+  useEffect(() => {
+    Object.values(punchAudioMap).forEach((audio) => {
+      audio.load();
+    });
+  }, []);
 
-  const punchAudioMap: Record<string, HTMLAudioElement> = {
-    "1": new Audio(jab),
-    "2": new Audio(cross),
-    "3": new Audio(hook),
-    "4": new Audio(hook),
-    "5": new Audio(uppercut),
-    "6": new Audio(uppercut),
-    S: new Audio(slip),
-    R: new Audio(roll),
-   
-  }
-  
   const playPunchSound = (punchId: string) => {
-    const audio = punchAudioMap[punchId]
+    const audio = punchAudioMap[punchId];
     if (audio) {
-      audio.pause() // make sure it stops if it's playing
-      audio.currentTime = 0
-      audio.playbackRate = getPlaybackRate() 
-      audio.play().catch((e) => console.error("Failed to play sound:", e))
+      audio.pause(); // make sure it stops if it's playing
+      audio.currentTime = 0;
+      audio.playbackRate = getPlaybackRate();
+      audio.play().catch((e) => console.error("Failed to play sound:", e));
     }
-  }
+  };
 
   const getPlaybackRate = () => {
-    const baseInterval = 1500 
-    const minRate = 0.5
-    const maxRate = 2.0
-    const rate = baseInterval / intervalTime
-    return Math.min(Math.max(rate, minRate), maxRate)
-  }
-  
+    const baseInterval = 1000;
+    const minRate = 0.5;
+    const maxRate = 2.0;
+    const rate = baseInterval / intervalTime;
+    return Math.min(Math.max(rate, minRate), maxRate);
+  };
 
+  // Webcam handling
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const [cameraEnabled, setCameraEnabled] = useState(true);
+
+  useEffect(() => {
+    const handleCamera = async () => {
+      if (cameraEnabled) {
+        try {
+          // Request new stream
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
+          streamRef.current = stream;
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            await videoRef.current.play();
+          }
+        } catch (err) {
+          console.error("Error accessing webcam:", err);
+          setCameraEnabled(false);
+        }
+      } else {
+        // Stop all tracks = LED off
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach((track) => {
+            track.stop();
+          });
+          streamRef.current = null;
+        }
+        if (videoRef.current) {
+          videoRef.current.srcObject = null;
+        }
+      }
+    };
+
+    handleCamera();
+
+    // Cleanup on unmount
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+        streamRef.current = null;
+      }
+    };
+  }, [cameraEnabled]);
+
+  const toggleCamera = () => setCameraEnabled((prev) => !prev);
 
   // Handle countdown before starting
   useEffect(() => {
     if (countdown > 0) {
       // Play countdown beep
       if (audioContextRef.current) {
-        playBeep(330, 200) // Lower pitch for countdown
+        playBeep(330, 200); // Lower pitch for countdown
       }
 
       countdownRef.current = setTimeout(() => {
-        setCountdown((prev) => prev - 1)
-      }, 1000)
+        setCountdown((prev) => prev - 1);
+      }, 1000);
     } else if (countdown === 0 && isTraining) {
       trainingStateRef.current = {
         index: 0,
         remainingReps: repsLeft,
         isActive: true,
-      }
-      nextPunch()
+      };
+      nextPunch();
     }
 
     return () => {
-      if (countdownRef.current) clearTimeout(countdownRef.current)
-    }
-  }, [countdown, isTraining])
+      if (countdownRef.current) clearTimeout(countdownRef.current);
+    };
+  }, [countdown, isTraining]);
 
   // Update training state ref when repsLeft changes
   useEffect(() => {
-    trainingStateRef.current.remainingReps = repsLeft
-  }, [repsLeft])
+    trainingStateRef.current.remainingReps = repsLeft;
+  }, [repsLeft]);
 
   // Clean up on unmount
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-      if (countdownRef.current) clearTimeout(countdownRef.current)
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (countdownRef.current) clearTimeout(countdownRef.current);
       if (audioContextRef.current) {
-        audioContextRef.current.close().catch(console.error)
+        audioContextRef.current.close().catch(console.error);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   // Process the next punch in the sequence
   const nextPunch = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-    const { index, remainingReps, isActive } = trainingStateRef.current
+    const { index, remainingReps, isActive } = trainingStateRef.current;
 
     if (!isActive || isPaused || remainingReps <= 0) {
       if (remainingReps <= 0) {
-        setIsTraining(false)
-        trainingStateRef.current.isActive = false
+        setIsTraining(false);
+        trainingStateRef.current.isActive = false;
       }
-      return
+      return;
     }
 
     // Set current punch
-    const punch = combo[index]
-    setCurrentPunch(punch)
-    setCurrentIndex(index)
+    const punch = combo[index];
+    setCurrentPunch(punch);
+    setCurrentIndex(index);
 
     // Play sound for the punch
-    playPunchSound(punch)
+    playPunchSound(punch);
 
     // Schedule next punch
     timeoutRef.current = setTimeout(() => {
       // Update index for next punch
-      const nextIndex = (index + 1) % combo.length
+      const nextIndex = (index + 1) % combo.length;
 
       // If we've completed a full combo
       if (nextIndex === 0) {
-        const newRepsLeft = remainingReps - 1
-        setRepsLeft(newRepsLeft)
-        trainingStateRef.current.remainingReps = newRepsLeft
+        const newRepsLeft = remainingReps - 1;
+        setRepsLeft(newRepsLeft);
+        trainingStateRef.current.remainingReps = newRepsLeft;
 
         // If we've completed all reps
         if (newRepsLeft <= 0) {
-          setIsTraining(false)
-          trainingStateRef.current.isActive = false
-          return
+          setIsTraining(false);
+          trainingStateRef.current.isActive = false;
+          return;
         }
       }
 
       // Update training state for next punch
-      trainingStateRef.current.index = nextIndex
+      trainingStateRef.current.index = nextIndex;
 
       // Process next punch
-      nextPunch()
-    }, intervalTime)
-  }
+      nextPunch();
+    }, intervalTime);
+  };
 
   // Start training with countdown
   const startTraining = () => {
-    initAudioContext()
-    setRepsLeft(reps)
-    setCountdown(3)
-    setIsTraining(true)
-  }
+    initAudioContext();
+    setRepsLeft(reps);
+    setCountdown(3);
+    setIsTraining(true);
+  };
 
   // Stop training
   const stopTraining = () => {
-    setIsTraining(false)
-    setIsPaused(false)
-    trainingStateRef.current.isActive = false
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    setCurrentPunch("")
-    setCurrentIndex(0)
-  }
+    setCountdown(0);
+    setIsTraining(false);
+    setIsPaused(false);
+    trainingStateRef.current.isActive = false;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setCurrentPunch("");
+    setCurrentIndex(0);
+  };
 
   // Toggle pause
   const togglePause = () => {
-    const newPausedState = !isPaused
-    setIsPaused(newPausedState)
-
+    const newPausedState = !isPaused;
+    setIsPaused(newPausedState);
+    setCountdown(0);
     if (newPausedState) {
       // Pause training
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     } else {
       // Resume training
-      nextPunch()
+      nextPunch();
     }
-  }
+  };
 
   return (
-    
     <motion.div
-    initial={{ opacity: 0, filter: "blur(10px)" }}
-    animate={{ opacity: 1, filter: "blur(0px)" }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.5 }}
-    className="min-h-screen   relative  h-full text-white flex flex-col px-4 md:py-24 py-12 md:px-12">
-         <ScrollToTop/><div className="train-bg w-full h-full  fixed top-0 left-0  opacity-10 -z-7"/>
+      initial={{ opacity: 0, filter: "blur(10px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen   relative  h-full text-white flex flex-col px-4 md:py-34 py-12 md:px-12"
+    >
+      <ScrollToTop />
+      <div className="train-bg w-full h-full  fixed top-0 left-0  opacity-10 -z-7" />
       {/* Header with navigation */}
       <div className="container mx-auto flex items-center">
         <Link
@@ -289,7 +396,9 @@ export default function Train() {
         </Link>
 
         <div className="flex items-center w-full gap-8">
-          <h1 className="text-2xl md:text-5xl font-bold ml-4 helvetica-font">Training Mode</h1>
+          <h1 className="text-2xl md:text-5xl font-bold ml-4 helvetica-font">
+            Training Mode
+          </h1>
           <div className="h-1 flex-grow bg-red-600 rounded-full"></div>
         </div>
       </div>
@@ -303,10 +412,16 @@ export default function Train() {
               <div
                 key={idx}
                 className={`flex items-center justify-center w-12 h-12 rounded-full text-white font-bold text-lg
-                  ${currentIndex === idx && isTraining ? "ring-2 ring-white ring-offset-2 ring-offset-gray-900" : ""}
+                  ${
+                    currentIndex === idx && isTraining
+                      ? "ring-2 ring-white ring-offset-2 ring-offset-gray-900"
+                      : ""
+                  }
                   ${idx < currentIndex && isTraining ? "opacity-50" : ""}
                 `}
-                style={{ backgroundColor: punchTypes[punch]?.color || "#6b7280" }}
+                style={{
+                  backgroundColor: punchTypes[punch]?.color || "#6b7280",
+                }}
               >
                 {punch}
               </div>
@@ -317,6 +432,13 @@ export default function Train() {
 
         {/* Main display area */}
         <div className="relative w-full max-w-2xl aspect-video bg-gray-900/50 rounded-xl flex items-center justify-center mb-8 overflow-hidden">
+          {cameraEnabled ? (
+            <video
+              ref={videoRef}
+              className="absolute inset-0 w-full h-full object-cover rounded-xl opacity-60"
+              muted
+            />
+          ) : null}
           {/* Countdown display */}
           <AnimatePresence>
             {countdown > 0 && (
@@ -328,13 +450,15 @@ export default function Train() {
                 transition={{ duration: 0.8 }}
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <div className="text-[8rem] font-bold text-red-600">{countdown}</div>
+                <div className="text-[8rem] font-bold text-red-600">
+                  {countdown}
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
 
           {/* Current punch display */}
-<AnimatePresence mode="wait">
+          <AnimatePresence mode="wait">
             {currentPunch && !countdown && (
               <motion.div
                 key={`${currentPunch}-${currentIndex}-${repsLeft}`}
@@ -344,19 +468,29 @@ export default function Train() {
                 transition={{ duration: 0.3 }}
                 className="flex flex-col items-center justify-center"
               >
-                <div className="text-[6rem] mb-2">{punchTypes[currentPunch]?.icon || "👊"}</div>
+                <div className="text-[6rem] mb-2">
+                  {punchTypes[currentPunch]?.icon || "👊"}
+                </div>
                 <div
                   className="text-[5rem] font-bold mb-2"
-                  style={{ color: punchTypes[currentPunch]?.color || "#ffffff" }}
+                  style={{
+                    color: punchTypes[currentPunch]?.color || "#ffffff",
+                  }}
                 >
                   {currentPunch}
                 </div>
-                <div className="text-2xl font-medium">{punchTypes[currentPunch]?.name || ""}</div>
+                <div className="text-2xl font-medium">
+                  {punchTypes[currentPunch]?.name || ""}
+                </div>
               </motion.div>
             )}
-          </AnimatePresence> 
+          </AnimatePresence>
 
-          
+          <div className="absolute top-4 left-4 bg-black/70 px-3 py-1 rounded-full text-sm font-medium">
+            <button onClick={toggleCamera}>
+              camera {cameraEnabled ? "ON" : "OFF"}
+            </button>
+          </div>
 
           {/* Reps counter */}
           <div className="absolute top-4 right-4 bg-black/70 px-3 py-1 rounded-full text-sm font-medium">
@@ -388,7 +522,11 @@ export default function Train() {
                 <>
                   <button
                     onClick={togglePause}
-                    className={`${isPaused ? "bg-yellow-600 hover:bg-yellow-700" : "bg-blue-600 hover:bg-blue-700"} text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2`}
+                    className={`${
+                      isPaused
+                        ? "bg-yellow-600 hover:bg-yellow-700"
+                        : "bg-blue-600 hover:bg-blue-700"
+                    } text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2`}
                   >
                     {isPaused ? (
                       <>
@@ -426,7 +564,9 @@ export default function Train() {
                 className="overflow-hidden"
               >
                 <div className="bg-gray-900/70 rounded-xl p-6 mb-4">
-                  <h3 className="text-lg font-semibold mb-4">Training Settings</h3>
+                  <h3 className="text-lg font-semibold mb-4">
+                    Training Settings
+                  </h3>
 
                   <div className="space-y-6">
                     {/* Interval control */}
@@ -436,11 +576,15 @@ export default function Train() {
                           <Clock className="w-5 h-5 text-gray-400" />
                           <span>Interval Time: {intervalTime}ms</span>
                         </label>
-                        <span className="text-sm text-gray-400">(Time between punches)</span>
+                        <span className="text-sm text-gray-400">
+                          (Time between punches)
+                        </span>
                       </div>
                       <div className="flex items-center gap-4">
                         <button
-                          onClick={() => setIntervalTime(Math.max(500, intervalTime - 100))}
+                          onClick={() =>
+                            setIntervalTime(Math.max(500, intervalTime - 100))
+                          }
                           className="bg-gray-800 hover:bg-gray-700 p-2 rounded-lg"
                           disabled={intervalTime <= 500}
                         >
@@ -452,11 +596,15 @@ export default function Train() {
                           max="2500"
                           step="100"
                           value={intervalTime}
-                          onChange={(e) => setIntervalTime(Number(e.target.value))}
+                          onChange={(e) =>
+                            setIntervalTime(Number(e.target.value))
+                          }
                           className="flex-1 accent-red-600"
                         />
                         <button
-                          onClick={() => setIntervalTime(Math.min(3000, intervalTime + 100))}
+                          onClick={() =>
+                            setIntervalTime(Math.min(3000, intervalTime + 100))
+                          }
                           className="bg-gray-800 hover:bg-gray-700 p-2 rounded-lg"
                           disabled={intervalTime >= 3000}
                         >
@@ -472,7 +620,9 @@ export default function Train() {
                           <Repeat className="w-5 h-5 text-gray-400" />
                           <span>Repetitions: {reps}</span>
                         </label>
-                        <span className="text-sm text-gray-400">(Number of combo repeats)</span>
+                        <span className="text-sm text-gray-400">
+                          (Number of combo repeats)
+                        </span>
                       </div>
                       <div className="flex items-center gap-4">
                         <button
@@ -489,9 +639,9 @@ export default function Train() {
                           step="1"
                           value={reps}
                           onChange={(e) => {
-                            const value = Number(e.target.value)
-                            setReps(value)
-                            if (!isTraining) setRepsLeft(value)
+                            const value = Number(e.target.value);
+                            setReps(value);
+                            if (!isTraining) setRepsLeft(value);
                           }}
                           className="flex-1 accent-red-600"
                         />
@@ -519,6 +669,5 @@ export default function Train() {
         </p>
       </div>
     </motion.div>
-  )
+  );
 }
-

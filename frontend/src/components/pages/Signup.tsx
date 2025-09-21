@@ -7,7 +7,7 @@ import { useAuthStore } from "../../stores/authStore";
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
-  const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,8 +28,9 @@ export default function Signup() {
 
     try {
       // call backend
-      const res = await registerUser({ username: email, password });
+      const res = await registerUser({ email, username, password });
       setUser(res.user);
+      window.location.href = "/profile";
     } catch (err: any) {
       setError(err.response?.data?.message || "Signup failed");
     } finally {
@@ -70,28 +71,28 @@ export default function Signup() {
         <p className="text-gray-300 text-center mb-8">Join us and get fighting</p>
 
         <form className="space-y-6" onSubmit={handleSignup}>
-          {/* Full Name */}
-          <motion.div whileFocus={{ scale: 1.02 }} className="w-full">
-            <input
-              type="text"
-              placeholder="Full Name"
-              required
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-300 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
-            />
-          </motion.div>
-
-          {/* Username/Email */}
+        
+          {/* Username*/}
           <motion.div whileFocus={{ scale: 1.02 }} className="w-full">
             <input
               type="text"
               placeholder="Username"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-300 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             />
+          </motion.div>
+
+          <motion.div whileFocus={{ scale: 1.02 }} className="w-full">
+            <input
+            type="email"
+            placeholder="Email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-gray-300 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+          />
           </motion.div>
 
           {/* Password */}

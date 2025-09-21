@@ -1,11 +1,20 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import { useNavigate } from "react-router"
-import { Link } from "react-router"
-import { motion } from "framer-motion"
-import { ArrowLeft, ArrowRight, Info, ChevronRight, Dumbbell, X, Trash2, Play } from "lucide-react"
-import ScrollToTop from "../ui/ScrollToTop"
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router";
+import { Link } from "react-router";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Info,
+  ChevronRight,
+  Dumbbell,
+  X,
+  Trash2,
+  Play,
+} from "lucide-react";
+import ScrollToTop from "../ui/ScrollToTop";
 // Boxing combo codes:
 // 1 = Jab (lead hand straight)
 // 2 = Cross (rear hand straight)
@@ -19,15 +28,40 @@ import ScrollToTop from "../ui/ScrollToTop"
 
 const punchTypes = [
   { id: "1", name: "Jab", color: "#ef4444", description: "Lead hand straight" },
-  { id: "2", name: "Cross", color: "#3b82f6", description: "Rear hand straight" },
-  { id: "3", name: "Lead Hook", color: "#10b981", description: "Lead hand hook" },
-  { id: "4", name: "Rear Hook", color: "#8b5cf6", description: "Rear hand hook" },
-  { id: "5", name: "Lead Uppercut", color: "#f59e0b", description: "Lead hand uppercut" },
-  { id: "6", name: "Rear Uppercut", color: "#ec4899", description: "Rear hand uppercut" },
+  {
+    id: "2",
+    name: "Cross",
+    color: "#3b82f6",
+    description: "Rear hand straight",
+  },
+  {
+    id: "3",
+    name: "Lead Hook",
+    color: "#10b981",
+    description: "Lead hand hook",
+  },
+  {
+    id: "4",
+    name: "Rear Hook",
+    color: "#8b5cf6",
+    description: "Rear hand hook",
+  },
+  {
+    id: "5",
+    name: "Lead Uppercut",
+    color: "#f59e0b",
+    description: "Lead hand uppercut",
+  },
+  {
+    id: "6",
+    name: "Rear Uppercut",
+    color: "#ec4899",
+    description: "Rear hand uppercut",
+  },
   { id: "S", name: "Slip", color: "#6366f1", description: "Defensive slip" },
   { id: "R", name: "Roll", color: "#14b8a6", description: "Defensive roll" },
   { id: "D", name: "Duck", color: "#f97316", description: "Defensive duck" },
-]
+];
 
 const boxingCombos = [
   { name: "Jab, Cross", code: "1-2" },
@@ -42,81 +76,81 @@ const boxingCombos = [
   { name: "Double Jab, Cross, Hook", code: "1-1-2-3" },
   { name: "Hook, Cross, Hook", code: "3-2-3" },
   { name: "Jab, Jab, Cross, Hook, Uppercut", code: "1-1-2-3-6" },
-]
+];
 
 export default function Select() {
-  const [customCombo, setCustomCombo] = useState<string[]>([])
-  const [showLegend, setShowLegend] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-  const dropAreaRef = useRef(null)
-  const navigate = useNavigate()
+  const [customCombo, setCustomCombo] = useState<string[]>([]);
+  const [showLegend, setShowLegend] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const dropAreaRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleSelectCombo = (combo: string) => {
-    navigate(`/train?combo=${encodeURIComponent(combo)}`)
-  }
+    navigate(`/train?combo=${encodeURIComponent(combo)}`);
+  };
 
   const handleTrainCustomCombo = () => {
     if (customCombo.length > 0) {
-      const comboString = customCombo.join("-")
-      navigate(`/train?combo=${encodeURIComponent(comboString)}`)
+      const comboString = customCombo.join("-");
+      navigate(`/train?combo=${encodeURIComponent(comboString)}`);
     }
-  }
+  };
 
   const addToCustomCombo = (punchId: string) => {
-    setCustomCombo([...customCombo, punchId])
-  }
+    setCustomCombo([...customCombo, punchId]);
+  };
 
   const removeFromCustomCombo = (index: number) => {
-    const newCombo = [...customCombo]
-    newCombo.splice(index, 1)
-    setCustomCombo(newCombo)
-  }
+    const newCombo = [...customCombo];
+    newCombo.splice(index, 1);
+    setCustomCombo(newCombo);
+  };
 
   const clearCustomCombo = () => {
-    setCustomCombo([])
-  }
+    setCustomCombo([]);
+  };
 
   const handleDragStart = (e: React.DragEvent, punchId: string) => {
-    e.dataTransfer.setData("punchId", punchId)
-    setIsDragging(true)
-  }
+    e.dataTransfer.setData("punchId", punchId);
+    setIsDragging(true);
+  };
 
   const handleDragEnd = () => {
-    setIsDragging(false)
-  }
+    setIsDragging(false);
+  };
 
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-  }
+    e.preventDefault();
+  };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    const punchId = e.dataTransfer.getData("punchId")
-    addToCustomCombo(punchId)
-    setIsDragging(false)
-  }
+    e.preventDefault();
+    const punchId = e.dataTransfer.getData("punchId");
+    addToCustomCombo(punchId);
+    setIsDragging(false);
+  };
 
   // Get punch name from ID
   const getPunchName = (id: string) => {
-    const punch = punchTypes.find((p) => p.id === id)
-    return punch ? punch.name : id
-  }
+    const punch = punchTypes.find((p) => p.id === id);
+    return punch ? punch.name : id;
+  };
 
   // Get punch color from ID
   const getPunchColor = (id: string) => {
-    const punch = punchTypes.find((p) => p.id === id)
-    return punch ? punch.color : "#6b7280"
-  }
+    const punch = punchTypes.find((p) => p.id === id);
+    return punch ? punch.color : "#6b7280";
+  };
 
   return (
     <motion.div
-    initial={{ opacity: 0, filter: "blur(10px)" }}
-    animate={{ opacity: 1, filter: "blur(0px)" }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.5 }}
-    className="min-h-screen relative w-full bg-black text-white flex flex-col justify-center items-center px-4 md:py-24 py-12 md:px-12">
-     
-      <ScrollToTop/>
+      initial={{ opacity: 0, filter: "blur(10px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen relative w-full bg-black text-white flex flex-col justify-center items-center px-4 md:py-34 py-12 md:px-12"
+    >
+      <ScrollToTop />
       <div className="absolute inset-0 h-full opacity-10 select-bg"></div>
       {/* Header with navigation */}
       <div className="w-full h-fit z-10 relative">
@@ -128,7 +162,9 @@ export default function Select() {
             <ArrowLeft className="w-5 h-5" />
           </Link>
 
-          <h1 className="text-3xl md:text-6xl font-bold helvetica-font">Select Your Combo</h1>
+          <h1 className="text-3xl md:text-6xl font-bold helvetica-font">
+            Select Your Combo
+          </h1>
 
           <Link
             to="/train"
@@ -145,7 +181,9 @@ export default function Select() {
             className="flex items-center gap-2 mb-6 text-gray-300 hover:text-white transition-colors"
           >
             <Info className="w-5 h-5" />
-            <span>{showLegend ? "Hide Combo Legend" : "Show Combo Legend"}</span>
+            <span>
+              {showLegend ? "Hide Combo Legend" : "Show Combo Legend"}
+            </span>
           </button>
 
           {/* Legend */}
@@ -203,7 +241,9 @@ export default function Select() {
               ref={dropAreaRef}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              className={`w-full min-h-24 bg-black border-2 ${isDragging ? "border-red-500 bg-gray-900/50" : "border-gray-700"} rounded-lg p-4 mb-6 flex flex-wrap items-center gap-2 transition-colors`}
+              className={`w-full min-h-24 bg-black border-2 ${
+                isDragging ? "border-red-500 bg-gray-900/50" : "border-gray-700"
+              } rounded-lg p-4 mb-6 flex flex-wrap items-center gap-2 transition-colors`}
             >
               {customCombo.length === 0 ? (
                 <div className="w-full text-center text-gray-500 py-4">
@@ -232,7 +272,9 @@ export default function Select() {
                         <X className="w-3 h-3" />
                       </button>
                       {index < customCombo.length - 1 && (
-                        <div className="absolute top-1/2 -right-3 transform -translate-y-1/2 text-gray-500">→</div>
+                        <div className="absolute top-1/2 -right-3 transform -translate-y-1/2 text-gray-500">
+                          →
+                        </div>
                       )}
                     </motion.div>
                   ))}
@@ -286,22 +328,26 @@ export default function Select() {
             {customCombo.length > 0 && (
               <div className="mt-4 text-center">
                 <span className="text-gray-400">Combo Code: </span>
-                <span className="font-mono bg-black px-2 py-1 rounded text-red-500">{customCombo.join("-")}</span>
+                <span className="font-mono bg-black px-2 py-1 rounded text-red-500">
+                  {customCombo.join("-")}
+                </span>
               </div>
             )}
 
             <p className="text-gray-400 text-sm mt-4">
-              Tip: Drag and drop punches to create your combo, or click on them to add. Click the X to remove a punch.
+              Tip: Drag and drop punches to create your combo, or click on them
+              to add. Click the X to remove a punch.
             </p>
           </div>
         </div>
 
         {/* Footer */}
         <div className="container mx-auto px-4 py-6 border-t border-gray-800">
-          <p className="text-center text-gray-500 text-sm">Select a combination to begin your training session</p>
+          <p className="text-center text-gray-500 text-sm">
+            Select a combination to begin your training session
+          </p>
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
-
