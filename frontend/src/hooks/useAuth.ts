@@ -13,13 +13,13 @@ export const useAuth = () => {
   }, []);
 
   const login = async (username: string, password: string) => {
-    await loginUser({ username, password });
+    await loginUser({ username, password, email: "" });
     const me = await fetchMe();
     setUser(me);
   };
 
   const register = async (username: string, password: string) => {
-    await registerUser({ username, password });
+    await registerUser({ username, password, email: "" });
     const me = await fetchMe();
     setUser(me);
   };
