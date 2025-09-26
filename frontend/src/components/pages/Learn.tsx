@@ -1,19 +1,11 @@
-import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
-import ScrollToTop from "../ui/ScrollToTop";
-import {
-  ArrowLeft,
-  Play,
-  Info,
-  ChevronRight,
-  BookOpen,
-  Award,
-  CheckCircle,
-  Clock,
-  ArrowDown,
-} from "lucide-react";
-import { motion } from "framer-motion";
-const TUTORIAL_VIDEO_ID = "FjZIDL8-JP0";
+"use client"
+
+import { useState, useRef, useEffect } from "react"
+import { Link } from "react-router"
+import ScrollToTop from "../ui/ScrollToTop"
+import { ArrowLeft, Play, Info, ChevronRight, BookOpen, Award, CheckCircle, Clock, ArrowDown } from "lucide-react"
+import { motion } from "framer-motion"
+const TUTORIAL_VIDEO_ID = "FjZIDL8-JP0"
 
 const punchTutorials = [
   {
@@ -243,7 +235,7 @@ const punchTutorials = [
     difficulty: "Intermediate",
     relatedPunches: ["D", "R"],
   },
-];
+]
 
 const categories = [
   { id: "stance", name: "Stance", punches: ["stance"] },
@@ -251,52 +243,52 @@ const categories = [
   { id: "power", name: "Power Punches", punches: ["3", "4", "5", "6"] },
   { id: "defense", name: "Defensive Moves", punches: ["S", "R", "B"] },
   { id: "footwork", name: "Footwork", punches: ["F"] },
-];
+]
 
 // Format seconds to MM:SS
 const formatTime = (seconds: number): string => {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-};
+  const mins = Math.floor(seconds / 60)
+  const secs = seconds % 60
+  return `${mins}:${secs < 10 ? "0" : ""}${secs}`
+}
 
 export default function Learn() {
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(false)
 
   const handleToggle = () => {
-    setToggle(!toggle);
-  };
+    setToggle(!toggle)
+  }
 
-  const [selectedPunch, setSelectedPunch] = useState(punchTutorials[0]);
-  const [activeCategory, setActiveCategory] = useState("basic");
-  const [player, setPlayer] = useState<any>(null);
-  const [isPlayerReady, setIsPlayerReady] = useState(false);
-  const playerRef = useRef<HTMLIFrameElement>(null);
+  const [selectedPunch, setSelectedPunch] = useState(punchTutorials[0])
+  const [activeCategory, setActiveCategory] = useState("basic")
+  const [player, setPlayer] = useState<any>(null)
+  const [isPlayerReady, setIsPlayerReady] = useState(false)
+  const playerRef = useRef<HTMLIFrameElement>(null)
 
   // Initialize YouTube API
   useEffect(() => {
     // Load YouTube API if not already loaded
     if (!window.YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
+      const tag = document.createElement("script")
+      tag.src = "https://www.youtube.com/iframe_api"
 
-      const firstScriptTag = document.getElementsByTagName("script")[0];
-      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+      const firstScriptTag = document.getElementsByTagName("script")[0]
+      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
 
-      window.onYouTubeIframeAPIReady = initializePlayer;
+      window.onYouTubeIframeAPIReady = initializePlayer
     } else {
-      initializePlayer();
+      initializePlayer()
     }
 
     return () => {
       // Clean up
-      window.onYouTubeIframeAPIReady = null;
-    };
-  }, []);
+      window.onYouTubeIframeAPIReady = null
+    }
+  }, [])
 
   // Initialize the YouTube player
   const initializePlayer = () => {
-    if (!playerRef.current) return;
+    if (!playerRef.current) return
 
     const newPlayer = new window.YT.Player(playerRef.current, {
       videoId: TUTORIAL_VIDEO_ID,
@@ -309,42 +301,44 @@ export default function Learn() {
       events: {
         onReady: () => setIsPlayerReady(true),
       },
-    });
+    })
 
-    setPlayer(newPlayer);
-  };
+    setPlayer(newPlayer)
+  }
 
   // Handle punch selection and seek to timestamp
   const handlePunchSelect = (punch: (typeof punchTutorials)[0]) => {
-    setSelectedPunch(punch);
+    setSelectedPunch(punch)
 
     if (isPlayerReady && player && player.seekTo) {
-      player.seekTo(punch.timestamp, true);
-      player.playVideo();
+      player.seekTo(punch.timestamp, true)
+      player.playVideo()
     }
-  };
+  }
 
   // Function to get difficulty badge color
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Beginner":
-        return "bg-green-600";
+        return "bg-green-600"
       case "Intermediate":
-        return "bg-yellow-600";
+        return "bg-yellow-600"
       case "Advanced":
-        return "bg-red-600";
+        return "bg-red-600"
       default:
-        return "bg-gray-600";
+        return "bg-gray-600"
     }
-  };
+  }
 
   return (
     <motion.div
       initial={{ filter: "blur(10px)", opacity: 0 }}
       animate={{ filter: "blur(0px)", opacity: 1 }}
       transition={{ duration: 2 }}
-      className="min-h-screen bg-[#020202] text-white flex flex-col px-4 md:py-34 py-12 md:px-12"
+      className="min-h-screen relative bg-[#1a1a1a] text-white flex flex-col px-4 md:py-34 py-12 md:px-12"
     >
+         <span className="absolute -z-1 blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#fc4f4f80]" />
+         <span className="absolute -z-1 blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#575cfa78] " />
       <ScrollToTop />
       {/* Header with navigation */}
       <div className="container mx-auto mb-12 flex items-center">
@@ -372,21 +366,16 @@ export default function Learn() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Sidebar with punch list */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-900/70 rounded-xl p-6 sticky top-10">
+            <div className="bg-white/10 border border-white/20 shadow-xl rounded-xl p-6 sticky top-10">
               <span className="flex  justify-between ">
-                
-                <span className="flex justify-center items-center"><BookOpen className="w-5 h-5 sm:mx-4  mr-4 text-red-600" />
-                <h2 className="text-2xl font-bold  flex items-center">
-                  
-                  Boxing Techniques
-                </h2></span>
+                <span className="flex justify-center items-center">
+                  <BookOpen className="w-5 h-5 sm:mx-4  mr-4 text-red-600" />
+                  <h2 className="text-2xl font-bold  flex items-center">Boxing Techniques</h2>
+                </span>
 
                 <ArrowDown
                   onClick={handleToggle}
-                  className={
-                    "transition-all lg:hidden border rounded-full " +
-                    (toggle ? "" : " rotate-180")
-                  }
+                  className={"transition-all lg:hidden border rounded-full " + (toggle ? "" : " rotate-180")}
                 />
               </span>
               {/* Categories */}
@@ -399,14 +388,11 @@ export default function Learn() {
                   className="space-y-6 transition-all lg:hidden duration-200"
                 >
                   <div>
-                    <h3 className={`text-lg font-medium mb-3 pb-2 border-b`}>
-                      Important note
-                    </h3>
+                    <h3 className={`text-lg font-medium mb-3 pb-2 border-b`}>Important note</h3>
                     <p>
-                      This course is not created or owned by us. It is a
-                      Creative Commons-licensed course sourced from YouTube,
-                      originally produced by its respective creator(s). All
-                      credit goes to the original author(s){" "}
+                      This course is not created or owned by us. It is a Creative Commons-licensed course sourced from
+                      YouTube, originally produced by its respective creator(s). All credit goes to the original
+                      author(s){" "}
                       <a
                         className="font-bold text-red-500"
                         href="https://www.youtube.com/channel/UCiE7yqBDTQjtk1abuw92FQg"
@@ -415,8 +401,7 @@ export default function Learn() {
                       >
                         Atiko Academy
                       </a>{" "}
-                      for their work. We are simply providing access to this
-                      content for educational purposes.
+                      for their work. We are simply providing access to this content for educational purposes.
                     </p>
                   </div>
 
@@ -424,9 +409,7 @@ export default function Learn() {
                     <div key={category.id}>
                       <h3
                         className={`text-lg font-medium mb-3 pb-2 border-b cursor-pointer ${
-                          activeCategory === category.id
-                            ? "border-red-600"
-                            : "border-gray-700"
+                          activeCategory === category.id ? "border-red-600" : "border-gray-700"
                         }`}
                         onClick={() => setActiveCategory(category.id)}
                       >
@@ -434,17 +417,15 @@ export default function Learn() {
                       </h3>
                       <div className="space-y-2">
                         {punchTutorials
-                          .filter((punch) =>
-                            category.punches.includes(punch.id)
-                          )
+                          .filter((punch) => category.punches.includes(punch.id))
                           .map((punch) => (
                             <button
                               key={punch.id}
                               onClick={() => handlePunchSelect(punch)}
                               className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
                                 selectedPunch.id === punch.id
-                                  ? "bg-gray-800 border-l-4 border-red-600"
-                                  : "hover:bg-gray-800/50"
+                                  ? "bg-white/20 border-l-4 border-red-600"
+                                  : "hover:bg-white/20"
                               }`}
                             >
                               <div className="flex items-center">
@@ -463,9 +444,7 @@ export default function Learn() {
                                 </span>
                                 <ChevronRight
                                   className={`w-5 h-5 transition-transform ${
-                                    selectedPunch.id === punch.id
-                                      ? "rotate-90"
-                                      : ""
+                                    selectedPunch.id === punch.id ? "rotate-90" : ""
                                   }`}
                                 />
                               </div>
@@ -484,14 +463,10 @@ export default function Learn() {
                 className="space-y-6 hidden lg:block transition-all duration-200"
               >
                 <div className="mt-3">
-                  <h3 className={`text-lg font-medium mb-3 pb-2 border-b`}>
-                    Important note
-                  </h3>
+                  <h3 className={`text-lg font-medium mb-3 pb-2 border-b`}>Important note</h3>
                   <p>
-                    This course is not created or owned by us. It is a Creative
-                    Commons-licensed course sourced from YouTube, originally
-                    produced by its respective creator(s). All credit goes to
-                    the original author(s){" "}
+                    This course is not created or owned by us. It is a Creative Commons-licensed course sourced from
+                    YouTube, originally produced by its respective creator(s). All credit goes to the original author(s){" "}
                     <a
                       className="font-bold text-red-500"
                       href="https://www.youtube.com/channel/UCiE7yqBDTQjtk1abuw92FQg"
@@ -500,8 +475,7 @@ export default function Learn() {
                     >
                       Atiko Academy
                     </a>{" "}
-                    for their work. We are simply providing access to this
-                    content for educational purposes.
+                    for their work. We are simply providing access to this content for educational purposes.
                   </p>
                 </div>
 
@@ -509,9 +483,7 @@ export default function Learn() {
                   <div key={category.id}>
                     <h3
                       className={`text-lg font-medium mb-3 pb-2 border-b cursor-pointer ${
-                        activeCategory === category.id
-                          ? "border-red-600"
-                          : "border-gray-700"
+                        activeCategory === category.id ? "border-red-600" : "border-gray-700"
                       }`}
                       onClick={() => setActiveCategory(category.id)}
                     >
@@ -546,9 +518,7 @@ export default function Learn() {
                               </span>
                               <ChevronRight
                                 className={`w-5 h-5 transition-transform ${
-                                  selectedPunch.id === punch.id
-                                    ? "rotate-90"
-                                    : ""
+                                  selectedPunch.id === punch.id ? "rotate-90" : ""
                                 }`}
                               />
                             </div>
@@ -570,9 +540,7 @@ export default function Learn() {
                   <div className="flex flex-wrap  justify-between w-full items-center">
                     <div className="flex items-center">
                       <div>
-                        <h2 className="text-3xl my-8 font-bold">
-                          {selectedPunch.name}
-                        </h2>
+                        <h2 className="text-3xl my-8 font-bold">{selectedPunch.name}</h2>
                         <div className="flex items-center gap-3 mt-1">
                           {" "}
                           <div
@@ -583,13 +551,13 @@ export default function Learn() {
                           </div>
                           <div
                             className={`text-sm px-2 py-1 rounded-full inline-flex items-center ${getDifficultyColor(
-                              selectedPunch.difficulty
+                              selectedPunch.difficulty,
                             )}`}
                           >
                             <Award className="w-4 h-4 mr-1" />
                             {selectedPunch.difficulty}
                           </div>
-                          <div className="text-sm px-2 py-1 rounded-full inline-flex items-center bg-gray-800">
+                          <div className="text-sm px-2 py-1 rounded-full inline-flex items-center bg-white/20">
                             <Clock className="w-4 h-4 mr-1" />
                             {formatTime(selectedPunch.timestamp)}
                           </div>
@@ -609,25 +577,23 @@ export default function Learn() {
                 </div>
 
                 {/* Video player */}
-                <div className="aspect-video h-full bg-gray-900/70 rounded-xl overflow-hidden">
+                <div className="aspect-video z-[3] h-full bg-white/20 rounded-xl overflow-hidden">
                   <div id="youtube-player" className=" w-full h-[100%] ">
                     <div ref={playerRef} className="w-full h-full"></div>
                   </div>
                 </div>
 
                 {/* Description */}
-                <div className="bg-gray-900/70 rounded-xl p-6">
+                <div className="bg-white/20 rounded-xl p-6">
                   <h3 className="text-xl font-bold mb-4 flex items-center">
                     <Info className="w-5 h-5 mr-2 text-red-600" />
                     Description
                   </h3>
-                  <p className="text-gray-300 leading-relaxed">
-                    {selectedPunch.description}
-                  </p>
+                  <p className="text-gray-300 leading-relaxed">{selectedPunch.description}</p>
                 </div>
 
                 {/* Tips */}
-                <div className="bg-gray-900/70 rounded-xl p-6">
+                <div className="bg-white/20 rounded-xl p-6">
                   <h3 className="text-xl font-bold mb-4">Key Technique Tips</h3>
                   <ul className="space-y-3">
                     {selectedPunch.tips.map((tip, index) => (
@@ -640,20 +606,18 @@ export default function Learn() {
                 </div>
 
                 {/* Related punches */}
-                <div className="bg-gray-900/70 rounded-xl p-6">
+                <div className="bg-white/20 rounded-xl p-6">
                   <h3 className="text-xl font-bold mb-4">Related Techniques</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {selectedPunch.relatedPunches.map((id) => {
-                      const relatedPunch = punchTutorials.find(
-                        (p) => p.id === id
-                      );
-                      if (!relatedPunch) return null;
+                      const relatedPunch = punchTutorials.find((p) => p.id === id)
+                      if (!relatedPunch) return null
 
                       return (
                         <button
                           key={id}
                           onClick={() => handlePunchSelect(relatedPunch)}
-                          className="bg-gray-800 hover:bg-gray-700 rounded-lg p-4 transition-colors flex items-center"
+                          className="bg-white/20 hover:bg-gray-700 rounded-lg p-4 transition-colors flex items-center"
                         >
                           <div
                             className="w-8 h-8 rounded-full flex items-center justify-center mr-3 text-white font-bold"
@@ -663,7 +627,7 @@ export default function Learn() {
                           </div>
                           <span>{relatedPunch.name}</span>
                         </button>
-                      );
+                      )
                     })}
                   </div>
                 </div>
@@ -672,21 +636,15 @@ export default function Learn() {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <div className="container my-12 px-4 py-6 border-t border-gray-800">
-        <p className="text-center text-gray-500 text-sm">
-          Learn proper boxing techniques from professional tutorials
-        </p>
-      </div>
+     
     </motion.div>
-  );
+  )
 }
 
 // Add YouTube IFrame API type definitions
 declare global {
   interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: (() => void) | null;
+    YT: any
+    onYouTubeIframeAPIReady: (() => void) | null
   }
 }

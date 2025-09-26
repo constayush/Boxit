@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { Link } from "react-router";
-import { Trophy, Users } from "lucide-react";
+import { Trophy, Users, ArrowRight, Activity, Settings } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import CustomCursor from "../ui/Cursor";
 import VideoCard from "../ui/VideoCard";
@@ -129,12 +129,29 @@ export default function Home() {
   const enterText = () => setCursorVariant("text");
   const leaveButton = () => setCursorVariant("default");
 
+  const features = [
+    {
+      icon: <Activity className="w-8 h-8 text-pink-400" />,
+      title: "Punch Tracking",
+      desc: "AI-powered punch detection to count, track, and improve your performance in real time.",
+    },
+    {
+      icon: <Settings className="w-8 h-8 text-blue-400" />,
+      title: "Custom & Standard Combos",
+      desc: "Practice pre-built combinations or create your own custom routines for tailored training.",
+    },
+    {
+      icon: <Users className="w-8 h-8 text-green-400" />,
+      title: "Learn with Experts",
+      desc: "Access guided lessons, tips, and drills designed by professional boxing coaches.",
+    },
+  ];
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 2, ease: "easeOut" }}
-      className="min-h-screen min-w-full flex flex-col justify-center items-center bg-[#030303] text-white "
+      className="min-h-screen min-w-full flex flex-col justify-center items-center bg-[#1a1a1a] text-white "
     >
       <ScrollToTop />
       <CustomCursor cursorVariant={cursorVariant} />
@@ -235,6 +252,74 @@ export default function Home() {
         </div>
       </motion.div>
       <hr className="w-full border  border-[#ffffff36]" />
+
+      <section className="relative w-full mt-20 flex items-center justify-center">
+        
+        
+
+        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#fc4f4fb9]" />
+        <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#575dfac8] " />
+        {/* Glass Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-10  w-full  p-10 backdrop-blur-lg bg-white/10 border border-white/20 shadow-xl text-center"
+        >
+          {/* Features */}
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            {features.map((f, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.05 }}
+                className="p-6 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md text-left shadow-lg"
+              >
+                {f.icon}
+                <h3 className="mt-4 text-xl font-semibold text-white">
+                  {f.title}
+                </h3>
+                <p className="mt-2 text-white/70 text-sm leading-relaxed">
+                  {f.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="mt-12 flex justify-center gap-4">
+            <Link to={"/learn"}>
+              <button className="px-6 py-3 rounded-full bg-white/20 border border-white/40 text-white font-semibold backdrop-blur-sm hover:bg-white/30 transition">
+                Learn
+              </button>
+            </Link>
+            <Link to={"/select"}>
+              <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold shadow-lg hover:opacity-90 transition">
+                Throw punches <ArrowRight className="w-5 h-5" />
+              </button>
+            </Link>
+          </div>
+        </motion.div>
+      </section>
+
+      <hr className="border-gray-700 w-full mt-20 " />
+      {/* Gallery Section */}
+      <div ref={gallery_ref} className="relative h-[300vh] w-full ">
+        <div className="sticky top-0 h-screen overflow-hidden ">
+          {pictures.map(({ src, scale, classes }, index) => (
+            <motion.div
+              key={index}
+              style={{ scale }}
+              className="absolute top-0 left-0 flex items-center justify-center w-full h-full"
+            >
+              <div className={`relative ${classes}`}>
+                <img src={src} alt="image" className="object-cover" />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+      <hr className="border-gray-700/10 w-full my-10 " />
+
       {/* Legendary Fights */}
       <div className="legendary-fights-wrapper relative flex justify-center items-center w-full mt-20">
         <span className="absolute blur-[400px] top-0 left-0 w-[20%] h-[80%] bg-[#fc4f4fb9]" />
@@ -267,24 +352,9 @@ export default function Home() {
           </div>
         </motion.div>
       </div>
-      <hr className="border-gray-700 w-full mt-20 " />
-      {/* Gallery Section */}
-      <div ref={gallery_ref} className="relative h-[300vh] w-full ">
-        <div className="sticky top-0 h-screen overflow-hidden ">
-          {pictures.map(({ src, scale, classes }, index) => (
-            <motion.div
-              key={index}
-              style={{ scale }}
-              className="absolute top-0 left-0 flex items-center justify-center w-full h-full"
-            >
-              <div className={`relative ${classes}`}>
-                <img src={src} alt="image" className="object-cover" />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-      <hr className="border-gray-700/10 w-full my-10 " />
+
+      <hr className="border-gray-700 w-full my-20 " />
+
       <div className="flex justify-center items-center w-full flex-col  relative ">
         <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[80%] bg-[#fc4f4fb9]" />
         <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[80%] bg-[#575dfac8] " />
@@ -317,7 +387,8 @@ export default function Home() {
             </motion.button>
           </Link>
         </motion.div>
-      </div>{" "}
+      </div>
+
       <hr className="border-gray-700 w-full my-20 " />
       {/* Footer Section */}
       <motion.div className=" w-full max-w-6xl mb-20 text-sm text-gray-500 text-center relative  ">
