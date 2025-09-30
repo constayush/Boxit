@@ -195,50 +195,56 @@ export default function Train() {
     let isMounted = true;
     let lastDetectionTime = 0;
     const DETECTION_INTERVAL = 150;
+
     const detect = async () => {
-      if (!isMounted || !isTraining) return;
+      if (
+        !isMounted ||
+        !isTraining ||
+        !detectorRef.current ||
+        !videoRef.current
+      )
+        return;
+
       const now = Date.now();
       if (now - lastDetectionTime < DETECTION_INTERVAL) {
         animationId = requestAnimationFrame(detect);
         return;
       }
-
       lastDetectionTime = now;
+
       try {
-        if (videoRef.current && detectorRef.current) {
-          const poses = await detectorRef.current.estimatePoses(
-            videoRef.current
-          );
-          if (poses.length > 0 && isMounted) {
-            const kp = poses[0].keypoints;
-            const leftWrist = kp.find((k) => k.name === "left_wrist");
-            const rightWrist = kp.find((k) => k.name === "right_wrist");
+        // Pose detection — async call, do NOT wrap in tf.tidy
+        const poses = await detectorRef.current.estimatePoses(videoRef.current);
 
-            [leftWrist, rightWrist].forEach((wrist, i) => {
-              if (wrist && wrist.score > 0.5) {
-                const prev =
-                  i === 0
-                    ? lastPositions.current.left
-                    : lastPositions.current.right;
+        if (poses.length === 0) return;
 
-                if (prev) {
-                  const dx = wrist.x - prev.x;
-                  const dy = wrist.y - prev.y;
-                  const speed = Math.sqrt(dx * dx + dy * dy);
+        const kp = poses[0].keypoints;
+        const leftWrist = kp.find((k) => k.name === "left_wrist");
+        const rightWrist = kp.find((k) => k.name === "right_wrist");
 
-                  if (speed > 25 && !cooldownRef.current) {
-                    setPunchCount((c) => c + 1);
-                    cooldownRef.current = true;
-                    setTimeout(() => (cooldownRef.current = false), 300);
-                  }
-                }
+        [leftWrist, rightWrist].forEach((wrist, i) => {
+          if (wrist?.score !== undefined && wrist.score > 0.5) {
+            const prev =
+              i === 0
+                ? lastPositions.current.left
+                : lastPositions.current.right;
 
-                if (i === 0) lastPositions.current.left = wrist;
-                else lastPositions.current.right = wrist;
+            if (prev) {
+              const dx = wrist.x - prev.x;
+              const dy = wrist.y - prev.y;
+              const speed = Math.sqrt(dx * dx + dy * dy);
+
+              if (speed > 25 && !cooldownRef.current) {
+                setPunchCount((c) => c + 1);
+                cooldownRef.current = true;
+                setTimeout(() => (cooldownRef.current = false), 300);
               }
-            });
+            }
+
+            if (i === 0) lastPositions.current.left = wrist;
+            else lastPositions.current.right = wrist;
           }
-        }
+        });
       } catch (error) {
         console.error("Pose detection error:", error);
       }
@@ -248,24 +254,32 @@ export default function Train() {
       }
     };
 
-    if (isTraining) {
-      detect();
-    }
+    if (isTraining) detect();
 
     return () => {
       isMounted = false;
       if (animationId) cancelAnimationFrame(animationId);
     };
-  }, [isTraining]);
+  }, [isTraining, cooldownRef]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (countdownRef.current) clearTimeout(countdownRef.current);
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
+      // Add detector cleanup here
+      detectorRef.current?.dispose();
+    };
+  }, []);
 
   //  TensorFlow memory cleanup
   useEffect(() => {
     return () => {
       // Clean up TensorFlow memory when component unmounts
-      if (tf && tf.memory) {
+      if (tf) {
         tf.disposeVariables();
-        tf.engine().startScope();
-        tf.engine().endScope();
       }
     };
   }, []);
@@ -517,7 +531,9 @@ export default function Train() {
         </Link>
 
         <div className="flex items-center w-full gap-8">
-          <h1 className="text-xl sm:text-3xl md:text-5xl font-bold ml-0 sm:ml-4 helvetica-font">Training Mode</h1>
+          <h1 className="text-xl sm:text-3xl md:text-5xl font-bold ml-0 sm:ml-4 helvetica-font">
+            Training Mode
+          </h1>
           <div className="h-1 flex-grow bg-red-600 rounded-full"></div>
         </div>
       </div>
@@ -574,7 +590,9 @@ export default function Train() {
                 transition={{ duration: 0.8 }}
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <div className="text-[3.5rem] sm:text-[5rem] md:text-[8rem] font-bold text-red-600">{countdown}</div>
+                <div className="text-[3.5rem] sm:text-[5rem] md:text-[8rem] font-bold text-red-600">
+                  {countdown}
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -601,20 +619,30 @@ export default function Train() {
                 >
                   {currentPunch}
                 </div>
-                <div className="text-lg sm:text-xl font-medium">{punchTypes[currentPunch]?.name || currentPunch}</div>
+                <div className="text-lg sm:text-xl font-medium">
+                  {punchTypes[currentPunch]?.name || currentPunch}
+                </div>
               </motion.div>
             ) : !isTraining && !currentPunch ? (
               <div className="flex flex-col items-center justify-center">
-                <div className="text-[3.5rem] sm:text-[5rem] md:text-[6rem] mb-2">🥊</div>
-                <div className="text-2xl sm:text-3xl md:text-[3rem] font-bold mb-2">Ready to box?</div>
+                <div className="text-[3.5rem] sm:text-[5rem] md:text-[6rem] mb-2">
+                  🥊
+                </div>
+                <div className="text-2xl sm:text-3xl md:text-[3rem] font-bold mb-2">
+                  Ready to box?
+                </div>
               </div>
             ) : null}
           </AnimatePresence>
 
           <div
-            className={`absolute top-4 left-4  border-2  bg-black px-3 py-1 rounded-full text-sm font-medium ${cameraEnabled ? "border-green-500" : "border-red-500"}`}
+            className={`absolute top-4 left-4  border-2  bg-black px-3 py-1 rounded-full text-sm font-medium ${
+              cameraEnabled ? "border-green-500" : "border-red-500"
+            }`}
           >
-            <button onClick={toggleCamera}>Camera {cameraEnabled ? "ON" : "OFF"}</button>
+            <button onClick={toggleCamera}>
+              Camera {cameraEnabled ? "ON" : "OFF"}
+            </button>
           </div>
 
           {/* Reps counter */}
@@ -649,7 +677,9 @@ export default function Train() {
                   <button
                     onClick={togglePause}
                     className={`${
-                      isPaused ? "bg-yellow-600 hover:bg-yellow-700" : "bg-blue-600 hover:bg-blue-700"
+                      isPaused
+                        ? "bg-yellow-600 hover:bg-yellow-700"
+                        : "bg-blue-600 hover:bg-blue-700"
                     } w-full md:w-auto text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2`}
                   >
                     {isPaused ? (
@@ -688,7 +718,9 @@ export default function Train() {
                 className="overflow-hidden"
               >
                 <div className="bg-white/20 shadow-2xl rounded-xl p-3 md:p-6 mb-4">
-                  <h3 className="text-lg font-semibold mb-4">Training Settings</h3>
+                  <h3 className="text-lg font-semibold mb-4">
+                    Training Settings
+                  </h3>
 
                   <div className="space-y-6">
                     {/* Interval control */}
@@ -698,11 +730,15 @@ export default function Train() {
                           <Clock className="w-5 h-5 text-gray-400" />
                           <span>Interval Time: {intervalTime}ms</span>
                         </label>
-                        <span className="text-sm text-gray-400">(Time between punches)</span>
+                        <span className="text-sm text-gray-400">
+                          (Time between punches)
+                        </span>
                       </div>
                       <div className="flex flex-wrap items-center gap-4">
                         <button
-                          onClick={() => setIntervalTime(Math.max(500, intervalTime - 100))}
+                          onClick={() =>
+                            setIntervalTime(Math.max(500, intervalTime - 100))
+                          }
                           className="bg-white hover:bg-gray-700 p-2 rounded-lg"
                           disabled={intervalTime <= 500}
                         >
@@ -714,11 +750,15 @@ export default function Train() {
                           max="2500"
                           step="100"
                           value={intervalTime}
-                          onChange={(e) => setIntervalTime(Number(e.target.value))}
+                          onChange={(e) =>
+                            setIntervalTime(Number(e.target.value))
+                          }
                           className="flex-1 accent-red-600"
                         />
                         <button
-                          onClick={() => setIntervalTime(Math.min(3000, intervalTime + 100))}
+                          onClick={() =>
+                            setIntervalTime(Math.min(3000, intervalTime + 100))
+                          }
                           className="bg-white hover:bg-gray-700 p-2 rounded-lg"
                           disabled={intervalTime >= 3000}
                         >
@@ -726,7 +766,7 @@ export default function Train() {
                         </button>
                       </div>
                     </div>
-<hr/>
+                    <hr />
                     {/* Reps control */}
                     <div>
                       <div className="flex gap-2 justify-between items-center mb-2">
@@ -734,7 +774,9 @@ export default function Train() {
                           <Repeat className="w-5 h-5 text-gray-400" />
                           <span>Repetitions: {reps}</span>
                         </label>
-                        <span className="text-sm text-gray-400">(Number of combo repeats)</span>
+                        <span className="text-sm text-gray-400">
+                          (Number of combo repeats)
+                        </span>
                       </div>
                       <div className="flex flex-wrap items-center gap-4">
                         <button
@@ -751,9 +793,9 @@ export default function Train() {
                           step="1"
                           value={reps}
                           onChange={(e) => {
-                            const value = Number(e.target.value)
-                            setReps(value)
-                            if (!isTraining) setRepsLeft(value)
+                            const value = Number(e.target.value);
+                            setReps(value);
+                            if (!isTraining) setRepsLeft(value);
                           }}
                           className="flex-1 accent-red-600"
                         />

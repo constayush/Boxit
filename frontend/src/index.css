@@ -103,14 +103,14 @@ body {
 
 /* Custom Brand Font */
 .brand-font {
-  font-family: "Montserrat", sans-serif;
+   font-family: "Lora", serif;
   font-optical-sizing: auto;
-  font-weight: 900;
+  font-weight: 700;
+  font-style: normal;
   text-transform: uppercase;
-  /* background: -webkit-linear-gradient(#aeaeae, #ffffff); */
-  /* -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
+  
 }
+
 
 /* Hero Gradient */
 .hero-gradient {
@@ -226,8 +226,12 @@ body {
 
 }
 .russo {
-  font-family: "Russo One", sans-serif;
-  font-style: normal;
+    font-family: "DM Serif Display", serif;
+  font-optical-sizing: auto;
+  
+  font-weight: 400;
+ 
+
 }
 
 /* Dynamic hover effects */

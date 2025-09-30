@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router";
 import { Trophy, Users, ArrowRight, Activity, Settings } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useSpring } from "framer-motion";
 import CustomCursor from "../ui/Cursor";
 import VideoCard from "../ui/VideoCard";
 import "../../index.css";
@@ -16,9 +16,12 @@ import effect_img_5 from "../../../public/effect_2.jpeg";
 import effect_img_6 from "../../../public/effect_6.jpeg";
 import effect_img_7 from "../../../public/effect_7.jpeg";
 import effect_img_8 from "../../../public/effect_8.jpeg";
+import promo_1 from "../../../public/promo-1.png";
 export default function Home() {
   type CursorVariant = "default" | "button" | "text";
-
+  const { scrollYProgress: scrollYProgress2 } = useScroll();
+  const y = useTransform(scrollYProgress2, [0, 1], [0, -50]);
+  const smoothY = useSpring(y, { stiffness: 100, damping: 20 });
   const [cursorVariant, setCursorVariant] = useState<CursorVariant>("default");
   const heroRef = useRef(null);
   const gallery_ref = useRef(null);
@@ -64,6 +67,26 @@ export default function Home() {
         "The legendary 'Rumble in the Jungle.' Ali uses his famous rope-a-dope strategy to tire out the powerful Foreman before delivering a stunning knockout.",
     },
   ];
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress: scrollYProgress_promo1 } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const rotateX_promo1 = useTransform(
+    scrollYProgress_promo1,
+    [0, 0.5],
+    [100, 0]
+  );
+
+  const y_promo1 = useTransform(scrollYProgress_promo1, [0, 0], [100, 0]);
+
+  const opacity_promo1 = useTransform(
+    scrollYProgress_promo1,
+    [0, 0.3],
+    [0.5, 1]
+  );
 
   const { scrollYProgress } = useScroll({
     target: gallery_ref,
@@ -150,8 +173,8 @@ export default function Home() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 2, ease: "easeOut" }}
-      className="min-h-screen min-w-full flex flex-col justify-center items-center bg-[#1a1a1a] text-white "
+      transition={{ duration: .5, ease: "easeOut" }}
+      className="min-h-screen min-w-full flex flex-col justify-center items-center bg-[#141414] text-white "
     >
       <ScrollToTop />
       <CustomCursor cursorVariant={cursorVariant} />
@@ -183,17 +206,17 @@ export default function Home() {
           ></motion.span>
 
           <motion.h1
-            initial={{ opacity: 0, y: 50, letterSpacing: "20px" }}
+            initial={{ opacity: 0, y: 50, letterSpacing: "5px" }}
             animate={
               isHeroInView ? { opacity: 1, y: 0, letterSpacing: "0px" } : {}
             }
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-[5rem] md:text-[8rem] font-bold  russo tracking-widest"
+            className="text-[5rem] md:text-[8rem] italic   russo"
             onMouseEnter={enterText}
             onMouseLeave={leaveButton}
           >
             Box'
-            <motion.span className="text-red-600">it</motion.span>
+            <motion.span className="text-red-600">Lit</motion.span>
           </motion.h1>
 
           <motion.p
@@ -231,7 +254,7 @@ export default function Home() {
                   <Trophy className="w-12 h-12 text-red-500 mb-4 relative z-10" />
                 }
                 title="Learn Boxing"
-                description="Master the fundamentals, from footwork to powerful punches by professionals"
+                description="Master the fundamentals, from footwork to punches by professionals"
                 link="/learn"
                 onMouseEnter={enterButton}
                 onMouseLeave={leaveButton}
@@ -253,12 +276,12 @@ export default function Home() {
       </motion.div>
       <hr className="w-full border  border-[#ffffff36]" />
 
-      <section className="relative w-full mt-20 flex items-center justify-center">
-        
-        
-
-        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#fc4f4fb9]" />
-        <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#575dfac8] " />
+      <section
+        ref={sectionRef}
+        className="relative flex-col gap-20 w-full mt-20 flex items-center justify-center"
+      >
+        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#fc4f4f44]" />
+        <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#575cfa9c] " />
         {/* Glass Card */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -272,7 +295,7 @@ export default function Home() {
               <motion.div
                 key={i}
                 whileHover={{ scale: 1.05 }}
-                className="p-6 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md text-left shadow-lg"
+                className="p-6 rounded-2xl bg-black/1 border border-white/20 backdrop-blur-md text-left shadow-lg"
               >
                 {f.icon}
                 <h3 className="mt-4 text-xl font-semibold text-white">
@@ -299,6 +322,70 @@ export default function Home() {
             </Link>
           </div>
         </motion.div>
+
+       <section
+        ref={sectionRef}
+        className="w-full min-h-screen flex flex-col items-center justify-center bg-white/10 border-white/20 border shadow-xl py-20"
+      >
+        <div className="max-w-6xl w-full px-6 flex flex-col items-center gap-16">
+          <div className="w-full" style={{ perspective: "3000px" }}>
+            <motion.div
+              style={{
+                rotateX: rotateX_promo1,
+                y: y_promo1,
+                opacity: opacity_promo1,
+                transformStyle: "preserve-3d",
+              }}
+              className="relative w-full p-3 rounded-3xl overflow-hidden bg-gradient-to-b from-white/20 to-red-500/10 backdrop-blur-2xl border border-white/50 shadow-2xl cursor-pointer"
+            >
+              <img
+                className="rounded-2xl border border-white/50 w-full"
+                src={promo_1}
+                alt="Boxing Training"
+              />
+              {/* Subtle shine effect */}
+              <motion.div
+                className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/10 to-white/0"
+                animate={{ opacity: [0, 0.15, 0] }}
+                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 4 }}
+              />
+            </motion.div>
+          </div>
+
+          {/* Animated Description */}
+          <motion.div
+            className="flex flex-col items-center lg:items-start text-center lg:text-left"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+          >
+            <h2 className="text-6xl font-extrabold text-white russo  mb-6 tracking-tight relative">
+              Experience{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-300 to-purple-300 animate-text">
+                Next-Level Boxing
+              </span>{" "}
+              Training
+            </h2>
+
+            <span className="flex w-full justify-center gap-4">
+              <Link to="/learn">
+                <button className="px-8 py-3 h-10 flex items-center justify-center bg-gradient-to-r from-red-600 to-pink-600 hover:to-red-500 text-white rounded-3xl font-semibold transition-all shadow-lg hover:shadow-xl">
+                  Learn to box
+                </button>
+              </Link>
+
+              <a href="https://www.youtube.com/channel/UCiE7yqBDTQjtk1abuw92FQg" target="_blank" rel="noreferrer">
+                <button className="flex gap-1 justify-center items-center text-center cursor-pointer border border-white/30 text-white rounded-3xl px-8 py-3 h-10 font-semibold transition-all shadow-lg hover:shadow-xl hover:bg-white/10">
+                  Atiko's YT <ArrowRight className="w-5 h-5" />
+                </button>
+              </a>
+            </span>
+          </motion.div>
+        </div>
+      </section>
+
+  
       </section>
 
       <hr className="border-gray-700 w-full mt-20 " />
@@ -322,15 +409,15 @@ export default function Home() {
 
       {/* Legendary Fights */}
       <div className="legendary-fights-wrapper relative flex justify-center items-center w-full mt-20">
-        <span className="absolute blur-[400px] top-0 left-0 w-[20%] h-[80%] bg-[#fc4f4fb9]" />
-        <span className="absolute blur-[400px] top-0 right-0 w-[20%] h-[80%] bg-[#575dfac8]" />
+        <span className="absolute blur-[400px] top-0 left-0 w-[20%] h-[80%] bg-[#fc4f4f8d]" />
+        <span className="absolute blur-[400px] top-0 right-0 w-[20%] h-[80%] bg-[#575cfa75]" />
         <motion.div
           ref={videosRef}
           className="w-full  max-w-6xl relative flex justify-center items-center"
         >
           <div className="">
             <motion.div className="text-center mb-22">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <h2 className="text-4xl md:text-6xl russo  mb-4">
                 THUNDER, <span className="text-red-600">BLOOD</span>, LEGACY
               </h2>
               <div className="w-90 h-1 bg-red-600 mx-auto"></div>

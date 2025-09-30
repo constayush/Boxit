@@ -148,7 +148,7 @@ export default function Select() {
       animate={{ opacity: 1, filter: "blur(0px)" }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen relative w-full bg-black/20 text-white flex flex-col justify-center items-center px-4 md:py-34 py-12 md:px-12"
+      className="min-h-screen relative w-full bg-black/20 text-white flex flex-col justify-center items-center px-4 pt-28 md:py-34 py-12 md:px-12"
     >  <span className="absolute -z-1 blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#fc4f4f61]" />
          <span className="absolute -z-1 blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#575cfa43] " />
       <ScrollToTop />
@@ -244,7 +244,7 @@ export default function Select() {
               onDrop={handleDrop}
               className={`w-full min-h-24 bg-black/80 border-2 ${
                 isDragging ? "border-red-500 bg-gray-900/50" : "border-gray-700"
-              } rounded-lg p-4 mb-6 flex flex-wrap items-center gap-2 transition-colors`}
+              } rounded-lg p-4 mb-6 flex flex-wrap items-center text-center gap-2 transition-colors`}
             >
               {customCombo.length === 0 ? (
                 <div className="w-full text-center text-gray-500 py-4">
@@ -286,7 +286,7 @@ export default function Select() {
             {/* Punch palette */}
             <div className="mb-6">
               <h3 className="text-lg font-medium mb-3">Punch Palette</h3>
-              <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9  gap-2">
                 {punchTypes.map((punch) => (
                   <div
                     key={punch.id}
@@ -294,7 +294,7 @@ export default function Select() {
                     onDragStart={(e) => handleDragStart(e, punch.id)}
                     onDragEnd={handleDragEnd}
                     onClick={() => addToCustomCombo(punch.id)}
-                    className="flex flex-col items-center justify-center w-full aspect-square rounded-lg text-white font-bold cursor-pointer hover:opacity-80 transition-opacity"
+                    className="flex flex-col items-center text-center justify-center w-full aspect-square rounded-lg text-white font-bold cursor-pointer hover:opacity-80 transition-opacity"
                     style={{ backgroundColor: punch.color }}
                   >
                     <div className="text-xl font-bold">{punch.id}</div>
@@ -329,7 +329,7 @@ export default function Select() {
             {customCombo.length > 0 && (
               <div className="mt-4 text-center">
                 <span className="text-gray-400">Combo Code: </span>
-                <span className="font-mono bg-black px-2 py-1 rounded text-red-500">
+                <span className="font-mono bg-black px-2 py-1 text-center rounded text-red-500">
                   {customCombo.join("-")}
                 </span>
               </div>

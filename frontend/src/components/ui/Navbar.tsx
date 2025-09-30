@@ -30,7 +30,7 @@ function Navbar() {
         className={`py-8 px-18 w-full transition-all duration-300 flex gap-8 items-center justify-between
           ${scrolled ? "onScrollNav" : ""}`}
       >
-        <li className="font-bold text-2xl">Box'it</li>
+        <li className="font-bold russo text-2xl">Box'Lit</li>
         <li>
           <ul className="flex w-fit gap-4 justify-between items-center">
             <Link

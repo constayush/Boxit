@@ -335,7 +335,7 @@ export default function Learn() {
       initial={{ filter: "blur(10px)", opacity: 0 }}
       animate={{ filter: "blur(0px)", opacity: 1 }}
       transition={{ duration: 2 }}
-      className="min-h-screen relative bg-[#1a1a1a] text-white flex flex-col px-4 md:py-34 py-12 md:px-12"
+      className="min-h-screen relative bg-[#1a1a1a] text-white flex flex-col pt-28 px-4 md:py-34 py-12 md:px-12"
     >
          <span className="absolute -z-1 blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#fc4f4f80]" />
          <span className="absolute -z-1 blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#575cfa78] " />
@@ -363,9 +363,9 @@ export default function Learn() {
       </div>
 
       <div className="container mx-auto flex-1">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid relative grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Sidebar with punch list */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 ">
             <div className="bg-white/10 border border-white/20 shadow-xl rounded-xl p-6 sticky top-10">
               <span className="flex  justify-between ">
                 <span className="flex justify-center items-center">
@@ -392,7 +392,7 @@ export default function Learn() {
                     <p>
                       This course is not created or owned by us. It is a Creative Commons-licensed course sourced from
                       YouTube, originally produced by its respective creator(s). All credit goes to the original
-                      author(s){" "}
+                      author(s)
                       <a
                         className="font-bold text-red-500"
                         href="https://www.youtube.com/channel/UCiE7yqBDTQjtk1abuw92FQg"
@@ -400,7 +400,7 @@ export default function Learn() {
                         rel="noreferrer"
                       >
                         Atiko Academy
-                      </a>{" "}
+                      </a>
                       for their work. We are simply providing access to this content for educational purposes.
                     </p>
                   </div>
