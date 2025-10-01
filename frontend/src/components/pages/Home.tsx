@@ -1,7 +1,14 @@
 "use client";
 import { useRef, useState } from "react";
 import { Link } from "react-router";
-import { Trophy, Users, ArrowRight, Activity, Settings } from "lucide-react";
+import {
+  Trophy,
+  Users,
+  ArrowRight,
+  Activity,
+  Settings,
+  ChevronRight,
+} from "lucide-react";
 import { motion, useInView, useSpring } from "framer-motion";
 import CustomCursor from "../ui/Cursor";
 import VideoCard from "../ui/VideoCard";
@@ -17,6 +24,7 @@ import effect_img_6 from "../../../public/effect_6.jpeg";
 import effect_img_7 from "../../../public/effect_7.jpeg";
 import effect_img_8 from "../../../public/effect_8.jpeg";
 import promo_1 from "../../../public/promo-1.png";
+import paperTex from "../../../public/paper-texture.webp";
 export default function Home() {
   type CursorVariant = "default" | "button" | "text";
   const { scrollYProgress: scrollYProgress2 } = useScroll();
@@ -29,6 +37,14 @@ export default function Home() {
   const videosRef = useRef(null);
   const isHeroInView = useInView(heroRef, { once: true });
   const isFeaturesInView = useInView(featuresRef, { once: true, amount: 0.3 });
+  const boxingCombos = [
+    { name: "Jab, Cross", code: "1-2" },
+    { name: "Jab, Cross, Hook", code: "1-2-3" },
+    { name: "Jab, Cross, Uppercut", code: "1-2-6" },
+    { name: "Jab, Jab, Cross", code: "1-1-2" },
+    { name: "Cross, Hook, Cross", code: "2-3-2" },
+    { name: "Jab, Cross, Hook, Uppercut", code: "1-2-3-6" },
+  ];
   const legendaryFights = [
     {
       title: "Muhammad Ali vs Joe Frazier – Thrilla in Manila (1975)",
@@ -173,7 +189,7 @@ export default function Home() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: .5, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       className="min-h-screen min-w-full flex flex-col justify-center items-center bg-[#141414] text-white "
     >
       <ScrollToTop />
@@ -195,14 +211,14 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-            className="w-[30%] h-[100%] absolute top-0 left-0 -z-10 bg-[#1688e4] blur-[300px]"
+            className="w-[30%] h-[100%] absolute top-0 left-0 -z-10 bg-[#a4c9f5] blur-[300px]"
           ></motion.span>
 
           <motion.span
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5, ease: "easeIn" }}
-            className="w-[30%] h-[100%] absolute top-0 right-0 -z-10 bg-[#e06565] blur-[300px]"
+            className="w-[30%] h-[100%] absolute top-0 right-0 -z-10 bg-[#e065659e] blur-[300px]"
           ></motion.span>
 
           <motion.h1
@@ -280,8 +296,8 @@ export default function Home() {
         ref={sectionRef}
         className="relative flex-col gap-20 w-full mt-20 flex items-center justify-center"
       >
-        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#fc4f4f44]" />
-        <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#575cfa9c] " />
+        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#fe808071]" />
+        <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#575cfa6d] " />
         {/* Glass Card */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -289,6 +305,12 @@ export default function Home() {
           transition={{ duration: 0.8 }}
           className="relative z-10  w-full  p-10 backdrop-blur-lg bg-white/10 border border-white/20 shadow-xl text-center"
         >
+          {" "}
+          <img
+            src={paperTex}
+            alt="Paper texture overlay"
+            className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay pointer-events-none"
+          />
           {/* Features */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((f, i) => (
@@ -307,7 +329,6 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-
           {/* CTA */}
           <div className="mt-12 flex justify-center gap-4">
             <Link to={"/learn"}>
@@ -316,79 +337,199 @@ export default function Home() {
               </button>
             </Link>
             <Link to={"/select"}>
-              <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold shadow-lg hover:opacity-90 transition">
+              <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold shadow-lg hover:opacity-90 transition">
                 Throw punches <ArrowRight className="w-5 h-5" />
               </button>
             </Link>
           </div>
         </motion.div>
 
-       <section
-        ref={sectionRef}
-        className="w-full min-h-screen flex flex-col items-center justify-center bg-white/10 border-white/20 border shadow-xl py-20"
-      >
-        <div className="max-w-6xl w-full px-6 flex flex-col items-center gap-16">
-          <div className="w-full" style={{ perspective: "3000px" }}>
-            <motion.div
-              style={{
-                rotateX: rotateX_promo1,
-                y: y_promo1,
-                opacity: opacity_promo1,
-                transformStyle: "preserve-3d",
-              }}
-              className="relative w-full p-3 rounded-3xl overflow-hidden bg-gradient-to-b from-white/20 to-red-500/10 backdrop-blur-2xl border border-white/50 shadow-2xl cursor-pointer"
-            >
-              <img
-                className="rounded-2xl border border-white/50 w-full"
-                src={promo_1}
-                alt="Boxing Training"
-              />
-              {/* Subtle shine effect */}
+        <div
+          ref={sectionRef}
+          className="w-full relative flex flex-col items-center justify-center bg-white/10 border-white/20 border shadow-xl py-20"
+        >
+          <img
+            src={paperTex}
+            alt="Paper texture overlay"
+            className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay pointer-events-none"
+          />
+          <div className="max-w-6xl w-full px-6 flex flex-col items-center gap-16">
+            <div className="w-full" style={{ perspective: "3000px" }}>
               <motion.div
-                className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/10 to-white/0"
-                animate={{ opacity: [0, 0.15, 0] }}
-                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 4 }}
-              />
+                style={{
+                  rotateX: rotateX_promo1,
+                  y: y_promo1,
+                  opacity: opacity_promo1,
+                  transformStyle: "preserve-3d",
+                }}
+                className=" w-full p-3 sticky top-10 rounded-3xl overflow-hidden bg-gradient-to-b from-white/20 to-red-500/10 backdrop-blur-2xl border border-white/50 shadow-2xl cursor-pointer"
+              >
+                <img
+                  className="rounded-2xl  border border-white/50 w-full"
+                  src={promo_1}
+                  alt="Boxing Training"
+                />
+                {/* Subtle shine effect */}
+                <motion.div
+                  className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/10 to-white/0"
+                  animate={{ opacity: [0, 0.15, 0] }}
+                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 4 }}
+                />
+              </motion.div>
+            </div>
+
+            {/* Animated Description */}
+            <motion.div
+              className="flex flex-col items-center lg:items-start text-center lg:text-left"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
+            >
+              <h2 className="text-6xl font-extrabold text-white russo  mb-6 tracking-tight relative">
+                Experience{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-300 to-purple-300 animate-text">
+                  Next-Level Boxing
+                </span>{" "}
+                Training
+              </h2>
+
+              <span className="flex w-full justify-center gap-4">
+                <Link to="/learn">
+                  <button className="px-8 py-3 h-10 flex items-center justify-center bg-gradient-to-r from-red-600 to-pink-600 hover:to-red-500 text-white rounded-3xl font-semibold transition-all shadow-lg hover:shadow-xl">
+                    Learn to box
+                  </button>
+                </Link>
+
+                <a
+                  href="https://www.youtube.com/channel/UCiE7yqBDTQjtk1abuw92FQg"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <button className="flex gap-1 justify-center items-center text-center cursor-pointer border border-white/30 text-white rounded-3xl px-8 py-3 h-10 font-semibold transition-all shadow-lg hover:shadow-xl hover:bg-white/10">
+                    Atiko's YT <ArrowRight className="w-5 h-5" />
+                  </button>
+                </a>
+              </span>
             </motion.div>
           </div>
-
-          {/* Animated Description */}
-          <motion.div
-            className="flex flex-col items-center lg:items-start text-center lg:text-left"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-          >
-            <h2 className="text-6xl font-extrabold text-white russo  mb-6 tracking-tight relative">
-              Experience{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-300 to-purple-300 animate-text">
-                Next-Level Boxing
-              </span>{" "}
-              Training
-            </h2>
-
-            <span className="flex w-full justify-center gap-4">
-              <Link to="/learn">
-                <button className="px-8 py-3 h-10 flex items-center justify-center bg-gradient-to-r from-red-600 to-pink-600 hover:to-red-500 text-white rounded-3xl font-semibold transition-all shadow-lg hover:shadow-xl">
-                  Learn to box
-                </button>
-              </Link>
-
-              <a href="https://www.youtube.com/channel/UCiE7yqBDTQjtk1abuw92FQg" target="_blank" rel="noreferrer">
-                <button className="flex gap-1 justify-center items-center text-center cursor-pointer border border-white/30 text-white rounded-3xl px-8 py-3 h-10 font-semibold transition-all shadow-lg hover:shadow-xl hover:bg-white/10">
-                  Atiko's YT <ArrowRight className="w-5 h-5" />
-                </button>
-              </a>
-            </span>
-          </motion.div>
         </div>
       </section>
 
-  
+      <section className="w-full p-6 mt-20 relative flex flex-col items-center justify-center bg-white/10 border-white/20 border shadow-xl py-20">
+        {" "}
+        <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#fe80803b]" />
+        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#575cfa9c] " />
+        {/* Paper texture overlay */}
+        <img
+          src={paperTex}
+          alt="Paper texture overlay"
+          className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay pointer-events-none"
+        />
+        {/* Panels wrapper */}
+        <div className="flex flex-col lg:flex-row items-stretch justify-center gap-8 w-full max-w-6xl mx-auto">
+          {/* Pre-built Combos Panel */}
+          <div className="flex-1 border border-white/50 bg-black/50 rounded-2xl shadow-2xl w-full flex flex-col relative">
+            {/* Top Bar */}
+            <div className="absolute top-0  left-0 right-0 flex items-center justify-between bg-[#2c2c2c] rounded-t-2xl px-3 py-1 border-b border-[#ffffff22] z-10">
+              <div className="flex space-x-2">
+                <span className="w-3 h-3 bg-red-500 rounded-full"></span>
+                <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+              </div>
+              <span className="text-gray-300 text-xs font-mono">
+                Pre-built Combos
+              </span>
+              <div></div>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 p-4 flex flex-col mt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-1">
+                {boxingCombos.map((combo, index) => (
+                  <button
+                    key={index}
+                    className="bg-[#1f1f1f] shadow-2xl border border-[#ffffff22] hover:border-red-500 hover:bg-black text-white p-5 rounded-xl transition-all duration-300 flex flex-col items-start h-full"
+                  >
+                    <div className="bg-red-600/50 border border-black text-white px-3 py-1 rounded-full text-sm font-mono mb-2">
+                      {combo.code}
+                    </div>
+                    <span className="text-lg font-medium">{combo.name}</span>
+                    <div className="mt-auto pt-2 w-full flex justify-end">
+                      <ChevronRight className="w-5 h-5 text-gray-200" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Custom Combo Builder Panel */}
+          <div className="flex-1 border border-white/50 bg-black/60 rounded-2xl p-6 shadow-2xl w-full flex flex-col relative">
+            {/* Top Bar */}
+            <div className="absolute top-0 left-0 right-0 flex items-center justify-between bg-[#2c2c2c] rounded-t-2xl px-3 py-1 border-b border-[#ffffff22] z-10">
+              <div className="flex space-x-2">
+                <span className="w-3 h-3 bg-red-500 rounded-full"></span>
+                <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+              </div>
+              <span className="text-gray-300 text-xs font-mono">
+                Custom Combo Builder
+              </span>
+              <div></div>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 pt-8 px-4 flex flex-col">
+              <h2 className="text-xl font-bold mb-4 text-white">
+                Create Custom Combo
+              </h2>
+
+              {/* Drag area */}
+              <div className="w-full min-h-24 bg-black/80 border-2 border-gray-700 rounded-lg p-4 mb-6 flex flex-wrap items-center text-center gap-2 flex-1">
+                {["Jab", "Cross", "Hook"].map((punch, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center justify-center w-16 h-16 rounded-lg text-white font-bold text-lg cursor-pointer bg-red-700"
+                  >
+                    <div className="text-xl font-bold">{punch[0]}</div>
+                    <div className="text-xs">{punch}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Punch Palette */}
+              <div className="mb-6">
+                <h3 className="text-lg font-medium mb-3 text-white">
+                  Punch Palette
+                </h3>
+                <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2">
+                  {["Jab", "Cross", "Hook", "Uppercut"].map((punch, i) => (
+                    <div
+                      key={i}
+                      className="flex flex-col items-center justify-center w-full aspect-square rounded-lg text-white font-bold cursor-pointer bg-gray-700 hover:opacity-80 transition-opacity"
+                    >
+                      <div className="text-xl font-bold">{punch[0]}</div>
+                      <div className="text-xs text-center px-1">{punch}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Main heading */}
+        <h2 className="text-6xl text-center font-extrabold text-white russo mt-18 tracking-tight relative">
+          Train with pre-made combos <br /> or create{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-300 to-purple-300 animate-text">
+            unlimited
+          </span>{" "}
+          custom sequences.
+        </h2>
       </section>
 
-      <hr className="border-gray-700 w-full mt-20 " />
+      <hr className="border-gray-700 w-full my-10 " />
+
       {/* Gallery Section */}
       <div ref={gallery_ref} className="relative h-[300vh] w-full ">
         <div className="sticky top-0 h-screen overflow-hidden ">
@@ -440,62 +581,84 @@ export default function Home() {
         </motion.div>
       </div>
 
-      <hr className="border-gray-700 w-full my-20 " />
+  <hr className="border-gray-700 w-full my-20" />
 
-      <div className="flex justify-center items-center w-full flex-col  relative ">
-        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[80%] bg-[#fc4f4fb9]" />
-        <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[80%] bg-[#575dfac8] " />
-        <motion.p className="text-3xl russo p-4 text-center">
-          "Everybody has a plan until they get punched in the mouth." -{" "}
-          <span className="text-red-500">Mike Tyson</span>
-        </motion.p>
-        <hr className="border-gray-700/10 w-full my-5 " />
-        <motion.div className="flex flex-col sm:flex-row gap-4 mt-8">
-          <Link to="/learn" className="w-full sm:w-auto">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onMouseEnter={enterButton}
-              onMouseLeave={leaveButton}
-              className="w-full bg-red-600 hover:bg-red-700 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-bold text-white"
-            >
-              Learn Boxing
-            </motion.button>
-          </Link>
-          <Link to="/select" className="w-full sm:w-auto">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onMouseEnter={enterButton}
-              onMouseLeave={leaveButton}
-              className="w-full border border-white/70 text-white bg-transparent hover:bg-white/10 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-medium"
-            >
-              Train with Us
-            </motion.button>
-          </Link>
-        </motion.div>
-      </div>
+<div className="relative w-full flex flex-col items-center">
+  {/* Glow effects */}
+  <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[80%] bg-[#fc4f4fb9]" />
+  <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[80%] bg-[#575dfac8]" />
 
-      <hr className="border-gray-700 w-full my-20 " />
-      {/* Footer Section */}
-      <motion.div className=" w-full max-w-6xl mb-20 text-sm text-gray-500 text-center relative  ">
-        <p className="mb-2">
-          Note - All video content featured in this app is the intellectual
-          property of its respective owners. We do not claim ownership of any
-          third-party videos.
-        </p>
-        <p>
-          Built by –{" "}
-          <a
-            href="https://constayush.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-red-300 hover:text-red-600"
-          >
-            Ayush
-          </a>
-        </p>
-      </motion.div>
+  {/* Brand */}
+ 
+  <motion.p className="text-3xl russo p-4 text-center max-w-3xl">
+    "Everybody has a plan until they get punched in the mouth." -{" "}
+    <span className="text-red-500">Mike Tyson</span>
+  </motion.p>
+
+  
+
+  {/* Call to Action Buttons */}
+  <motion.div className="flex flex-col sm:flex-row gap-4 mt-4">
+    <Link to="/learn" className="w-full sm:w-auto">
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onMouseEnter={enterButton}
+        onMouseLeave={leaveButton}
+        className="w-full bg-red-600 hover:bg-red-700 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-bold text-white"
+      >
+        Learn Boxing
+      </motion.button>
+    </Link>
+    <Link to="/select" className="w-full sm:w-auto">
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onMouseEnter={enterButton}
+        onMouseLeave={leaveButton}
+        className="w-full border border-white/70 text-white bg-transparent hover:bg-white/10 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-medium"
+      >
+        Train with Us
+      </motion.button>
+    </Link>
+  </motion.div>
+</div>
+
+<hr className="border-gray-700 w-full mt-20" />
+
+{/* Full Footer */}
+<footer className="w-full bg-gray-900 text-gray-400 text-sm">
+  <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col lg:flex-row items-center justify-between gap-10 relative">
+    {/* Footer Glow */}
+    <span className="absolute blur-[300px] -top-20 left-1/4 w-[30%] h-[60%] bg-red-600/40" />
+    <span className="absolute blur-[300px] -top-20 right-1/4 w-[30%] h-[60%] bg-blue-500/40" />
+
+    {/* Links */}
+     <h1 className="text-[10rem] md:text-7xl sm:text-6xl text-stone-100 russo mb-4">BOX'LIT</h1>
+
+    {/* Legal / Credits */}
+    <div className="mt-10 lg:mt-0 text-center lg:text-left max-w-sm">
+      <p className="mb-2">
+        Note - All video content featured in this app is the intellectual property of its respective owners. We do not claim ownership of any third-party videos.
+      </p>
+      <p>
+        Built by –{" "}
+        <a
+          href="https://constayush.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-red-300 hover:text-red-600 transition"
+        >
+          Ayush
+        </a>
+      </p>
+    </div>
+  </div>
+  <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-500">
+    &copy; {new Date().getFullYear()} BOX'LIT. All rights reserved.
+  </div>
+</footer>
+
     </motion.div>
   );
 }

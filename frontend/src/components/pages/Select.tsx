@@ -226,7 +226,7 @@ export default function Select() {
                   </div>
                   <span className="text-lg font-medium">{combo.name}</span>
                   <div className="mt-auto pt-2 w-full flex justify-end">
-                    <ChevronRight className="w-5 h-5 text-gray-500" />
+                    <ChevronRight className="w-5 h-5 text-gray-200" />
                   </div>
                 </button>
               ))}

@@ -37,7 +37,7 @@ const VideoCard = ({
       initial="initial"
       animate="animate"
       whileHover="hover"
-      className="w-full max-w-md rounded-xl overflow-hidden border-2 border-[#8e8e8e8d] h-full bg-gradient-to-t from-[#1c000024] to-[#b2010184] shadow-xl hover:shadow-2xl hover:shadow-white/10 transition-all duration-300"
+      className="w-full max-w-md rounded-xl overflow-hidden border-2 border-red-500/50 h-full bg-white/10 shadow-xl hover:shadow-2xl hover:shadow-white/10 transition-all duration-300"
     >
       {/* Video */}
       <motion.div className="relative aspect-video w-full overflow-hidden">
