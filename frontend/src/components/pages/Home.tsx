@@ -25,11 +25,12 @@ import effect_img_7 from "../../../public/effect_7.jpeg";
 import effect_img_8 from "../../../public/effect_8.jpeg";
 import promo_1 from "../../../public/promo-1.png";
 import paperTex from "../../../public/paper-texture.webp";
+import legendaryFights from "../../data/legendaryFights";
+
 export default function Home() {
   type CursorVariant = "default" | "button" | "text";
   const { scrollYProgress: scrollYProgress2 } = useScroll();
   const y = useTransform(scrollYProgress2, [0, 1], [0, -50]);
-  const smoothY = useSpring(y, { stiffness: 100, damping: 20 });
   const [cursorVariant, setCursorVariant] = useState<CursorVariant>("default");
   const heroRef = useRef(null);
   const gallery_ref = useRef(null);
@@ -37,6 +38,7 @@ export default function Home() {
   const videosRef = useRef(null);
   const isHeroInView = useInView(heroRef, { once: true });
   const isFeaturesInView = useInView(featuresRef, { once: true, amount: 0.3 });
+
   const boxingCombos = [
     { name: "Jab, Cross", code: "1-2" },
     { name: "Jab, Cross, Hook", code: "1-2-3" },
@@ -45,44 +47,7 @@ export default function Home() {
     { name: "Cross, Hook, Cross", code: "2-3-2" },
     { name: "Jab, Cross, Hook, Uppercut", code: "1-2-3-6" },
   ];
-  const legendaryFights = [
-    {
-      title: "Muhammad Ali vs Joe Frazier – Thrilla in Manila (1975)",
-      videoUrl: "https://www.youtube.com/embed/oNEfN2R4oRc",
-      description:
-        "The brutal third clash in their epic rivalry. Fought in scorching heat, this fight pushed both men beyond their limits, with Ali calling it 'the closest thing to dying.'",
-    },
-    {
-      title: "Mike Tyson vs Trevor Berbick (1986)",
-      videoUrl: "https://www.youtube.com/embed/QKFhSnX9LzM",
-      description:
-        "A 20-year-old Mike Tyson becomes the youngest heavyweight champion in history, demolishing Berbick in just two rounds with ferocious power.",
-    },
-    {
-      title: "Floyd Mayweather vs Manny Pacquiao (2015)",
-      videoUrl: "https://www.youtube.com/embed/39zhhfMGNRk",
-      description:
-        "The long-awaited 'Fight of the Century.' A masterclass in defensive boxing from Mayweather as he outpoints Pacquiao in a tactical showdown.",
-    },
-    {
-      title: "Gatti vs Ward I (2002)",
-      videoUrl: "https://www.youtube.com/embed/wxyQvFmlXiw",
-      description:
-        "An all-out war from start to finish. Arturo Gatti and Micky Ward traded non-stop punishment in one of the most thrilling bouts in boxing history.",
-    },
-    {
-      title: "Tyson Fury vs Deontay Wilder III (2021)",
-      videoUrl: "https://www.youtube.com/embed/vxw3x1zVvEE",
-      description:
-        "The dramatic conclusion to their trilogy. Multiple knockdowns, insane comebacks, and Fury’s final knockout to seal one of the greatest heavyweight rivalries.",
-    },
-    {
-      title: "George Foreman vs Muhammad Ali (1974)",
-      videoUrl: "https://www.youtube.com/embed/55AasOJZzDE",
-      description:
-        "The legendary 'Rumble in the Jungle.' Ali uses his famous rope-a-dope strategy to tire out the powerful Foreman before delivering a stunning knockout.",
-    },
-  ];
+ 
   const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress: scrollYProgress_promo1 } = useScroll({
@@ -309,13 +274,18 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay pointer-events-none"
           />
           {/* Features */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 ">
+           
             {features.map((f, i) => (
               <motion.div
                 key={i}
                 whileHover={{ scale: 1.05 }}
-                className="p-6 rounded-2xl bg-black/1 border border-white/20 backdrop-blur-md text-left shadow-lg"
-              >
+                className="p-6 rounded-2xl relative bg-black/1 border border-white/20 backdrop-blur-md text-left shadow-lg"
+              >  <img
+            src={paperTex}
+            alt="Paper texture overlay"
+            className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay pointer-events-none"
+          />
                 {f.icon}
                 <h3 className="mt-4 text-xl font-semibold text-white">
                   {f.title}
@@ -348,7 +318,7 @@ export default function Home() {
           <img
             src={paperTex}
             alt="Paper texture overlay"
-            className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay pointer-events-none"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay pointer-events-none"
           />
           <div className="max-w-6xl w-full px-6 flex flex-col items-center gap-16">
             <div className="w-full" style={{ perspective: "3000px" }}>
@@ -425,7 +395,11 @@ export default function Home() {
         />
         {/* Panels wrapper */}
         <div className="flex flex-col lg:flex-row items-stretch justify-center gap-8 w-full max-w-6xl mx-auto">
-          {/* Pre-built Combos Panel */}
+           <img
+            src={paperTex}
+            alt="Paper texture overlay"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay pointer-events-none"
+          />
           <div className="flex-1 border border-white/50 bg-black/10 rounded-2xl shadow-2xl w-full flex flex-col relative">
             {/* Top Bar */}
             <div className="absolute top-0  left-0 right-0 flex items-center justify-between bg-[#ffffff] rounded-t-2xl px-3 py-1 border-b border-[#ffffff22] z-10">
@@ -478,6 +452,11 @@ export default function Home() {
 
           {/* Custom Combo Builder Panel */}
           <div className="flex-1 border border-white/50  bg-black/40 rounded-2xl p-6 shadow-2xl w-full flex flex-col relative">
+            <img
+            src={paperTex}
+            alt="Paper texture overlay"
+            className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay pointer-events-none"
+          />
             {/* Top Bar */}
             <div className="absolute top-0 left-0 right-0 flex items-center justify-between bg-[#ffffff] rounded-t-2xl px-3 py-1 border-b border-[#ffffff22] z-10">
               <div className="flex space-x-2">
@@ -636,7 +615,13 @@ export default function Home() {
       <hr className="border-gray-700 w-full mt-20" />
 
       {/* Full Footer */}
-      <footer className="w-full bg-gray-900 text-gray-400 text-sm">
+      <footer className="w-full relative bg-gray-900 text-gray-400 text-sm">
+       
+        <img
+            src={paperTex}
+            alt="Paper texture overlay"
+            className="absolute inset-0 w-full h-full object-cover opacity-90 mix-blend-overlay pointer-events-none"
+          />
         <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col lg:flex-row items-center justify-between gap-10 relative">
           {/* Footer Glow */}
           <span className="absolute blur-[300px] -top-20 left-1/4 w-[30%] h-[60%] bg-red-600/40" />
@@ -696,7 +681,11 @@ const FeatureCard = ({
       className="feature-card motion-div group bg-[#00000000]  backdrop-blur-3xl border border-[#ffffff4c] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-    >
+    > <img
+            src={paperTex}
+            alt="Paper texture overlay"
+            className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay pointer-events-none"
+          />
       <Link to={link}>
         <div className="absolute inset-0 opacity-5 transition-all z-0"></div>
         <span className="flex w-full justify-center items-center">{icon}</span>

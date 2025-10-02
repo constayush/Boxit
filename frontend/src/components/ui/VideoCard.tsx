@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-
+import paperTex from "../../../public/paper-texture.webp"
 const VideoCard = ({ 
   title = "no title :( yet.", 
   description = "no description :( yet.",
@@ -37,8 +37,13 @@ const VideoCard = ({
       initial="initial"
       animate="animate"
       whileHover="hover"
-      className="w-full max-w-md rounded-xl overflow-hidden border-2 border-red-500/50 h-full bg-blue-500/10 shadow-xl hover:shadow-2xl hover:shadow-white/10 transition-all duration-300"
+      className="w-full max-w-md rounded-xl overflow-hidden border-2 border-red-500/50 h-full bg-pink-500/10 shadow-xl hover:shadow-2xl hover:shadow-white/10 transition-all duration-300"
     >
+       <img
+            src={paperTex}
+            alt="Paper texture overlay"
+            className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay pointer-events-none"
+          />
       {/* Video */}
       <motion.div className="relative aspect-video w-full overflow-hidden">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full h-full">

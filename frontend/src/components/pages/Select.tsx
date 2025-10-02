@@ -15,16 +15,8 @@ import {
   Play,
 } from "lucide-react";
 import ScrollToTop from "../ui/ScrollToTop";
-// Boxing combo codes:
-// 1 = Jab (lead hand straight)
-// 2 = Cross (rear hand straight)
-// 3 = Lead Hook
-// 4 = Rear Hook
-// 5 = Lead Uppercut
-// 6 = Rear Uppercut
-// S = Slip
-// R = Roll
-// D = Duck
+
+import paperTex from "../../../public/paper-texture.webp";
 
 const punchTypes = [
   { id: "1", name: "Jab", color: "#ef4444", description: "Lead hand straight" },
@@ -154,7 +146,7 @@ export default function Select() {
       <ScrollToTop />
       <div className="absolute inset-0 h-full opacity-10 select-bg"></div>
       {/* Header with navigation */}
-      <div className="w-full h-fit z-10 relative">
+      <div className="w-full h-fit z-10 relative flex justify-center  items-center flex-col">
         <div className="container flex items-center justify-between">
           <Link
             to="/"
@@ -163,7 +155,7 @@ export default function Select() {
             <ArrowLeft className="w-5 h-5" />
           </Link>
 
-          <h1 className="text-3xl md:text-6xl font-bold helvetica-font">
+          <h1 className="text-3xl md:text-6xl font-bold helvetica-font text-center">
             Select Your Combo
           </h1>
 
@@ -219,8 +211,13 @@ export default function Select() {
                 <button
                   key={index}
                   onClick={() => handleSelectCombo(combo.code)}
-                  className="bg-white/20  shadow-2xl border border-[#ffffff22] hover:border-red-500 hover:bg-black text-white p-5 rounded-xl transition-all duration-300 flex flex-col items-start h-full"
+                  className="bg-white/10 relative  backdrop-blur-2xl shadow-2xl border border-[#ffffff9e] hover:border-red-500 hover:bg-black text-white p-5 rounded-xl transition-all duration-300 flex flex-col items-start h-full"
                 >
+                  <img
+            src={paperTex}
+            alt="Paper texture overlay"
+            className="absolute inset-0 w-full h-full object-cover opacity-90 mix-blend-overlay pointer-events-none"
+          />
                   <div className="bg-red-600/50 border border-black text-white  px-3 py-1 rounded-full text-sm font-mono mb-2">
                     {combo.code}
                   </div>
@@ -234,7 +231,10 @@ export default function Select() {
           </div>
 
           {/* Custom Combo Builder */}
-          <div className="w-full max-w-4xl bg-white/20  rounded-xl p-6 mb-12">
+          <div className="w-full max-w-4xl bg-white/20 backdrop-blur-2xl relative rounded-xl p-6 mb-12">
+           
+           <img src={paperTex} alt="Paper texture overlay" className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay pointer-events-none rounded-xl" />
+         
             <h2 className="text-xl font-bold mb-4">Create Custom Combo</h2>
 
             {/* Drag and drop area */}
@@ -339,6 +339,7 @@ export default function Select() {
               Tip: Drag and drop punches to create your combo, or click on them
               to add. Click the X to remove a punch.
             </p>
+         
           </div>
         </div>
 
