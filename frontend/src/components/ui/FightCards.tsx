@@ -40,7 +40,7 @@ export default function FightCards({ fight, index }: FightProps) {
   const fighter2 = fighters?.fighter_2;
 
   return (
-    <div key={index} className="bg-gray-900/50 border border-gray-800 rounded-xl p-6 flex flex-col">
+    <div key={index} className="bg-gray-900 border border-gray-800 rounded-xl p-6 flex flex-col">
       <h3 className="text-xl font-bold mb-2">{fight.title || "Untitled Fight"}</h3>
       <p className="text-gray-400 mb-2">
         <Calendar className="inline w-4 h-4 mr-1" /> {fight.date_str || "Date TBA"}

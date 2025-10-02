@@ -25,7 +25,7 @@ function Navbar() {
  
 
   return (
-    <nav className="w-full fixed top-0 z-[50] flex justify-center items-center">
+    <nav className="w-full hidden fixed top-0 z-[50] md:flex justify-center items-center">
       <ul
         className={`py-8 px-18 w-full transition-all duration-300 flex gap-8 items-center justify-between
           ${scrolled ? "onScrollNav" : ""}`}

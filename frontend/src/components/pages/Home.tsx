@@ -119,7 +119,7 @@ export default function Home() {
     {
       src: effect_img_1,
       scale: scale4,
-      classes: "w-[25vw] h-[25vh] top-[1vh] md:top-[-15vh]",
+      classes: "w-[25vw] h-[25vh] top-[5vh] md:top-[-15vh]",
     },
     {
       src: effect_img_2,
@@ -211,7 +211,7 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-            className="w-[30%] h-[100%] absolute top-0 left-0 -z-10 bg-[#a4c9f5] blur-[300px]"
+            className="w-[30%] h-[100%] absolute top-0 left-0 -z-10 bg-[#60a5fa] blur-[300px]"
           ></motion.span>
 
           <motion.span
@@ -221,25 +221,22 @@ export default function Home() {
             className="w-[30%] h-[100%] absolute top-0 right-0 -z-10 bg-[#e065659e] blur-[300px]"
           ></motion.span>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 50, letterSpacing: "5px" }}
-            animate={
-              isHeroInView ? { opacity: 1, y: 0, letterSpacing: "0px" } : {}
-            }
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-[5rem] md:text-[8rem] italic   russo"
-            onMouseEnter={enterText}
-            onMouseLeave={leaveButton}
-          >
-            Box'
-            <motion.span className="text-red-600">Lit</motion.span>
-          </motion.h1>
+      <motion.h1
+  initial={{ opacity: 0, y: 50, letterSpacing: "5px" }}
+  animate={isHeroInView ? { opacity: 1, y: 0, letterSpacing: "0px" } : {}}
+  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+  className="italic russo text-[clamp(3.5rem,8vw,8rem)] leading-tight"
+  onMouseEnter={enterText}
+  onMouseLeave={leaveButton}
+>
+  Box'<motion.span className="text-red-600">Lit</motion.span>
+</motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 50 }}
             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="text-base sm:text-lg md:text-xl font-medium text-gray-300/90"
+            className="text-md md:text-xl mt-4 font-medium text-gray-300/85"
             onMouseEnter={enterText}
             onMouseLeave={leaveButton}
           >
@@ -303,7 +300,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10  w-full  p-10 backdrop-blur-lg bg-white/10 border border-white/20 shadow-xl text-center"
+          className="relative z-10  w-full p-4 backdrop-blur-lg bg-white/10 border border-white/20 shadow-xl text-center"
         >
           {" "}
           <img
@@ -330,7 +327,7 @@ export default function Home() {
             ))}
           </div>
           {/* CTA */}
-          <div className="mt-12 flex justify-center gap-4">
+          <div className="my-12 flex justify-center gap-4">
             <Link to={"/learn"}>
               <button className="px-6 py-3 rounded-full bg-white/20 border border-white/40 text-white font-semibold backdrop-blur-sm hover:bg-white/30 transition">
                 Learn
@@ -344,7 +341,7 @@ export default function Home() {
           </div>
         </motion.div>
 
-        <div
+        <section
           ref={sectionRef}
           className="w-full relative flex flex-col items-center justify-center bg-white/10 border-white/20 border shadow-xl py-20"
         >
@@ -386,7 +383,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 1 }}
             >
-              <h2 className="text-6xl font-extrabold text-white russo  mb-6 tracking-tight relative">
+              <h2 className=" text-4xl md:text-6xl font-extrabold text-white russo  mb-6 tracking-tight relative">
                 Experience{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-300 to-purple-300 animate-text">
                   Next-Level Boxing
@@ -413,10 +410,10 @@ export default function Home() {
               </span>
             </motion.div>
           </div>
-        </div>
+        </section>
       </section>
 
-      <section className="w-full p-6 mt-20 relative flex flex-col items-center justify-center bg-white/10 border-white/20 border shadow-xl py-20">
+      <section className="w-full p-4 mt-20 relative flex flex-col items-center justify-center bg-white/10 border-white/20 border shadow-xl py-20">
         {" "}
         <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#fe80803b]" />
         <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#575cfa9c] " />
@@ -429,15 +426,15 @@ export default function Home() {
         {/* Panels wrapper */}
         <div className="flex flex-col lg:flex-row items-stretch justify-center gap-8 w-full max-w-6xl mx-auto">
           {/* Pre-built Combos Panel */}
-          <div className="flex-1 border border-white/50 bg-black/50 rounded-2xl shadow-2xl w-full flex flex-col relative">
+          <div className="flex-1 border border-white/50 bg-black/10 rounded-2xl shadow-2xl w-full flex flex-col relative">
             {/* Top Bar */}
-            <div className="absolute top-0  left-0 right-0 flex items-center justify-between bg-[#2c2c2c] rounded-t-2xl px-3 py-1 border-b border-[#ffffff22] z-10">
+            <div className="absolute top-0  left-0 right-0 flex items-center justify-between bg-[#ffffff] rounded-t-2xl px-3 py-1 border-b border-[#ffffff22] z-10">
               <div className="flex space-x-2">
                 <span className="w-3 h-3 bg-red-500 rounded-full"></span>
                 <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
                 <span className="w-3 h-3 bg-green-500 rounded-full"></span>
               </div>
-              <span className="text-gray-300 text-xs font-mono">
+              <span className="text-gray-600 text-xs font-mono">
                 Pre-built Combos
               </span>
               <div></div>
@@ -449,7 +446,22 @@ export default function Home() {
                 {boxingCombos.map((combo, index) => (
                   <button
                     key={index}
-                    className="bg-[#1f1f1f] shadow-2xl border border-[#ffffff22] hover:border-red-500 hover:bg-black text-white p-5 rounded-xl transition-all duration-300 flex flex-col items-start h-full"
+                    className="bg-white/10 hidden md:flex shadow-2xl border border-[#ffffff22] hover:border-red-500 hover:bg-black text-white p-5 rounded-xl transition-all duration-300  flex-col items-start h-full"
+                  >
+                    <div className="bg-red-600/50 border border-black text-white px-3 py-1 rounded-full text-sm font-mono mb-2">
+                      {combo.code}
+                    </div>
+                    <span className="text-lg font-medium">{combo.name}</span>
+                    <div className="mt-auto pt-2 w-full flex justify-end">
+                      <ChevronRight className="w-5 h-5 text-gray-200" />
+                    </div>
+                  </button>
+                ))}
+
+                {boxingCombos.slice(0, 3).map((combo, i) => (
+                  <button
+                    key={i}
+                    className="bg-white/10 flex md:hidden shadow-2xl border border-[#ffffff22] hover:border-red-500 hover:bg-black text-white p-5 rounded-xl transition-all duration-300 flex-col items-start h-full"
                   >
                     <div className="bg-red-600/50 border border-black text-white px-3 py-1 rounded-full text-sm font-mono mb-2">
                       {combo.code}
@@ -465,15 +477,15 @@ export default function Home() {
           </div>
 
           {/* Custom Combo Builder Panel */}
-          <div className="flex-1 border border-white/50 bg-black/60 rounded-2xl p-6 shadow-2xl w-full flex flex-col relative">
+          <div className="flex-1 border border-white/50  bg-black/40 rounded-2xl p-6 shadow-2xl w-full flex flex-col relative">
             {/* Top Bar */}
-            <div className="absolute top-0 left-0 right-0 flex items-center justify-between bg-[#2c2c2c] rounded-t-2xl px-3 py-1 border-b border-[#ffffff22] z-10">
+            <div className="absolute top-0 left-0 right-0 flex items-center justify-between bg-[#ffffff] rounded-t-2xl px-3 py-1 border-b border-[#ffffff22] z-10">
               <div className="flex space-x-2">
                 <span className="w-3 h-3 bg-red-500 rounded-full"></span>
                 <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
                 <span className="w-3 h-3 bg-green-500 rounded-full"></span>
               </div>
-              <span className="text-gray-300 text-xs font-mono">
+              <span className="text-gray-600 text-xs font-mono">
                 Custom Combo Builder
               </span>
               <div></div>
@@ -519,7 +531,7 @@ export default function Home() {
           </div>
         </div>
         {/* Main heading */}
-        <h2 className="text-6xl text-center font-extrabold text-white russo mt-18 tracking-tight relative">
+        <h2 className=" text-5xl md:text-6xl text-center font-extrabold text-white russo mt-18 tracking-tight relative">
           Train with pre-made combos <br /> or create{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-300 to-purple-300 animate-text">
             unlimited
@@ -546,17 +558,16 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <hr className="border-gray-700/10 w-full my-10 " />
 
       {/* Legendary Fights */}
-      <div className="legendary-fights-wrapper relative flex justify-center items-center w-full mt-20">
+      <div className="legendary-fights-wrapper relative flex justify-center items-center w-full mt-20 ">
         <span className="absolute blur-[400px] top-0 left-0 w-[20%] h-[80%] bg-[#fc4f4f8d]" />
         <span className="absolute blur-[400px] top-0 right-0 w-[20%] h-[80%] bg-[#575cfa75]" />
         <motion.div
           ref={videosRef}
-          className="w-full  max-w-6xl relative flex justify-center items-center"
+          className="w-full  max-w-6xl relative flex justify-center items-center "
         >
-          <div className="">
+          <div className="p-4">
             <motion.div className="text-center mb-22">
               <h2 className="text-4xl md:text-6xl russo  mb-4">
                 THUNDER, <span className="text-red-600">BLOOD</span>, LEGACY
@@ -581,84 +592,88 @@ export default function Home() {
         </motion.div>
       </div>
 
-  <hr className="border-gray-700 w-full my-20" />
+      <hr className="border-gray-700 w-full my-20" />
 
-<div className="relative w-full flex flex-col items-center">
-  {/* Glow effects */}
-  <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[80%] bg-[#fc4f4fb9]" />
-  <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[80%] bg-[#575dfac8]" />
+      <div className="relative w-full flex flex-col items-center">
+        {/* Glow effects */}
+        <span className="absolute blur-[400px] top-0 left-0 w-[50%] h-[80%] bg-[#fc4f4fb9]" />
+        <span className="absolute blur-[400px] top-0 right-0 w-[50%] h-[80%] bg-[#575dfac8]" />
 
-  {/* Brand */}
- 
-  <motion.p className="text-3xl russo p-4 text-center max-w-3xl">
-    "Everybody has a plan until they get punched in the mouth." -{" "}
-    <span className="text-red-500">Mike Tyson</span>
-  </motion.p>
+        {/* Brand */}
 
-  
+        <motion.p className="text-3xl russo p-4 text-center max-w-3xl">
+          "Everybody has a plan until they get punched in the mouth." -{" "}
+          <span className="text-red-500">Mike Tyson</span>
+        </motion.p>
 
-  {/* Call to Action Buttons */}
-  <motion.div className="flex flex-col sm:flex-row gap-4 mt-4">
-    <Link to="/learn" className="w-full sm:w-auto">
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onMouseEnter={enterButton}
-        onMouseLeave={leaveButton}
-        className="w-full bg-red-600 hover:bg-red-700 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-bold text-white"
-      >
-        Learn Boxing
-      </motion.button>
-    </Link>
-    <Link to="/select" className="w-full sm:w-auto">
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onMouseEnter={enterButton}
-        onMouseLeave={leaveButton}
-        className="w-full border border-white/70 text-white bg-transparent hover:bg-white/10 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-medium"
-      >
-        Train with Us
-      </motion.button>
-    </Link>
-  </motion.div>
-</div>
+        {/* Call to Action Buttons */}
+        <motion.div className="flex flex-col sm:flex-row gap-4 mt-4">
+          <Link to="/learn" className="w-full sm:w-auto">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onMouseEnter={enterButton}
+              onMouseLeave={leaveButton}
+              className="w-full bg-red-600 hover:bg-red-700 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-bold text-white"
+            >
+              Learn Boxing
+            </motion.button>
+          </Link>
+          <Link to="/select" className="w-full sm:w-auto">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onMouseEnter={enterButton}
+              onMouseLeave={leaveButton}
+              className="w-full border border-white/70 text-white bg-transparent hover:bg-white/10 transition-all duration-300 rounded-xl py-4 px-8 text-lg font-medium"
+            >
+              Train with Us
+            </motion.button>
+          </Link>
+        </motion.div>
+      </div>
 
-<hr className="border-gray-700 w-full mt-20" />
+      <hr className="border-gray-700 w-full mt-20" />
 
-{/* Full Footer */}
-<footer className="w-full bg-gray-900 text-gray-400 text-sm">
-  <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col lg:flex-row items-center justify-between gap-10 relative">
-    {/* Footer Glow */}
-    <span className="absolute blur-[300px] -top-20 left-1/4 w-[30%] h-[60%] bg-red-600/40" />
-    <span className="absolute blur-[300px] -top-20 right-1/4 w-[30%] h-[60%] bg-blue-500/40" />
+      {/* Full Footer */}
+      <footer className="w-full bg-gray-900 text-gray-400 text-sm">
+        <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col lg:flex-row items-center justify-between gap-10 relative">
+          {/* Footer Glow */}
+          <span className="absolute blur-[300px] -top-20 left-1/4 w-[30%] h-[60%] bg-red-600/40" />
+          <span className="absolute blur-[300px] -top-20 right-1/4 w-[30%] h-[60%] bg-blue-500/40" />
 
-    {/* Links */}
-     <h1 className="text-[10rem] md:text-7xl sm:text-6xl text-stone-100 russo mb-4">BOX'LIT</h1>
+          {/* Links */}
+          <div className="flex flex-col">
+            <h1 className="text-6xl md:text-7xl  text-stone-100 russo mb-4">
+              BOX'LIT
+            </h1>
 
-    {/* Legal / Credits */}
-    <div className="mt-10 lg:mt-0 text-center lg:text-left max-w-sm">
-      <p className="mb-2">
-        Note - All video content featured in this app is the intellectual property of its respective owners. We do not claim ownership of any third-party videos.
-      </p>
-      <p>
-        Built by –{" "}
-        <a
-          href="https://constayush.vercel.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-red-300 hover:text-red-600 transition"
-        >
-          Ayush
-        </a>
-      </p>
-    </div>
-  </div>
-  <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-500">
-    &copy; {new Date().getFullYear()} BOX'LIT. All rights reserved.
-  </div>
-</footer>
+            <div className="border-t border-gray-700  pt-6 text-center text-gray-500">
+              &copy; {new Date().getFullYear()} BOX'LIT. All rights reserved.
+            </div>
+          </div>
 
+          {/* Legal / Credits */}
+          <div className="mt-10 lg:mt-0 text-center lg:text-left max-w-sm">
+            <p className="mb-2">
+              Note - All video content featured in this app is the intellectual
+              property of its respective owners. We do not claim ownership of
+              any third-party videos.
+            </p>
+            <p>
+              Built by –{" "}
+              <a
+                href="https://constayush.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-300 hover:text-red-600 transition"
+              >
+                Ayush
+              </a>
+            </p>
+          </div>
+        </div>
+      </footer>
     </motion.div>
   );
 }
