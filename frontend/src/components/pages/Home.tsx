@@ -234,8 +234,7 @@ export default function Home() {
                 title="Learn Boxing"
                 description="Master the fundamentals, from footwork to punches by professionals"
                 link="/learn"
-                onMouseEnter={enterButton}
-                onMouseLeave={leaveButton}
+               
               />
 
               <FeatureCard
@@ -245,8 +244,7 @@ export default function Home() {
                 }
                 title="Training"
                 description="Sharpen your skills with drills, discipline, and real fight conditioning"
-                onMouseEnter={enterButton}
-                onMouseLeave={leaveButton}
+            
               />
             </motion.div>
           </div>
@@ -668,19 +666,12 @@ const FeatureCard = ({
   title,
   description,
   link,
-  onMouseEnter,
-  onMouseLeave,
+
 }) => {
-  return (
+  return (<button className="rounded-xl w-full">
     <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
-      }}
-      transition={{ duration: 0.3 }}
-      className="feature-card motion-div group bg-[#00000000]  backdrop-blur-3xl border border-[#ffffff4c] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      className="  bg-[#00000000] transition-all duration-200 shadow-2xl backdrop-blur-3xl border border-t-6 hover:border-t-red-500 border-t-[#c9c9c9] border-[#ffffffb3] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
+ 
     > <img
             src={paperTex}
             alt="Paper texture overlay"
@@ -698,6 +689,6 @@ const FeatureCard = ({
         </span>
         <p className="text-gray-400 relative z-10">{description}</p>
       </Link>
-    </motion.div>
+    </motion.div></button>
   );
 };
