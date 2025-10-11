@@ -338,8 +338,8 @@ export default function Learn() {
       className="min-h-screen relative bg-[#1a1a1a] text-white flex flex-col pt-28 px-4 md:py-34 py-12 md:px-12"
     ><img src={paperTex} alt="Paper texture overlay" className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay pointer-events-none rounded-xl" />
           
-         <span className="absolute -z-1 blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#fb8a8aa7]" />
-         <span className="absolute -z-1 blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#575cfa78] " />
+         <span className="absolute -z-1 blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#969696a7]" />
+         <span className="absolute -z-1 blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#15151578] " />
       <ScrollToTop />
       {/* Header with navigation */}
       <div className="container mx-auto mb-12 flex items-center">
@@ -370,8 +370,8 @@ export default function Learn() {
             <div className="bg-white/10 border border-white/20 shadow-xl rounded-xl p-6 sticky top-10">
               <span className="flex  justify-between ">
                 <span className="flex justify-center items-center">
-                  <BookOpen className="w-5 h-5 sm:mx-4  mr-4 text-red-600" />
-                  <h2 className="text-2xl font-bold  flex items-center">Boxing Techniques</h2>
+                 
+                  <h2 className="text-2xl font-bold  flex items-center">Boxing Techniques</h2> <BookOpen className="w-10 h-10 sm:mx-4  mr-4 text-red-600" />
                 </span>
 
                 <ArrowDown
@@ -499,7 +499,7 @@ export default function Learn() {
                             onClick={() => handlePunchSelect(punch)}
                             className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
                               selectedPunch.id === punch.id
-                                ? "bg-gray-800 border-l-4 border-red-600"
+                                ? "bg-white/20 border-l-4 shadow-lg border-red-600"
                                 : "hover:bg-gray-800/50"
                             }`}
                           >

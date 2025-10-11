@@ -401,7 +401,7 @@ export default function Train() {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-black/20 relative h-full text-white flex flex-col px-4 pt-24  md:px-12 py-8 md:py-24"
     >
-      <span className="absolute -z-1 blur-[200px] sm:blur-[300px] md:blur-[400px] top-0 left-0 w-[80%] sm:w-[60%] md:w-[50%] h-[30%] sm:h-[35%] md:h-[40%] bg-[#fc4f4f61]" />
+      <span className="absolute -z-1 blur-[200px] sm:blur-[300px] md:blur-[400px] top-0 left-0 w-[80%] sm:w-[60%] md:w-[50%] h-[30%] sm:h-[35%] md:h-[40%] bg-[#70707061]" />
       <span className="absolute -z-1 blur-[200px] sm:blur-[300px] md:blur-[400px] top-0 right-0 w-[80%] sm:w-[60%] md:w-[50%] h-[30%] sm:h-[35%] md:h-[40%] bg-[#575cfa43]" />
       <ScrollToTop />
       <div className="train-bg w-full h-full fixed top-0 left-0 opacity-10 -z-7" />

@@ -141,7 +141,7 @@ export default function Select() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
       className="min-h-screen relative w-full bg-black/20 text-white flex flex-col justify-center items-center px-4 pt-28 md:py-34 py-12 md:px-12"
-    >  <span className="absolute -z-1 blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#fc4f4f61]" />
+    >  <span className="absolute -z-1 blur-[400px] top-0 left-0 w-[50%] h-[40%] bg-[#46464661]" />
          <span className="absolute -z-1 blur-[400px] top-0 right-0 w-[50%] h-[40%] bg-[#575cfa43] " />
       <ScrollToTop />
       <div className="absolute inset-0 h-full opacity-10 select-bg"></div>

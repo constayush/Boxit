@@ -10,7 +10,7 @@ html {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  background: #000;
+  background: #171717;
   color: #ffffff;
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
@@ -70,7 +70,7 @@ a, button{
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: hsl(0, 0%, 80%);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -95,11 +95,6 @@ a, button{
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: #000;
-  overflow-x: hidden;
-}
 
 /* Custom Brand Font */
 .brand-font {

@@ -11,6 +11,7 @@ import { ReactLenis } from 'lenis/react';
 import { useAuthStore } from "./stores/authStore";
 import { fetchMe } from "./services/auth";
 import ProfilePage from "./components/pages/Profile";
+import Home2 from "./components/pages/Home2";
 
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -35,6 +36,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/test" element={<Home2 />} />
           <Route path="/learn" element={<Learn />} />
           <Route path="/select" element={<Select />} />
           <Route path="/train" element={<Train />} />

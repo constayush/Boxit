@@ -190,7 +190,7 @@ export default function Home() {
   initial={{ opacity: 0, y: 50, letterSpacing: "5px" }}
   animate={isHeroInView ? { opacity: 1, y: 0, letterSpacing: "0px" } : {}}
   transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-  className="italic russo text-[clamp(3.5rem,8vw,8rem)] leading-tight"
+  className="italic russo text-[clamp(3.5rem,8vw,5rem)] leading-tight"
   onMouseEnter={enterText}
   onMouseLeave={leaveButton}
 >
@@ -207,7 +207,7 @@ export default function Home() {
           >
             Your Ultimate Boxing Guide! – Train, Learn, and Fight!
             <br />
-            Stay ahead with the ultimate boxing platform.
+           <span className="hidden md:block">Stay ahead with the ultimate boxing platform.</span> 
           </motion.p>
         </motion.div>
 
@@ -263,7 +263,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10  w-full p-4 backdrop-blur-lg bg-white/10 border border-white/20 shadow-xl text-center"
+          className="relative z-10  w-full p-4 backdrop-blur-lg bg-[#3a363f]border border-white/20  text-center"
         >
           {" "}
           <img
@@ -278,13 +278,13 @@ export default function Home() {
               <motion.div
                 key={i}
                 whileHover={{ scale: 1.05 }}
-                className="p-6 rounded-2xl relative bg-black/1 border border-white/20 backdrop-blur-md text-left shadow-lg"
+                className="p-6 rounded-2xl relative bg-[#ffffff24] border border-white/20 backdrop-blur-md text-left shadow-lg"
               >  <img
             src={paperTex}
             alt="Paper texture overlay"
-            className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay pointer-events-none"
+            className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay pointer-events-none"
           />
-                {f.icon}
+                {/* {f.icon} */}
                 <h3 className="mt-4 text-xl font-semibold text-white">
                   {f.title}
                 </h3>
@@ -670,7 +670,7 @@ const FeatureCard = ({
 }) => {
   return (<button className="rounded-xl w-full">
     <motion.div
-      className="  bg-[#00000000] transition-all duration-200 shadow-2xl backdrop-blur-3xl border border-t-6 hover:border-t-red-500 border-t-[#c9c9c9] border-[#ffffffb3] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
+      className="  bg-[#00000000] transition-all duration-200 shadow-2xl backdrop-blur-3xl border border-t-6 hover:border-t-red-500 border-t-[#b7b8c096] border-[#ffffffb3] w-full relative p-6 rounded-xl flex flex-col items-center text-center overflow-hidden"
  
     > <img
             src={paperTex}
