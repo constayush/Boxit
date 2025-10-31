@@ -18,7 +18,7 @@ function Home() {
   });
 
   const scale2 = useTransform(scrollYProgress, [0, 0.3], [0.9, 1]);
-  const scale1 = useTransform(scrollYProgress, [0, .3], [0.75, 1]);
+  // const scale1 = useTransform(scrollYProgress, [0, .3], [0.75, 1]);
 
   return (
     <div className="">
