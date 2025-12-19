@@ -4,8 +4,6 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
-
-
 interface AuthenticatedRequest extends Request {
   user?: {
     id: string;
@@ -24,15 +22,18 @@ const generateToken = (userId: string) => {
 
 // REGISTER
 export const registerUser = async (req: Request, res: Response) => {
-  const { username,email, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ username });
-    if (existingUser) return res.status(400).json({ message: "Username taken" });
+    if (existingUser)
+      return res.status(400).json({ message: "Username taken" });
 
     const user = await User.create({ username, email, password });
 
-    const token = generateToken((user._id as mongoose.Types.ObjectId).toString());
+    const token = generateToken(
+      (user._id as mongoose.Types.ObjectId).toString()
+    );
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -40,7 +41,7 @@ export const registerUser = async (req: Request, res: Response) => {
       sameSite: "lax",
     });
 
-    res.status(201).json({ 
+    res.status(201).json({
       success: true,
       message: "User created ✅",
       user: {
@@ -58,25 +59,35 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-
 // LOGIN
 export const loginUser = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-
   try {
-    const user = await User.findOne({ username }).select("+password");
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username }).select(
+      "+password +email +username +lastLogin +xp +level +streak +achievements"
+    );
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const isMatch = await user.matchPassword(password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = generateToken((user._id as mongoose.Types.ObjectId).toString());
+    user.updateStreak();
 
-    // Set HTTP-only cookie
+    await User.updateOne(
+      { _id: user._id },
+      { streak: user.streak, lastLogin: user.lastLogin }
+    );
+
+    const token = generateToken(
+      (user._id as mongoose.Types.ObjectId).toString()
+    );
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax", // "none" if cross-site and using https
+      sameSite: "lax",
     });
 
     res.json({
@@ -92,18 +103,12 @@ export const loginUser = async (req: Request, res: Response) => {
         achievements: user.achievements,
       },
     });
-
-    user.updateStreak();
-    await user.save();
-
   } catch (err: any) {
     res.status(500).json({ success: false, message: err.message });
   }
 };
 
-
-export const logoutUser = (req: Request, res:Response) => {
- 
+export const logoutUser = (req: Request, res: Response) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -111,10 +116,9 @@ export const logoutUser = (req: Request, res:Response) => {
     path: "/",
   });
   res.json({ success: true, message: "Logged out ✅" });
-}
+};
 
-
-export const returnUser =  async (req: AuthenticatedRequest, res: Response) => {
+export const returnUser = async (req: AuthenticatedRequest, res: Response) => {
   try {
     // req.user is attached by the protect middleware
     if (!req.user) {
@@ -125,8 +129,8 @@ export const returnUser =  async (req: AuthenticatedRequest, res: Response) => {
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
-}
- 
+};
+
 export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { action, amount } = req.body;
@@ -158,20 +162,19 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
         return res.status(400).json({ message: "Invalid action" });
     }
 
-    const updatedUser = await User.findByIdAndUpdate(userId, updateQuery, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(userId, updateQuery, {
+      new: true,
+    });
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    
     const { password, ...safeUser } = updatedUser.toObject();
 
     res.json({ success: true, user: safeUser });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
-

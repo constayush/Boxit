@@ -9,21 +9,25 @@ import effect_img_6 from "../../../public/effect_6.jpeg";
 import effect_img_7 from "../../../public/effect_7.jpeg";
 import effect_img_8 from "../../../public/effect_8.jpeg";
 import paperTex from "../../../public/paper-texture.webp";
+
 function GallerySection() {
   const galleryRef = useRef<HTMLDivElement>(null);
 
-  // Scroll progress for entire gallery
   const { scrollYProgress } = useScroll({
     target: galleryRef,
     offset: ["start end", "end start"],
   });
+  
   const scale = useTransform(scrollYProgress, [0, 0.2], [0.9, 1]);
-  // Shared transforms
   const baseScale = useTransform(scrollYProgress, [0, 1], [1, 2]);
+  const baseX = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
-  const baseX = useTransform(scrollYProgress, [0, 1], [0, -100]); // for subtle parallax drift
+  // Text animation transforms
+  const toOpacity = useTransform(scrollYProgress, [0.1, 0.2, 0.25, 0.3], [0, 1, 1, 0]);
+  const beOpacity = useTransform(scrollYProgress, [0.3, 0.35, 0.4, 0.45], [0, 1, 1, 0]);
+  const theOpacity = useTransform(scrollYProgress, [0.45, 0.5, 0.55, 0.6], [0, 1, 1, 0]);
+  const greatestOpacity = useTransform(scrollYProgress, [0.6, 0.65, 1], [0, 1, 1]);
 
-  // Gallery image configs with offsets for depth
   const pictures = [
     {
       src: effect_img_1,
@@ -87,14 +91,48 @@ function GallerySection() {
     <motion.div
       style={{ scale }}
       ref={galleryRef}
-      className="relative h-[300vh] top-[-50vh] w-full"
+      className="relative h-[300vh] ease-in top-[-50vh] w-full"
     >
-      <div className="sticky top-0 h-screen overflow-hidden bg-[#202020]  rounded-t-[3rem]">
+      <div className="sticky flex justify-center items-center top-0 h-screen overflow-hidden bg-[#202020] rounded-t-[3rem]">
         <img
           src={paperTex}
           alt="Paper texture overlay"
           className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay pointer-events-none"
         />
+
+        <div className="absolute inset-0 flex items-center justify-center z-[99]">
+          {/* TO */}
+          <motion.h1
+            style={{ opacity: toOpacity }}
+            className="absolute russo font-extrabold text-[6rem] text-white mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
+          >
+            TO
+          </motion.h1>
+
+          {/* BE */}
+          <motion.h1
+            style={{ opacity: beOpacity }}
+            className="absolute russo font-extrabold text-[6rem] text-white mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
+          >
+            BE
+          </motion.h1>
+
+          {/* THE */}
+          <motion.h1
+            style={{ opacity: theOpacity }}
+            className="absolute russo font-extrabold text-[6rem] text-white mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
+          >
+            THE
+          </motion.h1>
+
+          {/* GREATEST */}
+          <motion.h1
+            style={{ opacity: greatestOpacity }}
+            className="absolute russo font-extrabold text-[6rem] text-red-500 mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
+          >
+            GREATEST
+          </motion.h1>
+        </div>
 
         {pictures.map(({ src, offset, direction, classes }, index) => {
           const localScale = useTransform(
@@ -121,12 +159,11 @@ function GallerySection() {
               key={index}
               style={{
                 scale: localScale,
-
                 x: localX,
                 y: localY,
                 zIndex: 10 - index,
               }}
-              className="absolute inset-0 flex items-center justify-center"
+              className="absolute inset-0 flex ease-in-out items-center justify-center"
             >
               <div className={`relative ${classes}`}>
                 <img

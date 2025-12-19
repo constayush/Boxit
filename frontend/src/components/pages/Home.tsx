@@ -103,7 +103,7 @@ function Home() {
       <motion.section
         ref={section1Ref}
         style={{ scale: scale2 }}
-        className="w-full relative min-h-screen flex flex-col items-center shadow-white shadow-lg justify-center bg-[#d4d3d3] rounded-t-[3.5rem] overflow-hidden py-20"
+        className="w-full ease duration-100 relative min-h-screen flex flex-col items-center shadow-white shadow-lg justify-center bg-[#d4d3d3] rounded-t-[3.5rem] overflow-hidden py-20"
       >
         {/* Paper texture overlay */}
         <img
@@ -133,7 +133,7 @@ function Home() {
           </motion.div>
 
           <motion.div
-            style={{ scale: scale2 }}
+            // style={{ scale: scale2 }}
             className="w-full flex justify-center items-center"
           >
             <div className="w-[100%] p-3 sticky top-10 rounded-3xl overflow-hidden bg-gradient-to-b from-[#ffffff00] to-black/50 backdrop-blur-2xl border border-white/50 shadow-2xl cursor-pointer">
