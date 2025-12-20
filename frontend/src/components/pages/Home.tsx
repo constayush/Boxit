@@ -8,6 +8,7 @@ import promo_1 from "../../../public/promo-1.png";
 import GallerySection from "../ui/gallery";
 import { useScroll, useTransform } from "framer-motion";
 import promo_2 from "../../../public/promo-2.png";
+import ScrollImageSequence from "../ui/AnimatedCanvas";
 function Home() {
   const lines = ["Built for Warriors.", "Forged in Fire."];
   const section1Ref = useRef<HTMLElement>(null);
@@ -184,35 +185,13 @@ function Home() {
 
       <GallerySection />
 
-      <section className=" relative px-8 w-full flex flex-col justify-center items-center border-t-2 pt-40 rounded-t-4xl top-[-30vh]">
-        <p className="text-6xl russo text-center max-w-6xl">
-          "Everybody has a plan until they get punched in the mouth." -{" "}
-          <span className="text-red-500">Mike Tyson</span>
-        </p>
+      
 
-        <motion.div className="flex flex-col sm:flex-row gap-4 mt-8">
-          <Link to="/select" className="w-full sm:w-auto">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full bg-gradient-to-r from-[#fd5353] to-red-600 border-t-2  hover:bg-red-700 transition-all duration-300 rounded-sm py-4 px-8 text-lg font-bold text-white"
-            >
-              Train with Us
-            </motion.button>
-          </Link>
-          <Link to="/learn" className="w-full sm:w-auto">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full border border-white/70 text-white bg-transparent hover:bg-white/10 transition-all duration-300 rounded-sm py-4 px-8 text-lg font-medium"
-            >
-              Learn Boxing
-            </motion.button>
-          </Link>
-        </motion.div>
-      </section>
+<div className="relative h-[200vh] ease-in top-[-50vh] w-full ">
+   <ScrollImageSequence/>
+</div>
 
-      <footer className="w-full relative px-8 bg-gray-900 shadow-white border-t border-white/50 rounded-t-4xl text-gray-400 text-sm">
+      <footer className="w-full h-full relative px-8 bg-gray-900 shadow-white border-t border-white/50  text-gray-400 text-sm">
         <img
           src={paperTex}
           alt="Paper texture overlay"

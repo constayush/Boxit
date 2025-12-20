@@ -19,6 +19,7 @@ function GallerySection() {
   });
   
   const scale = useTransform(scrollYProgress, [0, 0.2], [0.9, 1]);
+  const scaleh1 = useTransform(scrollYProgress, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6], [1, 1.5, 1, 1.5, 1, 1.5]);
   const baseScale = useTransform(scrollYProgress, [0, 1], [1, 2]);
   const baseX = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
@@ -93,7 +94,9 @@ function GallerySection() {
       ref={galleryRef}
       className="relative h-[300vh] ease-in top-[-50vh] w-full"
     >
-      <div className="sticky flex justify-center items-center top-0 h-screen overflow-hidden bg-[#202020] rounded-t-[3rem]">
+      <motion.div 
+      // style={{borderRadius: roundedBorder+"rem"}}
+      className="sticky flex justify-center items-center -top-12 h-[calc(100vh+48px)] border-t  overflow-hidden bg-[#202020] rounded-t-[3rem] ">
         <img
           src={paperTex}
           alt="Paper texture overlay"
@@ -103,32 +106,32 @@ function GallerySection() {
         <div className="absolute inset-0 flex items-center justify-center z-[99]">
           {/* TO */}
           <motion.h1
-            style={{ opacity: toOpacity }}
-            className="absolute russo font-extrabold text-[6rem] text-white mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
+            style={{ opacity: toOpacity, scale: scaleh1 }}
+            className="absolute russo font-extrabold  text-[5rem] md:text-[6rem] text-white mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
           >
             TO
           </motion.h1>
 
           {/* BE */}
           <motion.h1
-            style={{ opacity: beOpacity }}
-            className="absolute russo font-extrabold text-[6rem] text-white mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
+            style={{ opacity: beOpacity, scale: scaleh1  }}
+            className="absolute russo font-extrabold  text-[5rem] md:text-[6rem] text-white mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
           >
             BE
           </motion.h1>
 
           {/* THE */}
           <motion.h1
-            style={{ opacity: theOpacity }}
-            className="absolute russo font-extrabold text-[6rem] text-white mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
+            style={{ opacity: theOpacity , scale: scaleh1 }}
+            className="absolute russo font-extrabold text-[5rem] md:text-[6rem] text-white mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
           >
             THE
           </motion.h1>
 
           {/* GREATEST */}
           <motion.h1
-            style={{ opacity: greatestOpacity }}
-            className="absolute russo font-extrabold text-[6rem] text-red-500 mix-blend-difference drop-shadow-[0_0_2px_rgba(0,0,0,0.6)]"
+            style={{ opacity: greatestOpacity, scale: scaleh1  }}
+            className="absolute  font-extrabold text-[clamp(2.5rem,8vw,7rem)] text-red-600 tracking-wide drop-shadow-[100px_100px_100px_rgba(0,0,0,100)]"
           >
             GREATEST
           </motion.h1>
@@ -175,7 +178,7 @@ function GallerySection() {
             </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
