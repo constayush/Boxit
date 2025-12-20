@@ -22,7 +22,8 @@ function Home() {
   // const scale1 = useTransform(scrollYProgress, [0, .3], [0.75, 1]);
 
   return (
-    <div className="">
+    <div>
+
       <section className="relative px-8 flex flex-col md:flex-row items-center justify-between min-h-screen bg-[#202020] text-white overflow-hidden  md:px-20">
         <img
           src={paperTex}
@@ -183,15 +184,15 @@ function Home() {
         </div>
       </motion.section>
 
-      <GallerySection />
+      <section>
+            <GallerySection />
+      </section>
 
-      
+      <section className="relative h-[200vh] ease-in top-[-50vh] w-full ">
+        <ScrollImageSequence />
+      </section>
 
-<div className="relative h-[200vh] ease-in top-[-50vh] w-full ">
-   <ScrollImageSequence/>
-</div>
-
-      <footer className="w-full h-full relative px-8 bg-gray-900 shadow-white border-t border-white/50  text-gray-400 text-sm">
+      <footer className="w-full relative px-8 bg-gray-900 shadow-white border-t border-white/50  text-gray-400 text-sm">
         <img
           src={paperTex}
           alt="Paper texture overlay"
@@ -234,6 +235,7 @@ function Home() {
           </div>
         </div>
       </footer>
+
     </div>
   );
 }
