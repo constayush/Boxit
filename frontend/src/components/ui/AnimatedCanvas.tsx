@@ -1,136 +1,110 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import React, { Suspense, useRef, useEffect } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { OrbitControls, useGLTF, Html } from "@react-three/drei";
+import * as THREE from "three";
 import { Link } from "react-router";
 
-const FRAME_COUNT = 40;
+function Model({ path = "/public/statueModel.glb" }: { path?: string }) {
+  const group = useRef<any>(null);
+  const gltf: any = useGLTF(path);
 
-const FRAME_PATH = (i: number) =>
-  `/frames/ezgif-frame-${String(i).padStart(3, "0")}.jpg`;
-
-export default function ScrollImageSequence() {
-  const sectionRef = useRef<HTMLDivElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const imagesRef = useRef<HTMLImageElement[]>([]);
-
-  /* 🔥 scroll progress relative to SECTION */
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end end"],
+  useFrame((state, delta) => {
+    if (group.current) group.current.rotation.y += delta * 0.3;
   });
 
-  /* map progress → frame index with smooth easing */
-  const frame = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, FRAME_COUNT - 1],
-    { clamp: true }
+  return (
+    <group ref={group} dispose={null}>
+      <primitive object={gltf.scene} position={[0, -1.2, 0]} scale={[1.2, 1.2, 1.2]} />
+    </group>
   );
+}
 
-  /* Obsession animation - flows up on view, down on scroll back */
-  const obsessionY = useTransform(scrollYProgress, [.8, 1], [.8, 0]);
-//   const obsessionOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0.3]);
+export default function ScrollImageSequence() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const targetZ = useRef<number>(4);
 
-  /* preload + draw */
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const el = containerRef.current;
+    if (!el) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    canvas.width = 1920;
-    canvas.height = 1080;
-
-    const render = (i: number) => {
-      const idx = Math.round(i);
-      const img = imagesRef.current[idx];
-      if (!img || !img.complete) return;
-      
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const startZ = 4; // camera z at top
+    const endZ = 2.2; // camera z at bottom (zoomed in)
+    const onScroll = () => {
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      const height = el.offsetHeight;
+      const scrolled = window.scrollY - top;
+      const progress = Math.min(Math.max(scrolled / (height - window.innerHeight || 1), 0), 1);
+      targetZ.current = startZ + progress * (endZ - startZ);
     };
 
-    // preload frames
-    imagesRef.current = [];
-    for (let i = 0; i < FRAME_COUNT; i++) {
-      const img = new Image();
-      img.src = FRAME_PATH(i + 1);
-      imagesRef.current.push(img);
-    }
-
-    imagesRef.current[0].onload = () => render(0);
-
-    // subscribe to motion value with smoother rendering
-    const unsubscribe = frame.on("change", (v) => {
-      requestAnimationFrame(() => render(v));
-    });
-
-    return unsubscribe;
-  }, [frame]);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
 
   return (
-    <div ref={sectionRef} className="relative h-[200vh]">
+    <div className="relative h-[200vh]" ref={containerRef}>
       <div className="sticky top-0 h-screen flex items-center justify-center">
-        {/* overlay */}
         <img
           src="/paper-texture.webp"
-          className="absolute inset-0 w-full h-full object-cover opacity-100 mix-blend-darken z-1  pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-darken z-1 pointer-events-none"
           alt=""
         />
 
-        {/* canvas with smooth transition */}
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full opacity-90 transition-opacity duration-300"
-        />
+        <div className="absolute inset-0 pointer-events-none">
+          <Canvas camera={{ position: [0, 0, 4], fov: 30 }}>
+            <ambientLight intensity={0.6} />
+            <directionalLight position={[5, 5, 5]} intensity={40} />
+            <Suspense fallback={<Html center>loding</Html>}>
+              <Model path="/public/statueModel.glb" />
+            </Suspense>
+            <OrbitControls enabled={false} enablePan={false} enableZoom={false} enableRotate={false} />
+            <ScrollZoom targetZ={targetZ} />
+          </Canvas>
+        </div>
 
-        {/* content */}
-        <section className="relative z-10 text-center px-8">
+        <section className="relative z-10 text-center px-8 pointer-events-none">
           <p className="text-6xl russo max-w-6xl flex flex-col text-left">
-            You need 
-            
-            <motion.span 
-
-              whileInView={{
-                
-                letterSpacing: "0.09em",
-                y: 0,
-                transition: { type: "tween", stiffness:100, duration: .6 },
-              
-              }}
-              
-        
-              className="text-red-600 text-[clamp(4rem,8vw,7rem)] will-change-transform"
-            >
+            You need
+            <span className="text-red-600 text-[clamp(4rem,8vw,7rem)] will-change-transform">
               Obsession
-            </motion.span>
+            </span>
           </p>
 
-          
-        <motion.div className="flex flex-col sm:flex-row gap-4 mt-8 justify-end">
-          <Link to="/select" className="w-full sm:w-auto">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full bg-gradient-to-r from-[#fd5353] to-red-600 border-t-2  hover:bg-red-700 transition-all duration-300 rounded-sm py-4 px-8 text-lg font-bold text-white"
-            >
-              Train with Us
-            </motion.button>
-          </Link>
-          <Link to="/learn" className="w-full sm:w-auto">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full border border-white/70 text-white bg-transparent hover:bg-white/10 transition-all duration-300 rounded-sm py-4 px-8 text-lg font-medium"
-            >
-              Learn Boxing
-            </motion.button>
-          </Link>
-        </motion.div>
+          <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-end pointer-events-auto">
+            <Link to="/select" className="w-full sm:w-auto">
+              <button className="w-full bg-gradient-to-r from-[#fd5353] to-red-600 border-t-2  hover:bg-red-700 transition-all duration-300 rounded-sm py-4 px-8 text-lg font-bold text-white">
+                Train with Us
+              </button>
+            </Link>
+            <Link to="/learn" className="w-full sm:w-auto">
+              <button className="w-full border border-white/70 text-white bg-transparent hover:bg-white/10 transition-all duration-300 rounded-sm py-4 px-8 text-lg font-medium">
+                Learn Boxing
+              </button>
+            </Link>
+          </div>
         </section>
       </div>
     </div>
   );
+}
+
+function ScrollZoom({ targetZ }: { targetZ: React.MutableRefObject<number> }) {
+  const { camera } = useThree();
+
+  useFrame(() => {
+    const minZ = 1.8;
+    const maxZ = 6;
+    const t = THREE.MathUtils.clamp(targetZ.current, minZ, maxZ);
+    camera.position.z = THREE.MathUtils.lerp(camera.position.z, t, 0.12);
+    camera.updateProjectionMatrix();
+  });
+
+  return null;
 }

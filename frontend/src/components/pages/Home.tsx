@@ -105,7 +105,7 @@ function Home() {
       <motion.section
         ref={section1Ref}
         style={{ scale: scale2 }}
-        className="w-full ease duration-100 relative min-h-screen flex flex-col items-center shadow-white shadow-lg justify-center bg-[#d4d3d3] rounded-t-[3.5rem] overflow-hidden py-20"
+        className="w-full ease duration-100 relative  flex flex-col items-center shadow-white shadow-lg justify-center bg-[#d4d3d3] rounded-t-[3.5rem] overflow-hidden py-20"
       >
         {/* Paper texture overlay */}
         <img
@@ -180,19 +180,21 @@ function Home() {
             </a>
           </span>
 
-          <div className="w-full h-[40vh]"></div>
+      
         </div>
+
+        <div className="w-full h-[50vh]"></div>
       </motion.section>
 
-      <section>
-            <GallerySection />
+      <section className="relative min-w-full min-h-screen -mt-[50vh] z-20 overflow-visible">
+        <GallerySection />
       </section>
-
-      <section className="relative h-[200vh] ease-in top-[-50vh] w-full ">
+      {/* <div className="w-[100%] h-[10px] blur-xl bg-white" /> */}
+      <section className="relative h-[200vh] ease-in  w-full ">
         <ScrollImageSequence />
       </section>
 
-      <footer className="w-full relative px-8 bg-gray-900 shadow-white border-t border-white/50  text-gray-400 text-sm">
+      <footer className="w-full relative px-8 bg-gray-900 shadow-white border-t border-white/50 rounded-t-4xl text-gray-400 text-sm">
         <img
           src={paperTex}
           alt="Paper texture overlay"

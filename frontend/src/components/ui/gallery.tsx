@@ -92,7 +92,7 @@ function GallerySection() {
     <motion.div
       style={{ scale }}
       ref={galleryRef}
-      className="relative h-[300vh] ease-in top-[-50vh] w-full"
+      className="relative h-[300vh] ease-in  w-full"
     >
       <motion.div 
       // style={{borderRadius: roundedBorder+"rem"}}
