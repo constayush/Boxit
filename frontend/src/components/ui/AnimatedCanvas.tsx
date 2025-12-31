@@ -6,7 +6,7 @@ import { OrbitControls, useGLTF, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { Link } from "react-router";
 
-function Model({ path = "/public/statueModel.glb" }: { path?: string }) {
+function Model({ path = "/statueModel.glb" }: { path?: string }) {
   const group = useRef<any>(null);
   const gltf: any = useGLTF(path);
 
@@ -62,7 +62,7 @@ export default function ScrollImageSequence() {
             <ambientLight intensity={0.6} />
             <directionalLight position={[5, 5, 5]} intensity={40} />
             <Suspense fallback={<Html center>loding</Html>}>
-              <Model path="/public/statueModel.glb" />
+              <Model path="/statueModel.glb" />
             </Suspense>
             <OrbitControls enabled={false} enablePan={false} enableZoom={false} enableRotate={false} />
             <ScrollZoom targetZ={targetZ} />
