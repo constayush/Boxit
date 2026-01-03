@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useRef , lazy} from "react";
 import heroImg from "../../../public/hero-img2.png";
 import paperTex from "../../../public/paper-texture.webp";
 import { Link } from "react-router";
@@ -8,7 +8,7 @@ import promo_1 from "../../../public/promo-1.png";
 import GallerySection from "../ui/gallery";
 import { useScroll, useTransform } from "framer-motion";
 import promo_2 from "../../../public/promo-2.png";
-import ScrollImageSequence from "../ui/AnimatedCanvas";
+const ScrollImageSequence = lazy(() => import("../ui/AnimatedCanvas"));
 function Home() {
   const lines = ["Built for Warriors.", "Forged in Fire."];
   const section1Ref = useRef<HTMLElement>(null);
@@ -190,8 +190,9 @@ function Home() {
         <GallerySection />
       </section>
       {/* <div className="w-[100%] h-[10px] blur-xl bg-white" /> */}
-      <section className="relative h-[200vh] ease-in  w-full ">
-        <ScrollImageSequence />
+      
+      <section  className="relative h-[200vh] ease-in  w-full ">
+        <ScrollImageSequence  />
       </section>
 
       <footer className="w-full relative px-8 bg-gray-900 shadow-white border-t border-white/50 rounded-t-4xl text-gray-400 text-sm">

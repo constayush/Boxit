@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { registerUser } from "../../services/auth";
 import { useAuthStore } from "../../stores/authStore";
-
+import paperTexx from "../../../public/paper-texture.webp";
 export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
@@ -39,13 +39,14 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-tyson-signup flex items-center justify-center relative p-4">
+    <div className="min-h-screen flex items-center justify-center relative p-4">
+      <img src={"../../../public/signup-tyson.png"} className="absolute grayscale-100 h-full opacity-80 w-full" alt="" />
       {/* Background glows */}
       <motion.span
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="absolute blur-[400px] -z-1 right-0 w-[50%] h-[100%] bg-red-500"
+        className="absolute blur-[100px] -z-1 right-0 w-[50%] h-[100%] bg-red-500"
       />
       <motion.span
         initial={{ y: -100 }}
@@ -67,7 +68,7 @@ export default function Signup() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full max-w-md bg-[#67676732] backdrop-blur-xl rounded-2xl shadow-xl shadow-[#ffffff06] p-8 border border-white/40"
       >
-        <h2 className="text-3xl font-bold text-center text-white">Create Account ✨</h2>
+        <h2 className="text-3xl font-bold text-center text-white">Create Account</h2>
         <p className="text-gray-300 text-center mb-8">Join us and get fighting</p>
 
         <form className="space-y-6" onSubmit={handleSignup}>

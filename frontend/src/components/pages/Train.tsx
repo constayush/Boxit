@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import "@tensorflow/tfjs-backend-webgl";
 import * as tf from "@tensorflow/tfjs";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import ScrollToTop from "../ui/ScrollToTop";
 import ComboTray from "../ui/comboTray";
 import TrainHud from "../ui/TrainHud";
@@ -23,9 +23,9 @@ interface TrainingState {
 
 export default function Train() {
   const location = useLocation();
-  const comboString = new URLSearchParams(location.search).get("combo") || "1-2";
- 
- // parse the combo
+  const comboString =
+    new URLSearchParams(location.search).get("combo") || "1-2";
+
   const combo = parseCombo(comboString);
   const [isTraining, setIsTraining] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -37,6 +37,11 @@ export default function Train() {
   const [countdown, setCountdown] = useState<number>(0);
   const [showSettings, setShowSettings] = useState<boolean>(true);
   const [punchCount, setPunchCount] = useState(0);
+
+  // Loading states
+  const [isModelLoaded, setIsModelLoaded] = useState(false);
+  const [isAudioLoaded, setIsAudioLoaded] = useState(false);
+  const [modelLoadError, setModelLoadError] = useState<string>("");
 
   // Refs
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -54,27 +59,112 @@ export default function Train() {
   });
   const cooldownRef = useRef(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const [cameraEnabled, setCameraEnabled] = useState(true);
+  const [cameraEnabled, setCameraEnabled] = useState(false);
 
-  // TensorFlow Pose Detection
+  // Check if everything is loaded
+  const isFullyLoaded = isModelLoaded && isAudioLoaded;
+
+  // TensorFlow Pose Detection - Initialize with proper backend setup
   useEffect(() => {
     const initDetector = async () => {
       try {
+        console.log("Initializing TensorFlow...");
         await tf.ready();
+        await tf.setBackend("webgl");
+        console.log("TensorFlow backend:", tf.getBackend());
+
+        console.log("Loading MoveNet model...");
         const detector = await poseDetection.createDetector(
           poseDetection.SupportedModels.MoveNet,
-          { modelType: "SinglePose.Lightning" }
+          { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
         );
         detectorRef.current = detector;
+        setIsModelLoaded(true);
+        console.log("MoveNet model loaded successfully");
       } catch (error) {
         console.error("Error initializing pose detector:", error);
+        setModelLoadError(
+          "Failed to load pose detection model. Please refresh the page."
+        );
       }
     };
     initDetector();
   }, []);
 
-  // Pose detection effect
+  // Preload audio files
+  useEffect(() => {
+    const loadAudio = async () => {
+      try {
+        console.log("Loading audio files...");
+        const audioPromises = Object.values(punchAudioMap).map((audio) => {
+          return new Promise((resolve) => {
+            audio.load();
+            audio.addEventListener("canplaythrough", resolve, { once: true });
+          });
+        });
+
+        await Promise.all(audioPromises);
+        setIsAudioLoaded(true);
+        console.log("Audio files loaded successfully");
+      } catch (error) {
+        console.error("Error loading audio:", error);
+        setIsAudioLoaded(true);
+      }
+    };
+
+    loadAudio();
+  }, []);
+
+  // Draw skeleton helper function
+  const drawSkeleton = (
+    keypoints: poseDetection.Keypoint[],
+    ctx: CanvasRenderingContext2D
+  ) => {
+    const connections = [
+      [0, 1],
+      [0, 2],
+      [1, 3],
+      [2, 4], // Face
+      [5, 6], // Shoulders
+      [5, 7],
+      [7, 9], // Left arm
+      [6, 8],
+      [8, 10], // Right arm
+      [5, 11],
+      [6, 12], // Torso
+      [11, 12], // Hips
+      [11, 13],
+      [13, 15], // Left leg
+      [12, 14],
+      [14, 16], // Right leg
+    ];
+
+    ctx.strokeStyle = "#00FF00";
+    ctx.lineWidth = 3;
+
+    connections.forEach(([i, j]) => {
+      const kp1 = keypoints[i];
+      const kp2 = keypoints[j];
+
+      if (
+        kp1 &&
+        kp2 &&
+        kp1.score &&
+        kp2.score &&
+        kp1.score > 0.3 &&
+        kp2.score > 0.3
+      ) {
+        ctx.beginPath();
+        ctx.moveTo(kp1.x, kp1.y);
+        ctx.lineTo(kp2.x, kp2.y);
+        ctx.stroke();
+      }
+    });
+  };
+
+  // Pose detection effect with visualization
   useEffect(() => {
     let animationId: number;
     let isMounted = true;
@@ -86,7 +176,8 @@ export default function Train() {
         !isMounted ||
         !isTraining ||
         !detectorRef.current ||
-        !videoRef.current
+        !videoRef.current ||
+        !canvasRef.current
       )
         return;
 
@@ -98,38 +189,74 @@ export default function Train() {
       lastDetectionTime = now;
 
       try {
-        // Pose detection — async call, do NOT wrap in tf.tidy
         const poses = await detectorRef.current.estimatePoses(videoRef.current);
 
-        if (poses.length === 0) return;
+        // Draw on canvas
+        const canvas = canvasRef.current;
+        const video = videoRef.current;
+        const ctx = canvas.getContext("2d");
 
-        const kp = poses[0].keypoints;
-        const leftWrist = kp.find((k) => k.name === "left_wrist");
-        const rightWrist = kp.find((k) => k.name === "right_wrist");
-
-        [leftWrist, rightWrist].forEach((wrist, i) => {
-          if (wrist?.score !== undefined && wrist.score > 0.5) {
-            const prev =
-              i === 0
-                ? lastPositions.current.left
-                : lastPositions.current.right;
-
-            if (prev) {
-              const dx = wrist.x - prev.x;
-              const dy = wrist.y - prev.y;
-              const speed = Math.sqrt(dx * dx + dy * dy);
-
-              if (speed > 25 && !cooldownRef.current) {
-                setPunchCount((c) => c + 1);
-                cooldownRef.current = true;
-                setTimeout(() => (cooldownRef.current = false), 300);
-              }
-            }
-
-            if (i === 0) lastPositions.current.left = wrist;
-            else lastPositions.current.right = wrist;
+        if (ctx) {
+          // Set canvas size to match video
+          if (
+            canvas.width !== video.videoWidth ||
+            canvas.height !== video.videoHeight
+          ) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
           }
-        });
+
+          // Clear canvas
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          if (poses.length > 0) {
+            const kp = poses[0].keypoints;
+
+            // Draw skeleton
+            drawSkeleton(kp, ctx);
+
+            // Draw keypoints
+            kp.forEach((keypoint) => {
+              if (keypoint.score && keypoint.score > 0.3) {
+                ctx.beginPath();
+                ctx.arc(keypoint.x, keypoint.y, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = "#00FF00";
+                ctx.fill();
+                ctx.strokeStyle = "#FFFFFF";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+              }
+            });
+
+            // Punch detection
+            const leftWrist = kp.find((k) => k.name === "left_wrist");
+            const rightWrist = kp.find((k) => k.name === "right_wrist");
+
+            [leftWrist, rightWrist].forEach((wrist, i) => {
+              if (wrist?.score !== undefined && wrist.score > 0.5) {
+                const prev =
+                  i === 0
+                    ? lastPositions.current.left
+                    : lastPositions.current.right;
+
+                if (prev) {
+                  const dx = wrist.x - prev.x;
+                  const dy = wrist.y - prev.y;
+                  const speed = Math.sqrt(dx * dx + dy * dy);
+
+                  if (speed > 25 && !cooldownRef.current) {
+                    setPunchCount((c) => c + 1);
+                    cooldownRef.current = true;
+                    setTimeout(() => (cooldownRef.current = false), 300);
+                  }
+                }
+
+                if (i === 0) lastPositions.current.left = wrist;
+                else lastPositions.current.right = wrist;
+              }
+            });
+          }
+        }
       } catch (error) {
         console.error("Pose detection error:", error);
       }
@@ -154,15 +281,13 @@ export default function Train() {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
       }
-      // Add detector cleanup here
       detectorRef.current?.dispose();
     };
   }, []);
 
-  //  TensorFlow memory cleanup
+  // TensorFlow memory cleanup
   useEffect(() => {
     return () => {
-      // Clean up TensorFlow memory when component unmounts
       if (tf) {
         tf.disposeVariables();
       }
@@ -202,13 +327,6 @@ export default function Train() {
     }
   };
 
-  // Preload audio files
-  useEffect(() => {
-    Object.values(punchAudioMap).forEach((audio) => {
-      audio.load();
-    });
-  }, []);
-
   const playPunchSound = (punchId: string) => {
     const audio = punchAudioMap[punchId];
     if (audio) {
@@ -230,9 +348,14 @@ export default function Train() {
   // Webcam handling
   useEffect(() => {
     const handleCamera = async () => {
-      if (cameraEnabled) {
+      // Don't allow camera if model isn't loaded
+      if (cameraEnabled && !isModelLoaded) {
+        console.log("Model not loaded yet, waiting...");
+        return;
+      }
+
+      if (cameraEnabled && isModelLoaded) {
         try {
-          // Stop existing stream if any
           if (streamRef.current) {
             streamRef.current.getTracks().forEach((track) => track.stop());
           }
@@ -241,21 +364,44 @@ export default function Train() {
             video: { width: 640, height: 480 },
           });
           streamRef.current = stream;
+
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
             await videoRef.current.play();
           }
         } catch (err) {
           console.error("Error accessing webcam:", err);
+
+          if (streamRef.current) {
+            streamRef.current.getTracks().forEach((track) => track.stop());
+            streamRef.current = null;
+          }
+          if (videoRef.current) {
+            videoRef.current.srcObject = null;
+          }
           setCameraEnabled(false);
+          alert("Could not access camera. Please check permissions.");
         }
-      } else {
+      } else if (!cameraEnabled) {
         if (streamRef.current) {
           streamRef.current.getTracks().forEach((track) => track.stop());
           streamRef.current = null;
         }
         if (videoRef.current) {
           videoRef.current.srcObject = null;
+        }
+
+        // Clear canvas when camera is disabled
+        if (canvasRef.current) {
+          const ctx = canvasRef.current.getContext("2d");
+          if (ctx) {
+            ctx.clearRect(
+              0,
+              0,
+              canvasRef.current.width,
+              canvasRef.current.height
+            );
+          }
         }
       }
     };
@@ -267,9 +413,15 @@ export default function Train() {
         streamRef.current.getTracks().forEach((track) => track.stop());
       }
     };
-  }, [cameraEnabled]);
+  }, [cameraEnabled, isModelLoaded]);
 
-  const toggleCamera = () => setCameraEnabled((prev) => !prev);
+  const toggleCamera = () => {
+    if (!isModelLoaded) {
+      alert("Please wait for the pose detection model to load first.");
+      return;
+    }
+    setCameraEnabled((prev) => !prev);
+  };
 
   // Handle countdown before starting
   useEffect(() => {
@@ -306,17 +458,6 @@ export default function Train() {
       setRepsLeft(reps);
     }
   }, [reps, isTraining]);
-
-  // Clean up on unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (countdownRef.current) clearTimeout(countdownRef.current);
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, []);
 
   // Process the next punch in the sequence
   const nextPunch = () => {
@@ -361,6 +502,10 @@ export default function Train() {
 
   // Start training with countdown
   const startTraining = () => {
+    if (!isFullyLoaded) {
+      alert("Please wait for all resources to load first.");
+      return;
+    }
     setPunchCount(0);
     initAudioContext();
     setRepsLeft(reps);
@@ -393,6 +538,9 @@ export default function Train() {
     }
   };
 
+ 
+
+
   return (
     <motion.div
       initial={{ opacity: 0, filter: "blur(10px)" }}
@@ -405,6 +553,9 @@ export default function Train() {
       <span className="absolute -z-1 blur-[200px] sm:blur-[300px] md:blur-[400px] top-0 right-0 w-[80%] sm:w-[60%] md:w-[50%] h-[30%] sm:h-[35%] md:h-[40%] bg-[#575cfa43]" />
       <ScrollToTop />
       <div className="train-bg w-full h-full fixed top-0 left-0 opacity-10 -z-7" />
+
+
+  
 
       {/* Header with navigation */}
       <header className="container mx-auto flex  items-center gap-4 justify-between py-2">
@@ -437,6 +588,7 @@ export default function Train() {
         {/* Main display area */}
         <TrainHud
           videoRef={videoRef}
+          canvasRef={canvasRef}
           toggleCamera={toggleCamera}
           cameraEnabled={cameraEnabled}
           punchCount={punchCount}

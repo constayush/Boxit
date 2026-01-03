@@ -37,18 +37,8 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-tyson-login relative p-4">
-      <motion.span
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="absolute blur-[400px] top-50 right-0 w-[52%] h-[50%] bg-red-500"
-      />
-      <motion.span
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="absolute blur-[400px] top-50 left-0 w-[52%] h-[50%] bg-blue-500"
-      />
+         <img src={"../../../public/login-tyson.jpg"} className="absolute grayscale-100 h-full opacity-80 w-full" alt="" />
+     
 
       {/* Card wrapper */}
       <motion.div
@@ -58,9 +48,9 @@ export default function Login() {
         className="w-full max-w-md bg-[#67676732] backdrop-blur-xl rounded-2xl shadow-xl shadow-[#ffffff06] p-8 border border-white/40"
       >
         <h2 className="text-3xl font-bold text-center text-white">
-          Welcome Back 👋
+          Welcome Back
         </h2>
-        <p className="text-gray-300 text-center mb-8">Login to continue</p>
+        <p className="text-gray-300 text-center mb-8">Login to rage</p>
 
         <form className="space-y-6" onSubmit={handleLogin}>
           <motion.div whileFocus={{ scale: 1.02 }} className="w-full">
