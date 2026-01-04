@@ -18,7 +18,7 @@ function TrainControls({setShowSettings, showSettings, isTraining, startTraining
               {!isTraining ? (
                 <button
                   onClick={startTraining}
-                  className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                  className="w-full md:w-auto bg-gradient-to-r from-[#fd5353] to-red-600 hover:to-red-500 border-t-2 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-1"
                 >
                   <Play className="w-5 h-5" />
                   <span>Start</span>
@@ -69,7 +69,7 @@ function TrainControls({setShowSettings, showSettings, isTraining, startTraining
                 className="overflow-hidden"
               >
                 <div className="bg-white/20 shadow-2xl rounded-xl p-3 md:p-6 mb-4 relative">
-                <img src={paperTex} alt="Paper texture overlay" className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay pointer-events-none rounded-xl" />
+                <img src={paperTex} alt="Paper texture overlay" className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay pointer-events-none rounded-xl" />
     
                   <h3 className="text-lg font-semibold mb-4">
                     Training Settings
@@ -112,7 +112,7 @@ function TrainControls({setShowSettings, showSettings, isTraining, startTraining
                           onClick={() =>
                             setIntervalTime(Math.min(3000, intervalTime + 100))
                           }
-                          className="bg-white hover:bg-gray-700 p-2 rounded-lg"
+                          className="bg-white hover:bg-red-800 p-2 rounded-lg"
                           disabled={intervalTime >= 3000}
                         >
                           <ChevronRight className="w-5 h-5 text-black" />
@@ -134,7 +134,7 @@ function TrainControls({setShowSettings, showSettings, isTraining, startTraining
                       <div className="flex flex-wrap items-center gap-4">
                         <button
                           onClick={() => setReps(Math.max(1, reps - 1))}
-                          className="bg-white  hover:bg-gray-700 p-2 rounded-lg"
+                          className="bg-white  hover:bg-red-800 p-2 rounded-lg"
                           disabled={reps <= 1}
                         >
                           <ChevronLeft className="w-5 h-5 text-black" />
@@ -154,7 +154,7 @@ function TrainControls({setShowSettings, showSettings, isTraining, startTraining
                         />
                         <button
                           onClick={() => setReps(Math.min(20, reps + 1))}
-                          className="bg-white hover:bg-gray-700 p-2 rounded-lg"
+                          className="bg-white hover:bg-red-800 p-2 rounded-lg"
                           disabled={reps >= 20}
                         >
                           <ChevronRight className="w-5 h-5 text-black" />

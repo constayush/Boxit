@@ -14,7 +14,7 @@ import TrainControls from "../ui/TrainControls";
 import punchTypes from "../../data/punchTypes";
 import punchAudioMap from "../../data/punchAudio";
 import parseCombo from "../../utils/parseCombo";
-
+import paperTex from "../../../public/paper-texture.webp";
 // Constants
 const DETECTION_INTERVAL = 150;
 const PUNCH_SPEED_THRESHOLD = 25;
@@ -578,8 +578,10 @@ export default function Train() {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-black/20 relative h-full text-white flex flex-col px-4 pt-24 md:px-12 py-8 md:py-24"
     >
-      <span className="absolute -z-1 blur-[200px] sm:blur-[300px] md:blur-[400px] top-0 left-0 w-[80%] sm:w-[60%] md:w-[50%] h-[30%] sm:h-[35%] md:h-[40%] bg-[#70707061]" />
-      <span className="absolute -z-1 blur-[200px] sm:blur-[300px] md:blur-[400px] top-0 right-0 w-[80%] sm:w-[60%] md:w-[50%] h-[30%] sm:h-[35%] md:h-[40%] bg-[#575cfa43]" />
+       
+       
+      <span className="absolute -z-1 blur-[200px] sm:blur-[300px] md:blur-[100px] top-0 left-0 w-[80%] sm:w-[60%] md:w-[50%] h-[30%] sm:h-[35%] md:h-[40%] bg-[#70707061]" />
+      <span className="absolute -z-1 blur-[200px] sm:blur-[300px] md:blur-[300px] top-0 right-0 w-[80%] sm:w-[60%] md:w-[50%] h-[30%] sm:h-[35%] md:h-[40%] bg-[#575cfa43]" />
       <ScrollToTop />
       <div className="train-bg w-full h-full fixed top-0 left-0 opacity-10 -z-7" />
 
@@ -652,6 +654,8 @@ export default function Train() {
         <p className="text-center text-gray-200 text-sm sm:text-base md:text-xl russo">
           Follow the visual and audio cues to complete your boxing combo <br />
           *Punch count is approximate — for training use only.
+
+      
         </p>
       </footer>
     </motion.div>

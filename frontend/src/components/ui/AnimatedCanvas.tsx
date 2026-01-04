@@ -158,7 +158,7 @@ export default function ScrollImageSequence() {
         {/* Paper texture */}
         <img
           src="/paper-texture.webp"
-          className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-darken z-1 pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-darken z-1 pointer-events-none"
           alt=""
         
         />

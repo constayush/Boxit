@@ -318,7 +318,7 @@ export default function Select() {
               <button
                 onClick={handleTrainCustomCombo}
                 disabled={customCombo.length === 0}
-                className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:hover:bg-red-600 flex items-center justify-center gap-2"
+                className="bg-gradient-to-r from-[#fd5353] to-red-600 hover:to-red-500 border-t-2 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:hover:bg-red-600 flex items-center justify-center gap-2"
               >
                 <Play className="w-5 h-5" />
                 <span>Train Custom Combo</span>
