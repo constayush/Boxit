@@ -37,7 +37,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-tyson-login relative p-4">
-         <img src={"../../../public/login-tyson.jpg"} className="absolute grayscale-100 h-full opacity-80 w-full" alt="" />
+         <img src={"/login-tyson.jpg"} className="absolute grayscale-100 h-full opacity-80 w-full" alt="" />
      
 
       {/* Card wrapper */}

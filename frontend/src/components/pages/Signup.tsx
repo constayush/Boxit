@@ -40,7 +40,7 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative p-4">
-      <img src={"../../../public/signup-tyson.png"} className="absolute grayscale-100 h-full opacity-80 w-full" alt="" />
+      <img src={"/signup-tyson.png"} className="absolute grayscale-100 h-full opacity-80 w-full" alt="" />
       {/* Background glows */}
       <motion.span
         initial={{ y: -100 }}
