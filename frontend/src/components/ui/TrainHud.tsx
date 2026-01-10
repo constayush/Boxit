@@ -117,10 +117,8 @@ function TrainHud({
 
             {!isFullyLoaded ? (
               <div className="flex flex-col justify-center items-center gap-6">
-                <div className="pong max-w-sm">
-                  <div></div>
-                  <div></div>
-                  <div></div>
+                <div className="loader">
+            
                 </div>
                 <div className="text-center space-y-2">
                   <h2 className="text-3xl font-bold">Loading Training Mode</h2>
@@ -129,7 +127,7 @@ function TrainHud({
                       {isModelLoaded ? (
                         <span className="text-green-500">✓</span>
                       ) : (
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-4 h-4 animate-spin text-red-500" />
                       )}
                       <span>
                         {isModelLoaded
