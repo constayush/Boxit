@@ -232,7 +232,7 @@ function Home() {
                 rel="noopener noreferrer"
                 className="text-red-300 hover:text-red-600 transition"
               >
-                Team Blooded
+                Team Code Blooded
               </a>
             </p>
           </div>
